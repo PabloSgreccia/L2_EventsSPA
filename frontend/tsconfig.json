@@ -21,7 +21,14 @@
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    "paths": {
+      // Shared
+      "@etp/shared/modules":["src/app/shared/modules/index.ts"],
+      // Auth
+      "@etp/auth/views":["src/app/modules/auth/views/index.ts"],
+    
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
