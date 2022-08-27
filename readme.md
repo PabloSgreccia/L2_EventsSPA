@@ -1,11 +1,12 @@
-### Authors:
-    - Galetto, Adelmar
-    - Sgreccia, Pablo
 
 ### Description
 Events SPA where a user can create an event with start and end date, a location and a type, and share it with the world.
 Others users can check check for upcoming events and indicate that they will participate in an event.
 You also can visit a user profile and check all the events created by this user.  
+
+### Authors:
+    - Galetto, Adelmar
+    - Sgreccia, Pablo
 
 ### Thechnologies:
     - Backend: NodeJs
