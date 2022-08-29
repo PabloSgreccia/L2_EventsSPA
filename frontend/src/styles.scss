@@ -1,1 +1,367 @@
-/* You can add global styles to this file, and also import other style files */
+// html, body { height: 100%; }
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// /*################# Generals #################*/
+// :root{
+//     --background-color: #e0e0e0; 
+//     --main-color: #2c3e50;
+//     --main-border-color: #2c3e50;
+//     --main-hover-color: #172029; 
+//     --padding-for-header: calc(4.5rem + 16px);
+// }
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+
+.container {
+    width: 100%;
+    padding-right: 10%;
+    padding-left: 10%;
+}
+
+@media screen and (max-width: 600px) {
+    .container {
+        padding-right: 1em;
+        padding-left: 1em;
+    }
+  }
+
+// a{
+//     text-decoration: none;
+// }
+
+// .common-btn {
+//     text-decoration: none;
+//     color: white;
+//     padding: 1rem;
+//     border-radius: 0.75rem;
+//     background-color: var(--main-color);
+//     border: 1px solid var(--main-border-color);
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     transition: 0.5s;
+//     gap: 5px;
+//     cursor: pointer;
+//     font-size: 1rem;
+//     min-width: 80px;
+// }
+// .common-btn:hover{
+//     background-color: var(--main-hover-color);
+//     border-color: var(--main-hover-color);
+// }
+
+// .common-btn:active{
+//     opacity: 50%;
+// }
+
+// /*################# Header #################*/
+// header{
+//     background-color: var(--main-color);
+//     position: fixed;
+//     overflow: hidden;
+//     width: 100%;
+// }
+
+// header ul {
+//     list-style-type: none;
+//     margin: 0;
+//     padding: 0;
+//     overflow: hidden;
+
+//     display: flex;
+//     flex-direction: row;
+//     flex-wrap: nowrap;
+//     justify-content: space-between;
+// }
+
+// header li {
+//     float: left;
+// }
+
+// header li a {
+//     display: block;
+//     color: white;
+//     text-align: center;
+//     text-decoration: none;
+//     font-weight: bolder;
+//     padding: 1.5rem;
+//     border-radius: 5px;
+
+//     transition: 0.5s;
+// }
+
+// header li a:hover {
+//     background-color: var(--main-hover-color);
+// }
+
+// /*################# dropdown-menu #################*/
+
+// .dropdown-menu{
+//     display: none;
+// }
+
+// @media screen and (max-width: 500px) {
+//     .categories-header {
+//         display: none;
+//     }
+
+//     .dropdown-menu{
+//         display: inline;
+//     }
+//     .dropdown-menu li ul{
+//         display: none;
+//       }
+//     .dropdown-menu li:hover ul {
+//         display:flex;
+//         flex-direction: column;
+//     }
+//     }
+
+
+// /*################# Container #################*/
+// .container {
+//     width: 100%;
+//     padding-right: 10%;
+//     padding-left: 10%;
+// }
+
+// @media screen and (max-width: 600px) {
+//     .container {
+//         padding-right: 1em;
+//         padding-left: 1em;
+//     }
+//   }
+
+// /*################# Main #################*/
+// .main{
+//     padding-top: var(--padding-for-header);
+//     margin-bottom: 1.5rem;
+//     display: flex;
+//     flex-direction: row;
+//     flex-wrap: wrap;
+//     justify-content: center;
+//     gap: 10%;
+// }
+
+// /*################# Index #################*/
+// .web-description{
+//     width: 35%;
+//     min-width: 330px;
+//     padding: 1.5rem;
+//     background-color: #f0f0f0;
+//     border-radius: 10px;
+//     flex-grow: 1;
+// }
+
+// .web-description h1, .crud-try{
+//     text-align: center;
+// }
+
+// .web-description p{
+//     text-align: justify;
+//     margin-top: 1rem;
+// }
+
+// .web-description hr{
+//     margin-top: 1rem;
+//     border: 0.5px solid #4e4e4e;
+// }
+
+// .web-description button{
+//     float: right;
+//     margin-top: 1rem;
+
+//     padding: 0.375rem 0.75rem;
+//     border-radius: 0.25rem;
+// }
+
+// .crud-try{
+//     padding-top: 1.5rem;
+//     flex-grow: 2;
+// }
+
+// .crud-try .crud-buttons{
+//     margin-top: 1.5rem;
+//     display: flex;
+//     flex-direction: row;
+//     flex-wrap: wrap;
+//     justify-content: center;
+//     gap: 10px;
+// }
+
+// /*################# List View #################*/
+// .main-list {
+//     padding-top: var(--padding-for-header);
+//     display: flex;
+//     flex-direction: column;
+//     flex-wrap: nowrap;
+//     gap: 10%;
+// }
+
+// .table-title {
+//     display: flex;
+//     flex-direction: row;
+//     flex-wrap: nowrap;
+//     align-items: center;
+//     justify-content: space-between;
+//     margin-bottom: 1.5rem;
+// }
+
+// table{
+//     text-align: center;
+//     font-size: 1.15rem;
+//     border-collapse: collapse;
+// }
+
+// thead{
+//     border-top: 1px solid #172029;
+//     border-bottom: 1px solid #172029;
+//     padding-top: 10px;
+//     line-height: 3rem;
+//     background-color: rgb(206, 206, 206);
+// }
+
+// tbody tr{
+//     padding-top: 10px;
+//     line-height: 3rem;
+//     background-color: #f0f0f0;
+//     border-bottom: 1px solid #e7e7e7;
+// }
+
+// tbody tr:hover{
+//     background-color: rgb(224, 224, 224);
+//     transition: 0.3s;
+// }
+
+// td, .messageText {
+//     text-transform: capitalize;
+// }
+
+// .floating-button{
+//     border: 1px solid #172029;
+//     width: 55px;
+//     height: 55px;
+//     border-radius: 50%;
+//     z-index: 999;
+//     position: fixed;
+//     bottom: 1.5rem;
+//     right: 10%;
+//     font-weight: bold;
+//     min-width: 0px;
+// }
+
+// .actions{
+//     margin-top: 3px;
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: center;
+//     align-items: center;
+// }
+
+// .list-button{
+//     padding: 0.5rem 1rem 0.5rem 1rem;
+//     font-size: 1rem;
+//     border-radius: 0.75rem;
+// }
+
+// .list-create{
+//     display: inline;
+//     padding: 0.5rem 1rem 0.5rem 1rem;
+//     font-size: 1rem;
+//     border-radius: 0.75rem;
+// }
+
+// tbody .no-data{
+//     background-color: #f0f0f0;
+// }
+
+// .floating-message{
+//     color: black;
+//     background-color: #64c47c;
+//     max-width: 350px;
+//     padding: 1rem;
+//     border-radius: 10px;
+//     z-index: 999;
+//     position: fixed;
+//     top: var(--padding-for-header);
+//     right: 1em;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     text-decoration: none;
+//     opacity: 75%;
+// }
+
+// .floating-message:hover{
+//     opacity: 100%;
+//     transition: 0.3s;
+//     cursor: pointer;
+// }
+
+// /*################# Create, Edit and Show Views #################*/
+// .form-input{
+//     display: flex;
+//     flex-direction: column;
+// }
+
+// .new-title{
+//     font-size: 1.5rem;
+//     margin-bottom: 0.75rem;
+//     text-transform: capitalize;
+// }
+
+// .form-input input{
+//     padding: 8px;
+//     border: none;
+//     border-bottom: 1px solid #ccc;
+//     width: 100%;
+//     font: inherit;
+// }
+
+// .form-input label{
+//     font-size: 1rem;
+//     font-weight: bold;
+// }
+
+// .form-buttons{
+//     display: flex;
+//     flex-direction: row;
+//     flex-wrap: wrap;
+//     justify-content: right;
+//     gap: 10px;
+// }
+
+// .btn-cancel{
+//     opacity: 70%;
+// }
+
+// .btn-delete{
+//     background-color: #cf1a1a;
+//     border-color: #ac1414;
+// }
+// .btn-delete:hover{
+//     background-color: #ac1414;
+//     border-color: #ac1414;
+// }
+
+// /*################# Validators #################*/
+
+// .hidden{
+//     display: none;
+// }
+
+// .invalid {
+//     color: white;
+//     background-color: #ce6969;
+//     display: block;
+//     visibility: visible;
+//     padding: 0.5rem;
+//     border-bottom-left-radius: 5px;
+//     border-bottom-right-radius: 5px;
+// }

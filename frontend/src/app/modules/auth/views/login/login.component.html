@@ -1,1 +1,22 @@
-<p>login works!</p>
+<form [formGroup]="logInForm" (ngSubmit)="logIn()">
+
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Placeholder" formControlName="email">
+        <mat-icon matSuffix>alternate_email</mat-icon>
+        <mat-hint *ngIf="email.errors?.['email']">Should be a valid email.</mat-hint>
+    </mat-form-field>
+    
+    <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input type="password" matInput placeholder="Placeholder" #passwordInput formControlName="password">
+        <mat-icon matSuffix class="show-password" (click)="showPassword()">remove_red_eye</mat-icon>
+        <mat-hint *ngIf="password.errors?.['minlength']">At least eight characters, one number and one special character.</mat-hint>
+    </mat-form-field>
+    
+    <span class="separator">
+        <div *ngIf="error" class="errormsg">{{error}}</div >
+    </span>
+
+    <button mat-flat-button type="submit" color="primary" [disabled]="!logInForm.valid">Log In</button>    
+</form>
