@@ -25,6 +25,10 @@
     "paths": {
       // Shared
       "@etp/shared/modules":["src/app/shared/modules/index.ts"],
+      "@etp/shared/guards":["src/app/shared/guards/index.ts"],
+      "@etp/shared/components":["src/app/shared/components/index.ts"],
+      "@etp/shared/services":["src/app/shared/services/index.ts"],
+      "@etp/shared/interfaces":["src/app/shared/interfaces/index.ts"],
       // Auth
       "@etp/auth/views":["src/app/modules/auth/views/index.ts"],
     
