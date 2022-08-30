@@ -1,0 +1,60 @@
+<div class="event-card">
+
+    <div class="event-card-header event-linker" (click)="showEvent(event._id)">
+      <img [src]="event.adminPhoto" class="user-img">
+      <div class="event-card-header-info">
+
+        <div class="card-title">
+          <mat-card-title>{{event.title}}</mat-card-title>
+          <mat-icon *ngIf="event.verifiedadmin" class="verify-icon">verified_user</mat-icon>
+        </div>
+
+        <div class="aligned-elements">
+          <mat-icon>date_range</mat-icon>
+          {{event.init_date | date:'short'}}
+        </div>
+
+        <div class="aligned-elements" *ngIf="event.province">
+          <mat-icon> place</mat-icon>
+          {{event.province}},
+          {{event.city}},
+          {{event.street}},
+          {{event.number}}
+        </div>
+
+        <div class="aligned-elements" *ngIf="event.link">
+          <mat-icon>link</mat-icon>
+          {{event.link}}
+        </div>
+
+        <div class="aligned-elements user">
+          <mat-icon>face</mat-icon>
+          {{event.adminUser}}
+        </div>
+
+      </div>
+    </div>
+
+    <img [src]="event.photo" class="event-img event-linker" (click)="showEvent(event._id)">
+
+    <div class="event-card-footer">
+        <button mat-button (click)="joinEvent(event._id)" *ngIf="!event.participateDisabled; else participating">PARTICIPATE</button>
+        <ng-template #participating>
+            <button mat-button disabled="true">PARTICIPATING</button>
+        </ng-template>
+      <div class="event-card-footer-stats">
+          <div class="event-card-footer-stats-ppl">
+              <mat-icon>people</mat-icon>
+              {{event.people}}
+          </div>
+          <div class="event-card-footer-stats-value" *ngIf="event.end_date == today">
+              <mat-icon>star</mat-icon>
+              <mat-icon>star</mat-icon>
+              <mat-icon>star</mat-icon>
+              <mat-icon>star</mat-icon>
+              <mat-icon>star</mat-icon>
+              {{event.valor}}
+          </div>
+      </div>
+    </div>
+  </div>

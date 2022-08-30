@@ -1,8 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '@etp/auth/services';
 import { User } from '@etp/shared/interfaces';
-import { UserServicesService } from '@etp/shared/services';
+import { UserServiceService } from '@etp/shared/services';
 
 @Component({
   selector: 'etp-signup',
@@ -32,11 +33,12 @@ export class SignupComponent implements OnInit {
   
   constructor(
     private router: Router,
-    private userService: UserServicesService,
-  ) { }
+    private authService: AuthService,
+    private userService: UserServiceService,
+    ) { }
 
   ngOnInit(): void {
-    if (this.userService.loggedIn()) {
+    if (this.authService.loggedIn()) {
       this.router.navigate(['/dashboard']);
     }
   }
@@ -51,12 +53,13 @@ export class SignupComponent implements OnInit {
         password: this.signUpForm.controls.password.value || ''
       }
 
-      this.userService.signUp(this.user)
+      this.authService.signUp(this.user)
         .subscribe({
           next: res => {
           if (res.status === 201) {
             localStorage.setItem('token', res.token);
             // sessionStorage.setItem('token', res.token)
+            // this.userService.storeUserData(res.user);
             this.router.navigate(['/dashboard']);
           }       
           },

@@ -1,0 +1,96 @@
+// Event card styles
+.user-img{
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.event-card{
+    width: calc(400px + 2em);
+    height: 100%;
+    background-color: rgb(240, 240, 240);
+    border-radius: 10px;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.event-card-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.event-card-header-info{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.card-title{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.aligned-elements{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2px;
+}
+
+.event-img{
+    max-height: 200px;
+    width: calc(400px + 2em);
+    position: relative;
+    left: -1em;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.event-card-footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.event-card-footer-stats{
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+    // gap: 2px;
+}
+
+.event-card-footer-stats-ppl{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.event-card-footer-stats-value{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.event-linker{
+    cursor: pointer;
+}
+
+button{
+    background-color: rgb(218, 218, 218);
+}
+
+.verify-icon{
+    color: rgb(1, 164, 239);
+    overflow: visible;
+}

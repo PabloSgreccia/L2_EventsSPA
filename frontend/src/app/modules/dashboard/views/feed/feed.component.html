@@ -1,0 +1,84 @@
+<div class="filters-header" (click)="showHideTasks()">
+  <h3>Filters</h3>
+  <mat-icon *ngIf="filtersFormDiv.hidden; else downfilter">keyboard_arrow_right</mat-icon>
+  <ng-template #downfilter>
+    <mat-icon>keyboard_arrow_down</mat-icon>
+  </ng-template>
+</div>
+<form [formGroup]="filtersForm" (ngSubmit)="filterEvents()" class="filter-form" #filtersFormDiv hidden="true">
+  <div class="filters-container">
+    <div class="filter-item">
+      <mat-form-field appearance="fill">
+        <mat-label>Province</mat-label>
+        <mat-select formControlName="province" (selectionChange)="changeProvince()">
+          <mat-option *ngFor="let province of provinces" [value]="province.value">
+            {{province.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>City/Town</mat-label>
+        <mat-select [disabled]="province.value === ''" #cityFilter>
+          <mat-option *ngFor="let city of cities" [value]="city.value">
+            {{city.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="filter-item">
+      <mat-form-field appearance="fill">
+        <mat-label>Topic</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let topic of topics" [value]="topic.value">
+            {{topic.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="filter-item">
+      <mat-form-field appearance="fill">
+        <mat-label>Order by</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let order of orders" [value]="order.value">
+            {{order.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <button mat-raised-button color="primary">Filter</button>
+
+  </div>
+</form>
+
+<div class="events-header">
+  <h3>Events</h3>
+  
+  <!-- <div class="order-by">
+    <mat-form-field appearance="fill">
+      <mat-label>Order by</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let order of orders" [value]="order.value">
+          {{order.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div> -->
+
+  <div class="new-event-btn" routerLink="/dashboard/new-event">
+    Create Event!
+    <mat-icon> create_new_folder</mat-icon>
+  </div>
+</div>
+
+<br>
+<div class="lista-eventos">
+  <div class="evento" *ngFor="let event of events">
+
+    <etp-event [event]="event"></etp-event>
+
+  </div>
+</div>

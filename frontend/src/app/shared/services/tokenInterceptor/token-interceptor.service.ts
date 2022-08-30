@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AuthService } from '@etp/auth/services';
 import { Observable } from 'rxjs';
-import { UserServicesService } from '../userServices/user-services.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,13 +9,13 @@ import { UserServicesService } from '../userServices/user-services.service';
 export class TokenInterceptorService {
 
   constructor(
-    private userService: UserServicesService
+    private authService: AuthService
   ) { }
   
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const tokenizeReq = req.clone({
       setHeaders: {
-        authorization: `Bearer ${this.userService.getToken()}`
+        authorization: `Bearer ${this.authService.getToken()}`
       }
     })
     return next.handle(tokenizeReq);

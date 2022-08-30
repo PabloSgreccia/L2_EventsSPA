@@ -31,6 +31,10 @@
       "@etp/shared/interfaces":["src/app/shared/interfaces/index.ts"],
       // Auth
       "@etp/auth/views":["src/app/modules/auth/views/index.ts"],
+      "@etp/auth/services":["src/app/modules/auth/services/index.ts"],
+      // dashboard
+      "@etp/dashboard/views":["src/app/modules/dashboard/views/index.ts"],
+      "@etp/dashboard/services":["src/app/modules/dashboard/services/index.ts"],
     
     }
   },
