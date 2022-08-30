@@ -25,7 +25,7 @@
   <div *ngIf="islogged()">
     <button mat-button [matMenuTriggerFor]="profile">{{user._id}}</button>
     <mat-menu #profile="matMenu">
-      <button mat-menu-item>
+      <button mat-menu-item [routerLink]="['/dashboard/profile', user._id]">
         <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="person"></mat-icon>
         Profile
       </button>

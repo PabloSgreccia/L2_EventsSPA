@@ -63,5 +63,6 @@ button{
 .same-row-inputs{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-evenly;
 }

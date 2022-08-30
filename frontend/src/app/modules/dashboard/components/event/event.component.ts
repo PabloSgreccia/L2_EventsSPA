@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Event } from '@etp/shared/interfaces'
+import { Router } from '@angular/router';
+import { Event, User } from '@etp/shared/interfaces'
+import { EventServiceService } from '@etp/shared/services';
 
 @Component({
   selector: 'etp-event',
@@ -11,7 +13,14 @@ export class EventComponent implements OnInit {
   @Input() event!: Event;
   today = new Date();
 
-  constructor() { }
+  user: User = {
+    _id:24,
+  }
+
+  constructor(
+    private eventService: EventServiceService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
   }
@@ -25,5 +34,8 @@ export class EventComponent implements OnInit {
       this.event.participateDisabled = true
     }
     
-
+  redirectEventDetails(event: Event){
+    this.eventService.setEvent(event);
+    this.router.navigate([`/dashboard/event/${this.event._id}`]);
+  }
 }
