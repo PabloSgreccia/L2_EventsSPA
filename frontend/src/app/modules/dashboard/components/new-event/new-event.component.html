@@ -44,12 +44,12 @@
         </div>
 
         <div class="same-row-inputs">
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="fill">
             <mat-label>Street</mat-label>
             <input matInput placeholder="Placeholder" formControlName="street">
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="fill">
             <mat-label>Number</mat-label>
             <input type="number" matInput placeholder="Placeholder" formControlName="number">
           </mat-form-field>
@@ -104,7 +104,7 @@
         <div *ngIf="error" class="errormsg">{{error}}</div>
       </span>
 
-      <button mat-flat-button type="submit" [disabled]="!eventForm.valid">Sign Up</button>
+      <button mat-flat-button type="submit" [disabled]="!eventForm.valid">Continue</button>
     </form>
   </div>
 

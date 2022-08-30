@@ -7,6 +7,7 @@ interface FilterInput {
   value: string;
   viewValue: string;
 }
+
 @Component({
   selector: 'etp-feed',
   templateUrl: './feed.component.html',
@@ -19,9 +20,7 @@ export class FeedComponent implements OnInit {
     {value: "", viewValue: ""},
   ]
   
-  cities:FilterInput[] = [
-    {value: "", viewValue: ""},
-  ]
+  cities: string[] = []
   
   topics:FilterInput[] = [
     {value: "Deportes", viewValue: "Deportes"},
@@ -97,17 +96,81 @@ export class FeedComponent implements OnInit {
     street: '3 de Febrero',
     number: 2318,
     link: 'pasionxchacarita.com',
-    init_date: new Date(2018, 0O5, 0O5, 17, 23, 42, 11),
-    end_date: new Date(2018, 0O5, 0O5, 17, 23, 42, 11),
+    init_date: new Date(2018, 5, 12, 17, 0, 0, 0),
+    end_date: new Date(2018, 5, 12, 19, 0, 0, 0),
     cancelled:false,
     type: 'Deporte',
     photo: 'https://img.freepik.com/vector-gratis/equipo-futbol-voleibol-beisbol-rugby_1441-4026.jpg',
-    finished: false,
+    finished: true,
     adminUser: 'Chacarita Jrs',
     people: 45000,
     verifiedadmin: false,
     adminPhoto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Escudo_del_Club_Atl%C3%A9tico_Chacarita_Juniors.svg/1200px-Escudo_del_Club_Atl%C3%A9tico_Chacarita_Juniors.svg.png',
     valor: 1,
+    participateDisabled:false,
+  },
+  {
+    _id: 3,
+    title: 'Chacarita vs NOB',
+    description: 'Recibimos a NOB por la 7ma fecha del torneo nacional. Veni a alentar a Charcarita',
+    mode: 'Mixto',
+    province: 'Buenos Aires',
+    city: 'Retiro',
+    street: '3 de Febrero',
+    number: 2318,
+    link: 'pasionxchacarita.com',
+    init_date: new Date(2018, 5, 5, 17, 0, 0, 0),
+    end_date: new Date(2018, 5, 5, 19, 0, 0, 0),
+    cancelled:false,
+    type: 'Deporte',
+    photo: 'https://img.freepik.com/vector-gratis/equipo-futbol-voleibol-beisbol-rugby_1441-4026.jpg',
+    finished: true,
+    adminUser: 'Chacarita Jrs',
+    people: 38854,
+    verifiedadmin: false,
+    adminPhoto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Escudo_del_Club_Atl%C3%A9tico_Chacarita_Juniors.svg/1200px-Escudo_del_Club_Atl%C3%A9tico_Chacarita_Juniors.svg.png',
+    valor: 1,
+    participateDisabled:false,
+  },{
+    _id: 1,
+    title: 'Mi Cumpleaños',
+    description: 'Traer su propia comida, yo pongo la bebida',
+    province: 'Santa Fe',
+    city: 'Rosario',
+    street: 'Cochabamba',
+    number: 1333,
+    init_date: new Date(2022, 23, 6, 11, 0, 0),
+    end_date: new Date(2022, 23, 6, 21, 0, 0),
+    cancelled:false,
+    type: 'Cumpleaños',
+    photo: 'https://cdn.computerhoy.com/sites/navi.axelspringer.es/public/media/image/2018/01/283709-crear-tarjetas-felicitar-cumpleanos.jpg',
+    finished: false,
+    adminUser: 'Pablo Sgreccia',
+    adminUserId: 24,
+    people: 12,
+    verifiedadmin: true, 
+    adminPhoto: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1WeNyqqvZ4xPqhmoF5Jcz3UYO_Gk2AUNgSKU59LJYLETM8tElgPD2931E8-7dauowdAQ&usqp=CAU',
+    valor: 0,
+    participateDisabled:false,
+  },
+  {
+    _id: 2,
+    title: 'Partido vs Atalaya',
+    province: 'Santa Fe',
+    city: 'Rosario',
+    street: 'San Juan',
+    number: 3550,
+    init_date: new Date(2022, 9, 2, 23, 0, 0),
+    end_date: new Date(2022, 10, 10, 7, 0, 0),
+    cancelled: false,
+    type: 'Fiesta',
+    photo: 'https://www.competize.com/blog/wp-content/uploads/2019/12/crear-torneos-basquet-baloncesto-scaled.jpg',
+    finished: false,
+    adminUser: 'Pablo Sgreccia',
+    adminUserId: 24,
+    people: 67,
+    verifiedadmin: true, 
+    adminPhoto: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1WeNyqqvZ4xPqhmoF5Jcz3UYO_Gk2AUNgSKU59LJYLETM8tElgPD2931E8-7dauowdAQ&usqp=CAU',
     participateDisabled:false,
   }]
 
@@ -134,12 +197,19 @@ export class FeedComponent implements OnInit {
       }
     })
 
+    this.events.sort(
+      function(a, b) {          
+         if (a.finished === b.finished) {
+            // Price is only important when cities are the same
+            return b.init_date > a.init_date? 1 : -1;
+         }
+         return a.finished > b.finished ? 1 : -1;
+      });
   }
   
   filterEvents(){
     
     console.log("eventos filtrados");
-    this.eventService.getvalor();
   }
 
   changeProvince(){
@@ -148,15 +218,16 @@ export class FeedComponent implements OnInit {
       next: res => {
         this.cities = (res.localidades).map(
           function(city:any) { 
-            // console.log(city.nombre);
-            let mapCity:FilterInput = {
-              value: city.nombre,
-              viewValue:city.nombre 
-            };
-            return mapCity
+            return city.nombre
           }
         )
-        this.cities.sort((a, b) => (a.value > b.value) ? 1 : -1)
+              
+        this.cities = this.cities.filter((city,index)=>{
+            return this.cities.indexOf(city) === index;
+        })
+
+        this.cities.sort((a, b) => (a > b) ? 1 : -1)
+
       }
     })
   }
@@ -166,6 +237,27 @@ export class FeedComponent implements OnInit {
       this.filtersFormDiv?.nativeElement.setAttribute('hidden', '');
     } else {
       this.filtersFormDiv?.nativeElement.removeAttribute('hidden');
+    }
+  }
+
+  orderby(event: any){
+    console.log(event.value);
+    if (event.value === 'date') {
+      this.events.sort(
+        function(a, b) {          
+           if (a.finished === b.finished) {
+              return b.init_date > a.init_date? 1 : -1;
+           }
+           return a.finished > b.finished ? 1 : -1;
+        });
+    }else if (event.value === 'people') {
+      this.events.sort(
+        function(a, b) {          
+           if (a.finished === b.finished) {
+              return ((a.people || 0) < (b.people || 0)) ? 1 : -1;
+           }
+           return a.finished > b.finished ? 1 : -1;
+        });
     }
   }
 

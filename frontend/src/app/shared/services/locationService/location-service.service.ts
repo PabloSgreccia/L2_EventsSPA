@@ -19,7 +19,7 @@ export class LocationServiceService {
   }
 
   getProvincesCities(province: string){
-    return this.http.get<any>(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${province}&max=2000`)
+    return this.http.get<any>(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${province}&max=1000`)
   }
 
 }

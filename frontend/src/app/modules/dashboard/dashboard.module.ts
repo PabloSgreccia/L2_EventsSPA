@@ -10,6 +10,8 @@ import { MaterialModule } from '@etp/shared/modules';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewEventComponent } from './components/new-event/new-event.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ProfileComponent } from './views/profile/profile.component';
+import { EventDetailComponent } from './components/event-detail/event-detail.component';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     DashboardComponent,
     FeedComponent,
     EventComponent,
-    NewEventComponent
+    NewEventComponent,
+    ProfileComponent,
+    EventDetailComponent
   ],
   imports: [
     CommonModule,

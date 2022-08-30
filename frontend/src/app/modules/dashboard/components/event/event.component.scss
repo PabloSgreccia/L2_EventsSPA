@@ -16,6 +16,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    
 }
 
 .event-card-header{
@@ -93,4 +94,8 @@ button{
 .verify-icon{
     color: rgb(1, 164, 239);
     overflow: visible;
+}
+
+.finished-event{
+    opacity: 45%;
 }

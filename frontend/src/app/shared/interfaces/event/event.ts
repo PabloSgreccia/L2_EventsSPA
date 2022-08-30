@@ -1,8 +1,8 @@
 export interface Event {
     _id?:number,
     title:String,
-    description:String,
-    mode:String,
+    description?:String,
+    mode?:String,
     province?:String,
     city?:String,
     street?:String,
@@ -15,6 +15,7 @@ export interface Event {
     photo?:String,
     finished:boolean,
     adminUser:string,
+    adminUserId?:number,
 
     people?: number,
     valor?: number,

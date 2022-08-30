@@ -1,8 +1,8 @@
-<div class="event-card">
+<div class="event-card" [ngClass]="event.finished ? 'finished-event' : 'active-event'">
 
-    <div class="event-card-header event-linker" (click)="showEvent(event._id)">
-      <img [src]="event.adminPhoto" class="user-img">
-      <div class="event-card-header-info">
+    <div class="event-card-header event-linker">
+      <img [src]="event.adminPhoto" class="user-img" [routerLink]="['/dashboard/profile', user._id]">
+      <div class="event-card-header-info" (click)="redirectEventDetails(event)">
 
         <div class="card-title">
           <mat-card-title>{{event.title}}</mat-card-title>
@@ -27,7 +27,7 @@
           {{event.link}}
         </div>
 
-        <div class="aligned-elements user">
+        <div class="aligned-elements user" [routerLink]="['/dashboard/profile', user._id]">
           <mat-icon>face</mat-icon>
           {{event.adminUser}}
         </div>
@@ -35,10 +35,13 @@
       </div>
     </div>
 
-    <img [src]="event.photo" class="event-img event-linker" (click)="showEvent(event._id)">
+    <img [src]="event.photo" class="event-img event-linker" (click)="redirectEventDetails(event)">
 
     <div class="event-card-footer">
-        <button mat-button (click)="joinEvent(event._id)" *ngIf="!event.participateDisabled; else participating">PARTICIPATE</button>
+        <button mat-button *ngIf="event.adminUserId === user._id; else participate" disabled="true">OWNER</button>
+        <ng-template #participate>
+          <button mat-button (click)="joinEvent(event._id)" *ngIf="!event.participateDisabled; else participating">PARTICIPATE</button>
+        </ng-template>
         <ng-template #participating>
             <button mat-button disabled="true">PARTICIPATING</button>
         </ng-template>
