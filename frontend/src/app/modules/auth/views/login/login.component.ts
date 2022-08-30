@@ -1,7 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserServicesService } from '@etp/shared/services';
+import { AuthService } from '@etp/auth/services';
+import { UserServiceService } from '@etp/shared/services';
 
 @Component({
   selector: 'etp-login',
@@ -21,11 +22,12 @@ export class LoginComponent implements OnInit {
   
   constructor(
     private router: Router,
-    private userService: UserServicesService,
+    private authService: AuthService,
+    private userService: UserServiceService,
   ) { }
 
   ngOnInit(): void {
-    if (this.userService.loggedIn()) {
+    if (this.authService.loggedIn()) {
       this.router.navigate(['/dashboard']);
     }
   }
@@ -33,11 +35,12 @@ export class LoginComponent implements OnInit {
   logIn(){
     if (this.logInForm.status === 'VALID') {
       
-      this.userService.logIn(this.logInForm.controls.email.value || '', this.logInForm.controls.password.value || '')
+      this.authService.logIn(this.logInForm.controls.email.value || '', this.logInForm.controls.password.value || '')
       .subscribe({
         next: res => {
           if (res.status === 200) {
             localStorage.setItem('token', res.token);
+            // this.userService.storeUserData(res.user);
             this.router.navigate(['/dashboard']);
           }       
         },
