@@ -24,13 +24,24 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // if (this.authService.loggedIn()) {
+    //   this.userService.getUserData()
+    //   .subscribe({
+    //     next: res => {
+    //       console.log("BBBBBBBBBBBBBBBBBBB");
+    //       console.log(res);
+    //       console.log("BBBBBBBBBBBBBBBBBBB");
+    //       this.user = res
+    //     }
+    //   })
+    // } else{
+    //   console.log("CCCCCCCCCCCCCC");
+    // }
   }
 
   islogged(){
     if (this.authService.loggedIn()) {
-      let token = this.authService.getToken() || ''
-      this.user = jwt_decode(token);
-      // console.log(this.user);
+      this.user = this.userService.getUserData()
       return true
     } else {
       return false

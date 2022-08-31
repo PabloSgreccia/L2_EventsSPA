@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EventServiceService } from '@etp/shared/services';
 import { Event, User } from "@etp/shared/interfaces";
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'etp-event-detail',
@@ -11,30 +10,32 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class EventDetailComponent implements OnInit {
 
-  event: Event =
+  event: Event = 
   {
-    _id: 2,
-    title: 'Partido vs Atalaya',
-    province: 'Santa Fe',
-    city: 'Rosario',
-    street: 'San Juan',
-    number: 3550,
+    _id: 0,
+    title: '',
+    province: '',
+    city: '',
+    street: '',
+    number: 0,
     init_date: new Date(2022, 9, 2, 23, 0, 0),
     end_date: new Date(2022, 10, 10, 7, 0, 0),
     cancelled: false,
-    type: 'Fiesta',
-    photo: 'https://www.competize.com/blog/wp-content/uploads/2019/12/crear-torneos-basquet-baloncesto-scaled.jpg',
+    type: '',
+    photo: '',
     finished: false,
-    adminUser: 'Pablo Sgreccia',
-    adminUserId: 24,
-    people: 67,
+    adminUser: '',
+    adminUserId: 0,
+    people: 0,
     verifiedadmin: true, 
-    adminPhoto: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1WeNyqqvZ4xPqhmoF5Jcz3UYO_Gk2AUNgSKU59LJYLETM8tElgPD2931E8-7dauowdAQ&usqp=CAU',
+    adminPhoto: '',
     participateDisabled:false,
   }
+
   user: User = {
     _id:24,
   }
+  
   today = new Date
 
   userEvents = [
@@ -70,30 +71,13 @@ export class EventDetailComponent implements OnInit {
 
   message:string = '';
 
-  private localKey="event";
-  // myVal = new BehaviorSubject(localStorage.getItem(this.localKey)??null);
-
   constructor(
     private activatedRoute: ActivatedRoute,
     private eventService: EventServiceService
   ) { }
 
   ngOnInit(): void{
-    // this.event = this.eventService.getEvent()
-
-    // this.eventService.currentApprovalStageMessage.subscribe(event => this.event = event);
-
-    // get user events --> BE
-    // get logged user info --> FE
-
-    // this.eventService.currentApprovalStageMessage.subscribe(newVal =>{
-    //   localStorage.setItem(this.localKey,JSON.stringify(newVal));
-    // })
-    
-    // var retrievedObject = localStorage.getItem('event');
-    // console.log(retrievedObject);
-    
-    this.event = this.eventService.getEvent()
+    this.event = this.eventService.getEvent() 
     
     this.userEvents.sort(
       function(a, b) {          
@@ -102,7 +86,6 @@ export class EventDetailComponent implements OnInit {
          }
          return a.star < b.star ? 1 : -1;
       });
-    
   }
 
   

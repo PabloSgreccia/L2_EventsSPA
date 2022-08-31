@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@etp/auth/services';
+import { User } from '@etp/shared/interfaces';
 import { UserServiceService } from '@etp/shared/services';
 
 @Component({
@@ -40,7 +41,18 @@ export class LoginComponent implements OnInit {
         next: res => {
           if (res.status === 200) {
             localStorage.setItem('token', res.token);
-            // this.userService.storeUserData(res.user);
+            
+            // Cambiar por la respuesta del BE
+            const user: User = {
+              _id: 3, 
+              name: 'Pablo Sgreccia', 
+              email: 'pablosgreccia@gmail.com', 
+              role: 'user', 
+              validated: 1, 
+              photo: 'https://thumbs.dreamstime.com/b/icono-del-var%C3%B3n-del-usuario-ninguna-cara-43652345.jpg',
+            }
+            this.userService.storeUserData(user);
+            
             this.router.navigate(['/dashboard']);
           }       
         },

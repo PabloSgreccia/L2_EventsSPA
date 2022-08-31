@@ -12,24 +12,24 @@
   
   <button mat-button [matMenuTriggerFor]="menu">About</button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item>
+    <button mat-menu-item [routerLink]="['/about']">
       <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="face"></mat-icon>
       About Us
     </button>
-    <button mat-menu-item>
+    <button mat-menu-item [routerLink]="['/contact']">
       <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="contact_support"></mat-icon>
       Contact
     </button>
   </mat-menu>
 
   <div *ngIf="islogged()">
-    <button mat-button [matMenuTriggerFor]="profile">{{user._id}}</button>
+    <button mat-button [matMenuTriggerFor]="profile">{{user.name}}</button>
     <mat-menu #profile="matMenu">
       <button mat-menu-item [routerLink]="['/dashboard/profile', user._id]">
         <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="person"></mat-icon>
         Profile
       </button>
-      <button mat-menu-item>
+      <button mat-menu-item [routerLink]="['/dashboard/settings']">
         <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="settings"></mat-icon>
         Settings
       </button>

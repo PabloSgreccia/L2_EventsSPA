@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NotfoundComponent } from '@etp/shared/components';
+import { AboutComponent, ContactComponent, NotfoundComponent } from '@etp/shared/components';
 import { AuthGuard } from '@etp/shared/guards';
 
 
@@ -14,6 +14,14 @@ const routes: Routes = [
     path: 'dashboard', 
     canLoad:[AuthGuard],
     loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule) 
+  },
+  {
+    path: 'about',
+    component: AboutComponent
+  },
+  {
+    path: 'contact',
+    component: ContactComponent
   },
   {
     path: '**',

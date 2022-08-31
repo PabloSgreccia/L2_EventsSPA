@@ -1,0 +1,51 @@
+.user-img{
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.settings-items{
+    display: flex;
+    flex-direction: column;
+}
+
+p{
+    margin:0px;
+}
+
+.action {
+    text-align: center; 
+    vertical-align: middle;
+
+}
+
+table{
+    max-width: 640px;
+}
+
+table tr td{
+    height: 50px;
+}
+
+button {
+    color: white;
+    background-color: #2c3e50;
+}
+button:hover {
+    color: white;
+    background-color: #1e2a36;
+}
+
+.bold{
+    font-weight: bold;
+    height: 0;
+}
+
+.modify-sections{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}

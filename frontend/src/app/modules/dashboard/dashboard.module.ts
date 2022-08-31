@@ -12,6 +12,7 @@ import { NewEventComponent } from './components/new-event/new-event.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ProfileComponent } from './views/profile/profile.component';
 import { EventDetailComponent } from './components/event-detail/event-detail.component';
+import { SettingsComponent } from './views/settings/settings.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { EventDetailComponent } from './components/event-detail/event-detail.com
     EventComponent,
     NewEventComponent,
     ProfileComponent,
-    EventDetailComponent
+    EventDetailComponent,
+    SettingsComponent
   ],
   imports: [
     CommonModule,

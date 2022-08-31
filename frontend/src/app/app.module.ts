@@ -12,11 +12,18 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { AuthGuard } from './shared/guards';
 // Services
 import { TokenInterceptorService } from './shared/services';
+import { AboutComponent } from './shared/components/about/about.component';
+import { ContactComponent } from './shared/components/contact/contact.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
+    AboutComponent,
+    ContactComponent,
   ],
   imports: [
     BrowserModule,
@@ -24,9 +31,11 @@ import { TokenInterceptorService } from './shared/services';
     ComponentsModule,
     BrowserAnimationsModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [
+    CookieService,
     AuthGuard, 
     {
       provide: HTTP_INTERCEPTORS,

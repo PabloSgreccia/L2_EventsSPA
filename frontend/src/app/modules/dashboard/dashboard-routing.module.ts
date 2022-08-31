@@ -8,6 +8,7 @@ import { NewEventComponent } from './components/new-event/new-event.component';
 import { DashboardComponent } from './dashboard.component';
 import { FeedComponent } from './views';
 import { ProfileComponent } from './views/profile/profile.component';
+import { SettingsComponent } from './views/settings/settings.component';
 
 const routes: Routes = [
   { 
@@ -28,19 +29,13 @@ const routes: Routes = [
     canActivate:[AuthGuard],
   },{ 
     path: 'settings', 
-    component: DashboardComponent,
+    component: SettingsComponent,
     canActivate:[AuthGuard],
   },{ 
     path: 'event/:id', 
     component: EventDetailComponent,
     canActivate:[AuthGuard],
-  },{ 
-    path: 'about', 
-    component: DashboardComponent,
-  },{ 
-    path: 'contact', 
-    component: DashboardComponent,
-  },
+  }
 ];
 
 @NgModule({

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { User } from '@etp/shared/interfaces';
 import { UserServiceService } from '@etp/shared/services';
 import jwt_decode from 'jwt-decode';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private userService: UserServiceService
+    private userService: UserServiceService,
+    private cookieService:CookieService
     ) { }
 
   signUp(user: User){
@@ -39,6 +41,8 @@ export class AuthService {
   }
 
   logOut(){
+    this.cookieService.delete('user');
+    this.cookieService.delete('event');
     localStorage.removeItem('token');
     this.router.navigate(['/signmenu'])
   }

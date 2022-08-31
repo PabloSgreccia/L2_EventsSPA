@@ -1,0 +1,95 @@
+<br>
+<h2>
+  Your Profile:
+</h2>
+<mat-card class="settings-items">
+  <table>
+    <tr rowspan="2" class="bold">Photo:</tr>
+    <tr>
+      <!-- <td class="bold">Photo:</td> -->
+      <td><img [src]="user.photo" class="user-img"></td>
+      <td>
+        <button mat-raised-button (click)="changePhotoDialog()">Change</button></td>
+    </tr>
+    <tr rowspan="2" class="bold">Name and Email:</tr>
+    <tr>
+      <td>
+        <div>
+          <p>{{user.name}} </p>
+          <p>{{user.email}}</p>
+        </div>
+      </td>
+      <td><button mat-raised-button (click)="changeDataDialog()">Edit</button></td>
+    </tr>
+    <tr rowspan="2" class="bold">Password:</tr>
+    <tr>
+      <td>***********</td>
+      <td><button mat-raised-button (click)="changePassDialog()">Change</button></td>
+    </tr>
+    
+    <tr rowspan="2" class="bold">Validation:</tr>
+    <tr *ngIf="user.validated === 1">
+      <!-- <td class="bold">Validation:</td> -->
+      <td>Not validated:</td>
+      <td><button mat-raised-button>Ask for</button></td>
+    </tr>
+
+    <tr *ngIf="user.validated === 2">
+      <!-- <td class="bold">Validation:</td> -->
+      <td>Pending</td>
+      <td><button mat-raised-button disabled="true">Pending</button></td>
+    </tr>
+
+    <tr *ngIf="user.validated === 3">
+      <!-- <td class="bold">Validation:</td> -->
+      <td>Validated</td>
+      <td>
+        <mat-icon>verified_user</mat-icon>
+      </td>
+    </tr>
+
+  </table>
+</mat-card>
+<br>
+<mat-card *ngIf="photoSection || dataSection || passwordSection">
+    <div *ngIf="photoSection" class="modify-sections">
+        <p>Select new photo:</p>
+      <input type="file">
+      <button mat-button (click)="savePhoto()">Save</button>
+    </div>
+    
+    <div *ngIf="dataSection" >
+        <form [formGroup]="dataForm" (ngSubmit)="saveData()" class="modify-sections">
+
+            <mat-form-field appearance="fill">
+                <mat-label>Name</mat-label>
+                <input matInput formControlName="name">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email">
+            </mat-form-field>
+            <button mat-button>Save</button>
+        </form>
+      </div>
+      
+    <div *ngIf="passwordSection" >
+        <form [formGroup]="passForm" (ngSubmit)="savePass()" class="modify-sections">
+
+            <mat-form-field appearance="fill">
+                <mat-label>Old Password</mat-label>
+                <input type="password" matInput formControlName="oldPass">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>New Password</mat-label>
+                <input type="password" matInput formControlName="newPass">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Repeat New Password</mat-label>
+                <input type="password" matInput formControlName="repPass">
+            </mat-form-field>
+            <button mat-button>Save</button>
+        </form>
+        </div>
+        
+</mat-card>
