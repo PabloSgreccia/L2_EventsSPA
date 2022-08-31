@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EventServiceService } from '@etp/shared/services';
-import { Event, User } from "@etp/shared/interfaces";
+// Interfaces
+import { Event } from '@etp/dashboard/interfaces'
+import { User } from "@etp/shared/interfaces";
+// Services
+import { EventServiceService } from '@etp/dashboard/services';
 
 @Component({
   selector: 'etp-event-detail',

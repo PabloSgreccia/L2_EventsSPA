@@ -9,6 +9,17 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 })
 export class UserServiceService {
 
+  private initialState: User = 
+    {
+      _id: 0, 
+      name: '', 
+      email: '', 
+      role: '', 
+      validated: 1, 
+      photo: '',
+    }
+  private _user$ = new BehaviorSubject(this.initialState)
+
   private user = 
     {
       _id: 0, 
@@ -21,6 +32,18 @@ export class UserServiceService {
 
   constructor(
   ){}
+
+  getUser():Observable<User> {
+    return this._user$.asObservable()
+  }
+
+  updateUser(user:User):void {
+    this._user$.next(user)
+  }
+
+  resetUser() {
+    this._user$.next(this.initialState)
+  }
 
   storeUserData(user: any){    
     // Create cookie

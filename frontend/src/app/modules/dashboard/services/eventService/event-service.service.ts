@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { FeedComponent } from '@etp/dashboard/views';
-import { Event } from "@etp/shared/interfaces";
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Event } from "@etp/dashboard/interfaces";
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventServiceService {
+
+  
 
   private event:Event = {
     _id: 0,

@@ -32,8 +32,8 @@ export class AuthService {
     return this.http.post<any>(`${this.URL_API_USER}/signin`, body)
   }
   
-  loggedIn(): Boolean {
-    return !!localStorage.getItem('token');
+  loggedIn(): boolean {
+    return localStorage.getItem('token') ? true : false;
   }
 
   getToken() {
@@ -41,8 +41,9 @@ export class AuthService {
   }
 
   logOut(){
-    this.cookieService.delete('user');
-    this.cookieService.delete('event');
+    // this.cookieService.delete('user');
+    // this.cookieService.delete('event');
+    this.userService.resetUser();
     localStorage.removeItem('token');
     this.router.navigate(['/signmenu'])
   }

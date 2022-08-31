@@ -1,66 +1,67 @@
 
 <br>
 
-<mat-card>
+<mat-card class="event-card">
     <div class="event-img">
         <img [src]="event.photo" class="event-img">
     </div>
     
-    <img [src]="event.adminPhoto" class="user-img" [routerLink]="['/dashboard/profile', event.adminUserId]">
-    
-    <div class="event-info">
-        <mat-card-title>{{event.title}}</mat-card-title>
-        <div class="aligned-elements">
-          <mat-icon>date_range</mat-icon>
-          {{event.init_date | date:'short'}}
-          <mat-icon>date_range</mat-icon>
-          {{event.end_date | date:'short'}}
-        </div>
-        <div class="aligned-elements" *ngIf="event.province">
-          <mat-icon> place</mat-icon>
-          {{event.province}},
-          {{event.city}},
-          {{event.street}},
-          {{event.number}}
-        </div>
-        <div class="aligned-elements" *ngIf="event.link">
-          <mat-icon>link</mat-icon>
-          {{event.link}}
-        </div>
-        <div class="aligned-elements user" [routerLink]="['/dashboard/profile', event.adminUserId]">
-          <mat-icon *ngIf="event.verifiedadmin" class="verify-icon">verified_user</mat-icon>
-          <mat-icon>face</mat-icon>
-          {{event.adminUser}}
-        </div>
-        <div class="aligned-elements user">
-          {{event.description}}
-        </div>
+    <br>
+    <mat-card class="admin-event-card" [routerLink]="['/dashboard/profile', event.adminUserId]">
+      <img [src]="event.adminPhoto" class="user-img" [routerLink]="['/dashboard/profile', event.adminUserId]">
+      {{event.adminUser}}
+      <mat-icon *ngIf="event.verifiedadmin" class="verify-icon">verified_user</mat-icon>
 
-        <div class="event-card-footer">
-            <button mat-button *ngIf="event.adminUserId === user._id; else participate" disabled="true">OWNER</button>
-            <ng-template #participate>
-              <button mat-button (click)="joinEvent(event._id)" *ngIf="!event.participateDisabled; else participating">PARTICIPATE</button>
-            </ng-template>
-            <ng-template #participating>
-                <button mat-button disabled="true">PARTICIPATING</button>
-            </ng-template>
-          <div class="event-card-footer-stats">
-              <!-- <div class="event-card-footer-stats-ppl">
-                  <mat-icon>people</mat-icon>
-                  {{event.people}}
-              </div> -->
-              <div class="event-card-footer-stats-value" *ngIf="event.end_date == today">
-                  <mat-icon>star</mat-icon>
-                  <mat-icon>star</mat-icon>
-                  <mat-icon>star</mat-icon>
-                  <mat-icon>star</mat-icon>
-                  <mat-icon>star</mat-icon>
-                  {{event.valor}}
-              </div>
-          </div>
-        </div>
+    </mat-card>
+<br>
 
+<mat-card class="event-data-card">
+  <mat-card-title>{{event.title}}</mat-card-title>
+  <div class="aligned-elements">
+    <mat-icon>date_range</mat-icon>
+    {{event.init_date | date:'short'}}
+    <mat-icon>date_range</mat-icon>
+    {{event.end_date | date:'short'}}
+  </div>
+  <div class="aligned-elements" *ngIf="event.province">
+    <mat-icon> place</mat-icon>
+    {{event.province}},
+    {{event.city}},
+    {{event.street}},
+    {{event.number}}
+  </div>
+  <div class="aligned-elements" *ngIf="event.link">
+    <mat-icon>link</mat-icon>
+    {{event.link}}
+  </div>
+  <div class="aligned-elements user">
+    {{event.description}}
+  </div>
+</mat-card>
+
+<div class="event-card-footer">
+  <button mat-button *ngIf="event.adminUserId === user._id; else participate" disabled="true">OWNER</button>
+  <ng-template #participate>
+    <button mat-button (click)="joinEvent(event._id)" *ngIf="!event.participateDisabled; else participating">PARTICIPATE</button>
+  </ng-template>
+  <ng-template #participating>
+      <button mat-button disabled="true">PARTICIPATING</button>
+  </ng-template>
+<div class="event-card-footer-stats">
+    <!-- <div class="event-card-footer-stats-ppl">
+        <mat-icon>people</mat-icon>
+        {{event.people}}
+    </div> -->
+    <div class="event-card-footer-stats-value" *ngIf="event.end_date == today">
+        <mat-icon>star</mat-icon>
+        <mat-icon>star</mat-icon>
+        <mat-icon>star</mat-icon>
+        <mat-icon>star</mat-icon>
+        <mat-icon>star</mat-icon>
+        {{event.valor}}
     </div>
+</div>
+</div>
     
     <div class="actions" *ngIf="event.adminUserId === user._id; else notowner">
         <button mat-button>Cancel Event</button>

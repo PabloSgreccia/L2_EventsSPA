@@ -1,7 +1,9 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { EventServiceService, LocationServiceService } from '@etp/shared/services';
-import { Event } from '@etp/shared/interfaces'
+// Interfaces
+import { Event } from '@etp/dashboard/interfaces'
+// Services
+import { EventServiceService, LocationServiceService } from '@etp/dashboard/services';
 
 interface FilterInput {
   value: string;

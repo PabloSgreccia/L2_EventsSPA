@@ -13,29 +13,37 @@ import { SettingsComponent } from './views/settings/settings.component';
 const routes: Routes = [
   { 
     path: '', 
-    redirectTo: 'feed',
-    pathMatch: 'full'
-  },{ 
-    path: 'feed', 
-    component: FeedComponent, 
-    canActivate:[AuthGuard],
-  },{ 
-    path: 'new-event', 
-    component: NewEventComponent, 
-    canActivate:[AuthGuard],
-  },{ 
-    path: 'profile/:id', 
-    component: ProfileComponent,
-    canActivate:[AuthGuard],
-  },{ 
-    path: 'settings', 
-    component: SettingsComponent,
-    canActivate:[AuthGuard],
-  },{ 
-    path: 'event/:id', 
-    component: EventDetailComponent,
-    canActivate:[AuthGuard],
-  }
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'feed',
+        pathMatch: 'full'
+      },
+      { 
+        path: 'feed', 
+        component: FeedComponent, 
+        canActivate:[AuthGuard],
+      },{ 
+        path: 'new-event', 
+        component: NewEventComponent, 
+        canActivate:[AuthGuard],
+      },{ 
+        path: 'profile/:id', 
+        component: ProfileComponent,
+        canActivate:[AuthGuard],
+      },{ 
+        path: 'settings', 
+        component: SettingsComponent,
+        canActivate:[AuthGuard],
+      },{ 
+        path: 'event/:id', 
+        component: EventDetailComponent,
+        canActivate:[AuthGuard],
+      }
+    ]
+  },
+  
 ];
 
 @NgModule({

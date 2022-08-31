@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { User } from '@etp/shared/interfaces';
-import { UserServiceService } from '@etp/shared/services';
-import {MatDialogModule} from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+// Interfaces
+import { User } from '@etp/shared/interfaces';
+// Services
+import { UserServiceService } from '@etp/shared/services';
+// Components
+import { ModalToEditComponent } from "@etp/dashboard/components";
+
 
 @Component({
   selector: 'etp-settings',
@@ -36,7 +40,7 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private userService: UserServiceService,
-    public dialog: MatDialog
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -50,16 +54,19 @@ export class SettingsComponent implements OnInit {
   }
 
   changeDataDialog(){
-    this.photoSection = false;
-    this.dataSection = true
-    this.passwordSection = false
+    
+    this.dialog.open(ModalToEditComponent);
 
-    if (this.user.name) {
-      this.dataForm.controls.name.setValue(this.user.name)
-    }
-    if (this.user.email) {
-      this.dataForm.controls.email.setValue(this.user.email)
-    }
+    // this.photoSection = false;
+    // this.dataSection = true
+    // this.passwordSection = false
+
+    // if (this.user.name) {
+    //   this.dataForm.controls.name.setValue(this.user.name)
+    // }
+    // if (this.user.email) {
+    //   this.dataForm.controls.email.setValue(this.user.email)
+    // }
   }
 
   changePassDialog(){

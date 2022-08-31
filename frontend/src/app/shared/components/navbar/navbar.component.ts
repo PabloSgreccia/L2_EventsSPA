@@ -11,12 +11,7 @@ import jwt_decode from 'jwt-decode';
 })
 export class NavbarComponent implements OnInit {
 
-  user: User = {
-    _id: 0,
-    name: '',
-    email: '',
-    role: ''
-  }
+  user!: User
 
   constructor(
     private authService: AuthService,
@@ -24,6 +19,10 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.userService.getUser().subscribe({
+      next: (user: User) => {
+      this.user = user
+    }, error: () => {}})
     // if (this.authService.loggedIn()) {
     //   this.userService.getUserData()
     //   .subscribe({
@@ -41,7 +40,7 @@ export class NavbarComponent implements OnInit {
 
   islogged(){
     if (this.authService.loggedIn()) {
-      this.user = this.userService.getUserData()
+      // this.user = this.userService.getUserData()
       return true
     } else {
       return false

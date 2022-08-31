@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AboutComponent, ContactComponent, NotfoundComponent } from '@etp/shared/components';
+import { NotfoundComponent } from '@etp/shared/components';
 import { AuthGuard } from '@etp/shared/guards';
+import { AboutComponent, ContactComponent } from '@etp/shared/views';
 
 
 

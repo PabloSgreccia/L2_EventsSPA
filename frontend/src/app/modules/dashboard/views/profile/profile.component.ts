@@ -1,7 +1,9 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { EventServiceService, LocationServiceService } from '@etp/shared/services';
-import { Event, User } from '@etp/shared/interfaces'
+import {Component, OnInit} from '@angular/core';
+// Interfaces
+import { Event } from '@etp/dashboard/interfaces'
+import { User } from '@etp/shared/interfaces'
+// Services
+import { EventServiceService, LocationServiceService } from '@etp/dashboard/services';
 
 @Component({
   selector: 'etp-profile',

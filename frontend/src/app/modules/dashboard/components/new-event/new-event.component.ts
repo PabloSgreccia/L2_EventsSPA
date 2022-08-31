@@ -1,9 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+// Services
 import { AuthService } from '@etp/auth/services';
-import { User } from '@etp/shared/interfaces';
-import { LocationServiceService, UserServiceService } from '@etp/shared/services';
+import { UserServiceService } from '@etp/shared/services';
+import { LocationServiceService } from '@etp/dashboard/services';
 
 interface FilterInput {
   value: string;

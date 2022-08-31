@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NotfoundComponent } from '../../components/notfound/notfound.component';
+// Components
+import { NotfoundComponent } from '@etp/shared/components';
 
 const components = [
   NotfoundComponent

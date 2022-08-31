@@ -38,9 +38,18 @@ export class LoginComponent implements OnInit {
       
       this.authService.logIn(this.logInForm.controls.email.value || '', this.logInForm.controls.password.value || '')
       .subscribe({
-        next: res => {
+        next: (res) => {
           if (res.status === 200) {
             localStorage.setItem('token', res.token);
+
+            // Otra peticion
+           /*
+             this.authService.getUser().subscribe({
+              next: (user:User) => {
+                this.userService.updateUser(user);
+              }
+             })
+           */
             
             // Cambiar por la respuesta del BE
             const user: User = {
@@ -51,7 +60,8 @@ export class LoginComponent implements OnInit {
               validated: 1, 
               photo: 'https://thumbs.dreamstime.com/b/icono-del-var%C3%B3n-del-usuario-ninguna-cara-43652345.jpg',
             }
-            this.userService.storeUserData(user);
+            // this.userService.storeUserData(user);
+            this.userService.updateUser(user);
             
             this.router.navigate(['/dashboard']);
           }       
