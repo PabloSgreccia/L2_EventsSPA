@@ -1,14 +1,13 @@
 
 <br>
 
-{{message}}
-
 <mat-card>
     <div class="event-img">
         <img [src]="event.photo" class="event-img">
-        <img [src]="event.adminPhoto" class="user-img" [routerLink]="['/dashboard/profile', event.adminUserId]">
     </div>
-
+    
+    <img [src]="event.adminPhoto" class="user-img" [routerLink]="['/dashboard/profile', event.adminUserId]">
+    
     <div class="event-info">
         <mat-card-title>{{event.title}}</mat-card-title>
         <div class="aligned-elements">
