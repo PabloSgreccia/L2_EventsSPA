@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models.event, {
-        foreignKey: 'idUser'
+        foreignKey: 'idUser_admin'
       })
       User.belongsToMany(models.event, {
         through: 'users_events'
@@ -44,7 +44,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull:false,
       defaultValue:1
     },
-    privacy: DataTypes.STRING
+    privacy: DataTypes.STRING,
+    active:{
+      type:DataTypes.BOOLEAN,
+      allowNull:false,
+      defaultValue:false
+    },
+    validationCode:DataTypes.STRING
   }, {
     sequelize,
     modelName: 'user',

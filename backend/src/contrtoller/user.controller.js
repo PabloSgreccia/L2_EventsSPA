@@ -4,12 +4,15 @@ const Event = require('../database/models/').event
 const sequelize = require('sequelize');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-
+const {validationMail} = require('../contrtoller/mail.controller')
 //API
 
 const showAll = async (req, res) => {
     let users = await User.findAll({
-        include:[Event]
+        include: [Event],
+        where: {
+            active: true
+        }
     })
     return res.status(200).json({
         users
@@ -21,7 +24,7 @@ const show = async (req, res) => {
     let user = await User.findOne({
         where: {
             id: id
-        }        
+        }
     });
     if (user) {
         return res.status(200).json({
@@ -36,12 +39,27 @@ const show = async (req, res) => {
 
 const register = async (req, res) => {
     let params = req.body;
+    let validationCode = (Math.random() + 1).toString(36)
     params.password = await bcrypt.hash(req.body.password, 10);
-    let user = await User.create(params)
+    let user = await User.create({
+        name: params.name,
+        email: params.email,
+        password: params.password,
+        validationCode: validationCode
+    })
     if (user) {
+        try {
+            await validationMail(user)
+        } catch (error) {
+            console.log(error)
+        }
         return res.status(200).json({
-            user,
-            'msg': 'Creado correctamente'
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            validated: user.validated,
+            'msg': 'Se creó correctamente'
         })
     } else {
         return res.status(404).json({
@@ -49,6 +67,35 @@ const register = async (req, res) => {
         })
     }
 };
+
+const validationUser = async (req, res) => {
+    const validationCode = req.params.code
+    const user = await User.findOne({
+        where: {
+            validationCode: validationCode
+        }
+    })
+    if (!user) {
+        return res.status(404).json({
+            msg: "Usuario no encontrado"
+        })
+    } else {
+        user.update({
+            active: true,
+            validationCode: ""
+        }).then(user => {
+            res.status(200).json({
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                validated: user.validated,
+                'msg': 'Se actualizó correctamente'
+            })
+        })
+    }
+
+}
 
 const login = async (req, res) => {
     const {
@@ -59,14 +106,15 @@ const login = async (req, res) => {
     //Comprobar email en DB
     User.findOne({
             where: {
-                email: email
+                email: email,
+                active: true
             }
         })
         .then(user => {
             if (!user) {
                 //Email invalido
                 res.status(404).json({
-                    msg: 'Email invalido'
+                    msg: 'Usuario y/o contraseña incorrecta'
                 })
             } else if (bcrypt.compareSync(password, user.password)) {
                 //Seteo un Token
@@ -113,7 +161,10 @@ const updatePass = async (req, res) => {
         })
     } else {
         user.update(params).then(user => {
-            res.status(200).json({ user, 'msg':'Contraseña actualizada correctamente'})
+            res.status(200).json({
+                user,
+                'msg': 'Contraseña actualizada correctamente'
+            })
         })
     }
 }
@@ -121,7 +172,11 @@ const updatePass = async (req, res) => {
 const updateUser = async (req, res) => {
     const params = req.body;
     const id = req.params.id;
-    let user = await User.findOne({ where: { id: id }});
+    let user = await User.findOne({
+        where: {
+            id: id
+        }
+    });
     if (!user) {
         return res.status(404).json({
             msg: "Usuario no encontrado"
@@ -129,7 +184,8 @@ const updateUser = async (req, res) => {
     } else {
         user.update(params).then(user => {
             res.status(200).json({
-                user, 'msg':'Se actualizó correctamente'
+                user,
+                'msg': 'Se actualizó correctamente'
             })
         })
     }
@@ -169,6 +225,7 @@ module.exports = {
     show,
     register,
     login,
+    validationUser,
     updatePass,
     updateUser,
     destroy,

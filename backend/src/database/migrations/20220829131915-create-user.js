@@ -36,6 +36,14 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      active: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+      validationCode: {
+        type: Sequelize.STRING
       }
     });
   },
