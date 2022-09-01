@@ -1,0 +1,28 @@
+<div class="main-list">
+  <div class="table-title">
+    <h2>Users List</h2>
+  </div>
+  <button>filtrar</button>
+  <br>
+
+  <table>
+    <thead>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Delete</th>
+    </thead>
+    <tbody *ngIf="usersList">
+      <tr *ngFor="let user of usersList">
+        <td>{{user.name}}</td>
+        <td>{{user.email}}</td>
+        <td class="actions">
+          <button>delete</button>
+        </td>
+      </tr>
+    <tbody *ngIf="!usersList">
+      <tr class="no-data">
+        <td colspan="2">No users!</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -7,8 +7,8 @@
     </div>
     
     <br>
-    <mat-card class="admin-event-card" [routerLink]="['/dashboard/profile', event.adminUserId]">
-      <img [src]="event.adminPhoto" class="user-img" [routerLink]="['/dashboard/profile', event.adminUserId]">
+    <mat-card class="admin-event-card" [routerLink]="['/dashboard/profile', event.idUser]">
+      <img [src]="event.adminPhoto" class="user-img" [routerLink]="['/dashboard/profile', event.idUser]">
       {{event.adminUser}}
       <mat-icon *ngIf="event.verifiedadmin" class="verify-icon">verified_user</mat-icon>
 
@@ -40,7 +40,7 @@
 </mat-card>
 
 <div class="event-card-footer">
-  <button mat-button *ngIf="event.adminUserId === user._id; else participate" disabled="true">OWNER</button>
+  <button mat-button *ngIf="event.idUser === idUser; else participate" disabled="true">OWNER</button>
   <ng-template #participate>
     <button mat-button (click)="joinEvent(event._id)" *ngIf="!event.participateDisabled; else participating">PARTICIPATE</button>
   </ng-template>
@@ -63,7 +63,7 @@
 </div>
 </div>
     
-    <div class="actions" *ngIf="event.adminUserId === user._id; else notowner">
+    <div class="actions" *ngIf="event.idUser === idUser; else notowner">
         <button mat-button>Cancel Event</button>
         <button mat-button>Delete Event</button>
         <button mat-button>Edit Event</button>

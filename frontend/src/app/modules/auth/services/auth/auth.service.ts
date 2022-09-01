@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router } from '@angular/router';
+import jwt_decode from 'jwt-decode';
 // Interfaces
 import { User } from '@etp/shared/interfaces';
 import { UserServiceService } from '@etp/shared/services';
-import jwt_decode from 'jwt-decode';
-import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +16,15 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private userService: UserServiceService,
-    private cookieService:CookieService
     ) { }
 
-  signUp(user: User){
-    return this.http.post<any>(`${this.URL_API_USER}/signup`, user)
+  signUp(name: string, email: string, password: string){
+    const body = {
+      name, 
+      email, 
+      password
+    }
+    return this.http.post<any>(`${this.URL_API_USER}/signup`, body)
   }
   
   logIn(email: string, password: string){
@@ -39,43 +42,29 @@ export class AuthService {
   getToken() {
     return localStorage.getItem('token');
   }
+  
+  getLoggedUser(){
+    return this.http.get<any>(`${this.URL_API_USER}/`)
+  }
+
+  isAdmin(): boolean {
+    let token = localStorage.getItem('token') 
+    if (token) {
+      let decoded: {_id: string, role: string, iat:number } = jwt_decode(token);
+      console.log(decoded.role);
+      
+      //TODO: cambiar cuando se oficialice
+      return decoded.role === 'user' ? true : false;
+    } else {
+      return false
+    }
+
+  }
 
   logOut(){
-    // this.cookieService.delete('user');
-    // this.cookieService.delete('event');
     this.userService.resetUser();
     localStorage.removeItem('token');
     this.router.navigate(['/signmenu'])
   }
-
-  // isAdmin(){
-  //   if (this.loggedIn()) {
-  //     const token = this.getToken() || ''
-  //     const role = this.getDecodedAccessToken(token).role
-      
-  //     // let role = this.userService.getUser().role
-  //     if (role === 'admin') {
-  //       console.log("ES ADMIN");
-  //       return true
-  //     } else {
-  //       console.log("NOOOOOOOOOOO DONDE VAS");
-  //       return false
-  //     }
-  //   } else {
-  //     return false
-  //   }
-  // }
-
-  // getDecodedAccessToken(token: string): any {
-  //   try {
-  //     // return jwt_decode(token);
-  //     console.log(jwt_decode(token));
-  //     return jwt_decode(token);
-  //   } catch(Error) {
-  //     // return null;
-  //     console.log(Error);
-  //     return null;
-  //   }
-  // }
 
 }

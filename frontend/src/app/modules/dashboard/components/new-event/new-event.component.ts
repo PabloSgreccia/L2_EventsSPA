@@ -4,7 +4,10 @@ import { Router } from '@angular/router';
 // Services
 import { AuthService } from '@etp/auth/services';
 import { UserServiceService } from '@etp/shared/services';
-import { LocationServiceService } from '@etp/dashboard/services';
+import { EventServiceService, LocationServiceService } from '@etp/dashboard/services';
+import { Event } from '../../interfaces/event/event';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalMsgComponent } from '../modal-msg/modal-msg.component';
 
 interface FilterInput {
   value: string;
@@ -18,6 +21,7 @@ interface FilterInput {
 })
 
 export class NewEventComponent implements OnInit { 
+
   eventForm = new FormGroup({
     title: new FormControl('', {validators: [Validators.required]}),
     description: new FormControl(''),
@@ -27,13 +31,18 @@ export class NewEventComponent implements OnInit {
     street: new FormControl(''),
     number: new FormControl(''),
     link: new FormControl(''),
-    init_day: new FormControl('', {validators: [Validators.required]}),
-    end_day: new FormControl('', {validators: [Validators.required]}),
-    type: new FormControl('', {validators: [Validators.required]}),
+    init_date: new FormControl('', {validators: [Validators.required]}),
+    end_date: new FormControl('', {validators: [Validators.required]}),
+    idType: new FormControl('', {validators: [Validators.required]}),
     photo: new FormControl(''),
   }, {validators: locationValidator})
 
   types: String[] = ['Sports', 'Party', 'Conference', 'Meeting']
+
+  fileToUpload!: File | null;
+  fileName = '';
+  file!: File
+
 
   error: String = '';
 
@@ -49,13 +58,13 @@ export class NewEventComponent implements OnInit {
   ]
   
   constructor(
-    private router: Router,
-    private authService: AuthService,
-    private userService: UserServiceService,
     private locationService: LocationServiceService,
+    private eventService: EventServiceService,
+    public dialog: MatDialog
     ) { }
 
   ngOnInit(): void {
+
     this.locationService.getProvinces()
     .subscribe({
       next: res => {
@@ -93,25 +102,54 @@ export class NewEventComponent implements OnInit {
     })
   }
 
-  signUp(){
+  createEvent(){
+    // console.log(this.eventForm.controls.photo);
     
     if (this.eventForm.status === 'VALID') {
-      console.log("simulacro de envío terminado");
-      
-      // this.user = {
-      //   name: this.eventForm.controls.name.value || '',
-      //   email: this.eventForm.controls.email.value || '',
-      //   password: this.eventForm.controls.password.value || ''
-      // }
+      if (this.file) {
+        const formData = new FormData();
+        formData.append("thumbnail", this.file);
+      }
+      this.eventService.createEvent(this.eventForm.value, this.file)
+        .subscribe({
+          next: (res: { status: number; msg: String; }) => {
+            if (res.status === 200) {
 
+              this.openDialog('Event successfully created')
+            } 
+            else{
+              this.error = '';
+              this.error = res.msg 
+            }       
+          }
+          ,
+          error: ((err: any) => {
+            console.log(err);
+          })
+        })
+      
     }
   }
 
-  // onFileSelected(event: any){
-  //    console.log(event);
-  //    this.selectedFile = event.target.files[0]
-  //    console.log(this.selectedFile);
-  // }
+  openDialog(msg: string) {
+    this.dialog.open(ModalMsgComponent, {
+      data: { msg },
+    });
+  }
+
+  handleFileInput(event: any) {
+    const file:File = event.target.files[0];
+    console.log(event.target.files[0]);
+    console.log((event.target.files[0].type).includes("image"));
+
+    this.file = file;
+
+    if (file) {
+        this.fileName = file.name;
+    }
+  
+  }
+
 
   modeChange(){
     this.eventForm.controls.province.reset();
@@ -122,13 +160,10 @@ export class NewEventComponent implements OnInit {
   }
 
   get f() { return this.eventForm }
-  // get name() { return this.eventForm.controls.name }
-  // get email() { return this.eventForm.controls.email }
-  // get password() { return this.eventForm.controls.password }
   get mode() { return this.eventForm.controls.mode }
   get title() { return this.eventForm.controls.title }
-  get init_day() { return this.eventForm.controls.init_day }
-  get end_day() { return this.eventForm.controls.end_day }
+  get init_day() { return this.eventForm.controls.init_date }
+  get end_day() { return this.eventForm.controls.end_date }
   get province() { return this.eventForm.controls.province }
 }
 

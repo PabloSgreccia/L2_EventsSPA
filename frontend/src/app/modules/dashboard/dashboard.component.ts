@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit {
           _id: 3, 
           name: 'Pablo Sgreccia', 
           email: 'pablosgreccia@gmail.com', 
-          role: 'user', 
+          role: 'admin', 
           validated: 1, 
           photo: 'https://thumbs.dreamstime.com/b/icono-del-var%C3%B3n-del-usuario-ninguna-cara-43652345.jpg',
         }

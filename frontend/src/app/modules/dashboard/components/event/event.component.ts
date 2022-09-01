@@ -16,10 +16,8 @@ export class EventComponent implements OnInit {
   @Input() event!: Event;
   today = new Date();
 
-  user: User = {
-    _id:24,
-  }
-
+  idUser!: number
+  
   constructor(
     private eventService: EventServiceService,
     private router: Router,

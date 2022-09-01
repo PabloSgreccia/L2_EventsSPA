@@ -14,6 +14,9 @@ import { ProfileComponent } from './views/profile/profile.component';
 import { EventDetailComponent } from './components/event-detail/event-detail.component';
 import { SettingsComponent } from './views/settings/settings.component';
 import { ModalToEditComponent } from './components/modal-to-edit/modal-to-edit.component';
+import { ModalToChangePwdComponent } from './components/modal-to-change-pwd/modal-to-change-pwd.component';
+import { ModalToChangePhotoComponent } from './components/modal-to-change-photo/modal-to-change-photo.component';
+import { ModalMsgComponent } from './components/modal-msg/modal-msg.component';
 
 
 @NgModule({
@@ -25,7 +28,10 @@ import { ModalToEditComponent } from './components/modal-to-edit/modal-to-edit.c
     ProfileComponent,
     EventDetailComponent,
     SettingsComponent,
-    ModalToEditComponent
+    ModalToEditComponent,
+    ModalToChangePwdComponent,
+    ModalToChangePhotoComponent,
+    ModalMsgComponent,
   ],
   imports: [
     CommonModule,

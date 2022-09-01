@@ -13,31 +13,9 @@ import { EventServiceService } from '@etp/dashboard/services';
 })
 export class EventDetailComponent implements OnInit {
 
-  event: Event = 
-  {
-    _id: 0,
-    title: '',
-    province: '',
-    city: '',
-    street: '',
-    number: 0,
-    init_date: new Date(2022, 9, 2, 23, 0, 0),
-    end_date: new Date(2022, 10, 10, 7, 0, 0),
-    cancelled: false,
-    type: '',
-    photo: '',
-    finished: false,
-    adminUser: '',
-    adminUserId: 0,
-    people: 0,
-    verifiedadmin: true, 
-    adminPhoto: '',
-    participateDisabled:false,
-  }
+  event!: Event
 
-  user: User = {
-    _id:24,
-  }
+  idUser!:number
   
   today = new Date
 
