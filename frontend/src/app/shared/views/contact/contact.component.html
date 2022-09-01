@@ -1,0 +1,39 @@
+<div class="form-container">
+  <div class="sub-form-container">
+    <form [formGroup]="contactForm" (ngSubmit)="sendForm()">
+
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+        <mat-hint *ngIf="email.errors?.['email']">Shoul be a valid email.</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Subject</mat-label>
+        <input matInput formControlName="subject">
+      </mat-form-field>
+
+
+      <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea matInput #message maxlength="255" formControlName="description"></textarea>
+        <mat-hint align="end" class="chars-ref">{{message.value.length}} / 255</mat-hint>
+        <mat-hint *ngIf="description.errors?.['minlength']">At least 10 characters.</mat-hint>
+        <mat-hint *ngIf="description.errors?.['maxlength']">Max 255 characters.</mat-hint>
+    </mat-form-field>
+
+
+      <span class="separator">
+        <div *ngIf="error" class="errormsg">{{error}}</div>
+      </span>
+
+      <button mat-flat-button type="submit" [disabled]="!contactForm.valid">Continue</button>
+    </form>
+  </div>
+
+</div>

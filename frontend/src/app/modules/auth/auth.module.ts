@@ -7,8 +7,8 @@ import { ComponentsModule, MaterialModule } from '@etp/shared/modules';
 // Components
 import { AuthComponent } from './auth.component';
 // Views
-import { LoginComponent, SignupComponent } from "@etp/auth/views";
-import { SignmenuComponent } from './components/signmenu/signmenu.component';
+import { LoginComponent, SignupComponent } from "src/app/modules/auth/components";
+import { SignmenuComponent } from './views/signmenu/signmenu.component';
 
 
 const views = [

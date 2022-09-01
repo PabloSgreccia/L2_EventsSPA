@@ -12,12 +12,11 @@ import { UserServiceService } from '@etp/shared/services';
 })
 export class SignupComponent implements OnInit {
 
-  user: User = {
+  newUser = {
     name: '',
     email: '',
     password: ''
   };
-
   
   signUpForm = new FormGroup({
     name: new FormControl('', {validators: [Validators.required]}),
@@ -43,23 +42,19 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  signUp(){
-
-    
+  signUp(){    
     if (this.signUpForm.status === 'VALID') {
-      this.user = {
+      this.newUser = {
         name: this.signUpForm.controls.name.value || '',
         email: this.signUpForm.controls.email.value || '',
         password: this.signUpForm.controls.password.value || ''
       }
 
-      this.authService.signUp(this.user)
+      this.authService.signUp(this.newUser.name, this.newUser.email, this.newUser.password, )
         .subscribe({
           next: res => {
           if (res.status === 201) {
             localStorage.setItem('token', res.token);
-            // sessionStorage.setItem('token', res.token)
-            // this.userService.storeUserData(res.user);
             this.router.navigate(['/dashboard']);
           }       
           },

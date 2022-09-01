@@ -29,12 +29,18 @@
       "@etp/shared/components":["src/app/shared/components/index.ts"],
       "@etp/shared/services":["src/app/shared/services/index.ts"],
       "@etp/shared/interfaces":["src/app/shared/interfaces/index.ts"],
+      "@etp/shared/views":["src/app/shared/views/index.ts"],
       // Auth
-      "@etp/auth/views":["src/app/modules/auth/views/index.ts"],
+      "@etp/auth/views":["src/app/modules/auth/components/index.ts"],
+      "@etp/auth/components":["src/app/modules/auth/components/index.ts"],
       "@etp/auth/services":["src/app/modules/auth/services/index.ts"],
       // dashboard
       "@etp/dashboard/views":["src/app/modules/dashboard/views/index.ts"],
       "@etp/dashboard/services":["src/app/modules/dashboard/services/index.ts"],
+      "@etp/dashboard/interfaces":["src/app/modules/dashboard/interfaces/index.ts"],
+      "@etp/dashboard/components":["src/app/modules/dashboard/components/index.ts"],
+      // Admin
+      "@etp/admin/views":["src/app/modules/dashboard/modules/admin/views/index.ts"],
     
     }
   },

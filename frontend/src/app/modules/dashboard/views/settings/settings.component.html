@@ -1,0 +1,52 @@
+<br>
+<h2>
+  Your Profile:
+</h2>
+<mat-card class="settings-items">
+  <table>
+    <tr rowspan="2" class="bold">Photo:</tr>
+    <tr>
+      <!-- <td class="bold">Photo:</td> -->
+      <td><img [src]="user.photo" class="user-img"></td>
+      <td>
+        <button mat-raised-button (click)="changePhotoDialog()">Change</button></td>
+    </tr>
+    <tr rowspan="2" class="bold">Name and Email:</tr>
+    <tr>
+      <td>
+        <div>
+          <p>{{user.name}} </p>
+          <p>{{user.email}}</p>
+        </div>
+      </td>
+      <td><button mat-raised-button (click)="changeDataDialog()">Edit</button></td>
+    </tr>
+    <tr rowspan="2" class="bold">Password:</tr>
+    <tr>
+      <td>***********</td>
+      <td><button mat-raised-button (click)="changePassDialog()">Change</button></td>
+    </tr>
+    
+    <tr rowspan="2" class="bold">Validation:</tr>
+    <tr *ngIf="user.validated === 1">
+      <!-- <td class="bold">Validation:</td> -->
+      <td>Not validated:</td>
+      <td><button mat-raised-button>Ask for</button></td>
+    </tr>
+
+    <tr *ngIf="user.validated === 2">
+      <!-- <td class="bold">Validation:</td> -->
+      <td>Pending</td>
+      <td><button mat-raised-button disabled="true">Pending</button></td>
+    </tr>
+
+    <tr *ngIf="user.validated === 3">
+      <!-- <td class="bold">Validation:</td> -->
+      <td>Validated</td>
+      <td>
+        <mat-icon>verified_user</mat-icon>
+      </td>
+    </tr>
+
+  </table>
+</mat-card>

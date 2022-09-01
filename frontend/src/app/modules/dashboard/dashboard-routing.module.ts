@@ -8,39 +8,42 @@ import { NewEventComponent } from './components/new-event/new-event.component';
 import { DashboardComponent } from './dashboard.component';
 import { FeedComponent } from './views';
 import { ProfileComponent } from './views/profile/profile.component';
+import { SettingsComponent } from './views/settings/settings.component';
 
 const routes: Routes = [
   { 
     path: '', 
-    redirectTo: 'feed',
-    pathMatch: 'full'
-  },{ 
-    path: 'feed', 
-    component: FeedComponent, 
-    canActivate:[AuthGuard],
-  },{ 
-    path: 'new-event', 
-    component: NewEventComponent, 
-    canActivate:[AuthGuard],
-  },{ 
-    path: 'profile/:id', 
-    component: ProfileComponent,
-    canActivate:[AuthGuard],
-  },{ 
-    path: 'settings', 
     component: DashboardComponent,
-    canActivate:[AuthGuard],
-  },{ 
-    path: 'event/:id', 
-    component: EventDetailComponent,
-    canActivate:[AuthGuard],
-  },{ 
-    path: 'about', 
-    component: DashboardComponent,
-  },{ 
-    path: 'contact', 
-    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'feed',
+        pathMatch: 'full'
+      },
+      { 
+        path: 'feed', 
+        component: FeedComponent, 
+        canActivate:[AuthGuard],
+      },{ 
+        path: 'new-event', 
+        component: NewEventComponent, 
+        canActivate:[AuthGuard],
+      },{ 
+        path: 'profile/:id', 
+        component: ProfileComponent,
+        canActivate:[AuthGuard],
+      },{ 
+        path: 'settings', 
+        component: SettingsComponent,
+        canActivate:[AuthGuard],
+      },{ 
+        path: 'event/:id', 
+        component: EventDetailComponent,
+        canActivate:[AuthGuard],
+      }
+    ]
   },
+  
 ];
 
 @NgModule({

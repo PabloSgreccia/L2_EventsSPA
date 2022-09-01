@@ -1,0 +1,29 @@
+<div class="main-list">
+    <div class="table-title">
+      <h2>Events List</h2>
+    </div>
+    <button>filtrar</button>
+    <br>
+  
+    <table>
+      <thead>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Delete</th>
+      </thead>
+      <tbody *ngIf="eventsList">
+        <tr *ngFor="let event of eventsList">
+          <td>{{event._id}}</td>
+          <td>{{event.title}}</td>
+          <td class="actions">
+            <button>delete</button>
+          </td>
+        </tr>
+      <tbody *ngIf="!eventsList">
+        <tr class="no-data">
+          <td colspan="2">No events!</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

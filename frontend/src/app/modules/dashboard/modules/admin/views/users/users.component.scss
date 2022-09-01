@@ -1,0 +1,103 @@
+/*################# Generals #################*/
+:root{
+    --background-color: #e0e0e0; 
+    --main-color: #2c3e50;
+    --main-border-color: #2c3e50;
+    --main-hover-color: #172029; 
+    --padding-for-header: calc(4.5rem + 16px);
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html{
+    background-color: #e0e0e0;
+}
+
+
+
+/*################# List View #################*/
+.main-list {
+    padding-top: var(--padding-for-header);
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 10%;
+}
+
+.table-title {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+table{
+    text-align: center;
+    font-size: 1.15rem;
+    border-collapse: collapse;
+}
+
+thead{
+    border-top: 1px solid #172029;
+    border-bottom: 1px solid #172029;
+    padding-top: 10px;
+    line-height: 3rem;
+    background-color: rgb(206, 206, 206);
+}
+
+tbody tr{
+    padding-top: 10px;
+    line-height: 3rem;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+tbody tr:hover{
+    background-color: rgb(224, 224, 224);
+    transition: 0.3s;
+}
+
+td, .messageText {
+    text-transform: capitalize;
+}
+
+.actions{
+    margin-top: 3px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+tbody .no-data{
+    background-color: #f0f0f0;
+}
+
+.floating-message{
+    color: black;
+    background-color: #64c47c;
+    max-width: 350px;
+    padding: 1rem;
+    border-radius: 10px;
+    z-index: 999;
+    position: fixed;
+    top: var(--padding-for-header);
+    right: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    opacity: 75%;
+}
+
+.floating-message:hover{
+    opacity: 100%;
+    transition: 0.3s;
+    cursor: pointer;
+}
