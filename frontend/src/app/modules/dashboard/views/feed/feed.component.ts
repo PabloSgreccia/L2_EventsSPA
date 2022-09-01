@@ -46,6 +46,7 @@ export class FeedComponent implements OnInit {
   @ViewChild("filterByUser") filterByUser: ElementRef | undefined;
 
   // Events vars
+  // TODO: descomentar esta linea
   // initialEvents!: Event[]
   
   events: Event[] = [{
@@ -65,6 +66,7 @@ export class FeedComponent implements OnInit {
     verifiedadmin: true, 
     adminPhoto: 'https://s3-symbol-logo.tradingview.com/amazon--600.png',
     valor: 4.5,
+    idUser: 1,
     participateDisabled:false,
   },
   {
@@ -78,7 +80,7 @@ export class FeedComponent implements OnInit {
     number: 1333,
     init_date: new Date(2022, 10, 10, 23, 0, 0),
     end_date: new Date(2022, 10, 10, 7, 0, 0),
-    cancelled: false,
+    cancelled: true,
     idType: 2,
     photo: 'https://media.istockphoto.com/photos/dancing-friends-picture-id501387734?k=20&m=501387734&s=612x612&w=0&h=1mli5b7kpDg428fFZfsDPJ9dyVHsWsGK-EVYZUGWHpI=',
     finished: false,
@@ -87,6 +89,7 @@ export class FeedComponent implements OnInit {
     verifiedadmin: false, 
     adminPhoto: 'https://cdn-media.italiani.it/site-rosario/sites/48/2020/05/escudo.jpg',
     valor: 2.2,
+    idUser: 1,
     participateDisabled:false,
   },
   {
@@ -110,6 +113,7 @@ export class FeedComponent implements OnInit {
     verifiedadmin: false,
     adminPhoto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Escudo_del_Club_Atl%C3%A9tico_Chacarita_Juniors.svg/1200px-Escudo_del_Club_Atl%C3%A9tico_Chacarita_Juniors.svg.png',
     valor: 1,
+    idUser: 1,
     participateDisabled:false,
   },
   {
@@ -133,6 +137,7 @@ export class FeedComponent implements OnInit {
     verifiedadmin: false,
     adminPhoto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Escudo_del_Club_Atl%C3%A9tico_Chacarita_Juniors.svg/1200px-Escudo_del_Club_Atl%C3%A9tico_Chacarita_Juniors.svg.png',
     valor: 1,
+    idUser: 1,
     participateDisabled:false,
   },{
     _id: 1,
@@ -179,6 +184,7 @@ export class FeedComponent implements OnInit {
     participateDisabled:false,
   }]
 
+  // TODO: eliminar esta linea
   initialEvents: Event[] = this.events
 
   constructor(
@@ -219,13 +225,7 @@ export class FeedComponent implements OnInit {
       next: events => {
         this.initialEvents = events
           // Sort events by date
-          this.initialEvents.sort(
-            function(a, b) {          
-              if (a.finished === b.finished) {
-                  return b.init_date > a.init_date? 1 : -1;
-              }
-              return a.finished > b.finished ? 1 : -1;
-            });
+          this.orderby({value: "date"})
         this.events = this.initialEvents
       },
       error: (err) => {}
@@ -284,11 +284,14 @@ export class FeedComponent implements OnInit {
     if (event.value === 'date') {
       //Order by date (desc)
       this.events.sort(
-        function(a, b) {          
-           if (a.finished === b.finished) {
-              return b.init_date > a.init_date? 1 : -1;
-           }
-           return a.finished > b.finished ? 1 : -1;
+        function(a, b) {     
+          
+          return b.init_date > a.init_date? 1 : -1;
+
+          //  if (a.finished === b.finished) {
+          //     return b.init_date > a.init_date? 1 : -1;
+          //  }
+          //  return a.finished > b.finished ? 1 : -1;
         });
     }else if (event.value === 'people') {
       //Order by people (desc)

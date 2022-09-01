@@ -1,0 +1,88 @@
+<br>
+
+<mat-card class="event-card">
+  <div class="event-img">
+    <img [src]="event.photo" class="event-img">
+  </div>
+
+  <br>
+  <mat-card class="admin-event-card" [routerLink]="['/dashboard/profile', event.idUser]">
+    <img [src]="event.adminPhoto" class="user-img" [routerLink]="['/dashboard/profile', event.idUser]">
+    <b>{{event.adminUser}}</b> 
+    <mat-icon *ngIf="event.verifiedadmin" class="verify-icon">verified_user</mat-icon>
+
+  </mat-card>
+  <br>
+
+  <mat-card class="event-data-card">
+    <mat-card-title>{{event.title}}</mat-card-title>
+    <div class="aligned-elements">
+      <mat-icon>date_range</mat-icon>
+      From: {{event.init_date | date:'short'}} - 
+      To: {{event.end_date | date:'short'}}
+    </div>
+    <!-- <div class="aligned-elements">
+      <mat-icon>date_range</mat-icon>
+    </div> -->
+    <div class="aligned-elements" *ngIf="event.province">
+      <mat-icon> place</mat-icon>
+      {{event.province}},
+      {{event.city}},
+      {{event.street}},
+      {{event.number}}
+    </div>
+    <div class="aligned-elements" *ngIf="event.link">
+      <mat-icon>link</mat-icon>
+      {{event.link}}
+    </div>
+    <div class="aligned-elements user">
+      {{event.description}}
+    </div>
+    <div *ngIf="event.cancelled" class="cancelled">
+      Event Cancelled 
+    </div>
+  </mat-card>
+<br>
+
+  <div class="actions" *ngIf="2 === 2; else notowner">
+  <!-- <div class="actions" *ngIf="event.idUser === idUser; else notowner"> -->
+    <button mat-stroked-button color="warn" (click)="cancelEvent()" *ngIf="event.end_date > today && !event.cancelled ">Cancel Event</button>
+    <button mat-stroked-button color="warn" (click)="deleteEvent()">Delete Event</button>
+    <button mat-stroked-button color="primary" (click)="editEvent()" *ngIf="event.end_date > today && !event.cancelled">Edit Event</button>
+  </div>
+  <ng-template  #notowner>
+    <div *ngIf="!event.cancelled">
+      <button  *ngIf="userParticipateEvent" mat-stroked-button color="warn" (click)="quitEvent()">QUIT EVENT</button>
+      <button *ngIf="!userParticipateEvent" mat-stroked-button color="primary" (click)="joinEvent()">PARTICIPATE</button>
+    </div>
+  </ng-template>
+
+  <br>
+
+  <mat-expansion-panel class="participants-card">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="panel-title">
+        PEOPLE LIST
+        <mat-icon>people</mat-icon>
+        {{event.people}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <table>
+      <tr *ngFor="let user of userEvents">
+        <td [routerLink]="['/dashboard/profile', user.id]">{{user.name}}</td>
+        <td *ngIf="user.star; else nostar" (click)="favuser(user.id, false)">
+          <mat-icon class="user-star">stars</mat-icon>
+        </td>
+        <ng-template #nostar>
+          <td></td>
+        </ng-template>
+        
+        <td *ngIf="event.idUser === idUser">
+          <mat-icon *ngIf="!user.star" (click)="favuser(user.id, true)">star_border</mat-icon>
+        </td>
+
+      </tr>
+    </table>
+
+  </mat-expansion-panel>
+</mat-card>

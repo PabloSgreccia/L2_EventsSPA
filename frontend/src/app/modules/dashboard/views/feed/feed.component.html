@@ -49,10 +49,7 @@
 
 
 <div class="events-header">
-  <h3>Events</h3>
 <div>
-
-  Order by: 
   <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="orderby($event)">
     <mat-button-toggle value="date" >
       <mat-icon>date_range</mat-icon>
@@ -60,16 +57,12 @@
     <mat-button-toggle value="people">
       <mat-icon>people</mat-icon>
     </mat-button-toggle>
-    <!-- <mat-button-toggle value="stars">
-      <mat-icon>stars</mat-icon>
-    </mat-button-toggle> -->
+    <mat-button-toggle routerLink="/dashboard/new-event">
+      <mat-icon>note_add</mat-icon>
+    </mat-button-toggle>
   </mat-button-toggle-group>
 </div>
 
-  <div class="new-event-btn" routerLink="/dashboard/new-event">
-    Create Event!
-    <mat-icon> create_new_folder</mat-icon>
-  </div>
 </div>
 
 <br>

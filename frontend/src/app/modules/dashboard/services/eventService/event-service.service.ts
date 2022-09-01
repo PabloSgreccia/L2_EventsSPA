@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Event } from "@etp/dashboard/interfaces";
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,41 +10,76 @@ export class EventServiceService {
 
   URL_API_EVENT = "http://localhost:3000/api/event"
   
-
-  private event!:Event 
-  // currentEvent = this.event.asObservable();
+  private initialState: Event = 
+  {
+    _id: 0,
+    title: '',
+    description: '',
+    mode: '',
+    province: '',
+    city: '',
+    street: '',
+    number: 0,
+    init_date: new Date(),
+    end_date: new Date(),
+    cancelled: false,
+    idType: 0,
+    photo: '',
+    finished: false,
+    adminUser: '',
+    people: 0,
+    verifiedadmin: false, 
+    adminPhoto: '',
+    idUser: 1,
+  }
+  private _event$ = new BehaviorSubject(this.initialState)
 
   constructor(
     private http: HttpClient,
-  ) { }
+    ) { }
+    
 
-  
-  setEvent(event: any){
-    document.cookie = `event=${JSON.stringify(event)}`;    
+  // Observable
+  getEvent():Observable<Event> {
+    return this._event$.asObservable()
   }
 
-  getEvent(): Event {    
-    // Get cookie
-    let cookieValue = '';
-
-    let ca: Array<string> = document.cookie.split(';');
-        let caLen: number = ca.length;
-        let cookieName = `event=`;
-        let c: string;
-
-        for (let i: number = 0; i < caLen; i += 1) {
-            c = ca[i].replace(/^\s+/g, '');
-            if (c.indexOf(cookieName) == 0) {
-                cookieValue = c.substring(cookieName.length, c.length);
-            }
-        }
-
-    if (cookieValue) {
-      let evento = JSON.parse(cookieValue)
-      return (evento);
-    }
-    return this.event
+  setEvent(event:Event):void {
+    this._event$.next(event)
   }
+
+  resetEvent() {
+    this._event$.next(this.initialState)
+  }
+  // Observable
+
+  // private event!:Event 
+  // setEvent(event: any){
+  //   document.cookie = `event=${JSON.stringify(event)}`;    
+  // }
+
+  // getEvent(): Event {    
+  //   // Get cookie
+  //   let cookieValue = '';
+
+  //   let ca: Array<string> = document.cookie.split(';');
+  //       let caLen: number = ca.length;
+  //       let cookieName = `event=`;
+  //       let c: string;
+
+  //       for (let i: number = 0; i < caLen; i += 1) {
+  //           c = ca[i].replace(/^\s+/g, '');
+  //           if (c.indexOf(cookieName) == 0) {
+  //               cookieValue = c.substring(cookieName.length, c.length);
+  //           }
+  //       }
+
+  //   if (cookieValue) {
+  //     let evento = JSON.parse(cookieValue)
+  //     return (evento);
+  //   }
+  //   return this.event
+  // }
   
   createEvent(event:any, fileToUpload: File | null){
     if (fileToUpload) {

@@ -1,9 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from '@etp/auth/services';
 import { User } from '@etp/shared/interfaces';
 import { UserServiceService } from '@etp/shared/services';
+import { ModalMsgComponent } from 'src/app/modules/dashboard/components/modal-msg/modal-msg.component';
 
 @Component({
   selector: 'etp-signup',
@@ -21,7 +23,7 @@ export class SignupComponent implements OnInit {
   signUpForm = new FormGroup({
     name: new FormControl('', {validators: [Validators.required]}),
     email: new FormControl('', {validators: [Validators.required, Validators.email]}),
-    password: new FormControl('', {validators: [Validators.required, Validators.pattern(''), Validators.minLength(8)]}),
+    password: new FormControl('', {validators: [Validators.required, Validators.pattern(""), Validators.minLength(8)]}),
     repeatpassword: new FormControl('', {validators: [Validators.required]}),
   }, {validators: passwordsValidator})
 
@@ -33,7 +35,7 @@ export class SignupComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private userService: UserServiceService,
+    public dialog: MatDialog
     ) { }
 
   ngOnInit(): void {
@@ -53,10 +55,12 @@ export class SignupComponent implements OnInit {
       this.authService.signUp(this.newUser.name, this.newUser.email, this.newUser.password, )
         .subscribe({
           next: res => {
-          if (res.status === 201) {
-            localStorage.setItem('token', res.token);
-            this.router.navigate(['/dashboard']);
-          }       
+          if (res.status === 200) {
+            // localStorage.setItem('token', res.token);
+            // this.router.navigate(['/dashboard']);
+            this.openDialog('We sent you a verification email, please check it. This will allows you to login.')
+            
+          }
           },
           error: ((err) => {
             this.error = '';
@@ -66,6 +70,17 @@ export class SignupComponent implements OnInit {
           })
         })
     }
+  }
+  
+  openDialog(msg: string) {
+    this.dialog.open(ModalMsgComponent, {
+      data: { msg },
+    }).afterClosed().subscribe({
+          next: next => {
+            window.location.reload();
+          },
+          error: (err) => {}
+        });
   }
 
   showPassword(value: number){

@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 // Interfaces
 import { User } from '@etp/shared/interfaces';
+import { Event } from '@etp/dashboard/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -89,7 +90,7 @@ export class UserServiceService {
   }
 
 
-  userJoinsEvent(idUser: string, idEvent: string){
+  userJoinsEvent(idUser: number, idEvent: number){
     const body = {
       idUser,
       idEvent
@@ -97,7 +98,7 @@ export class UserServiceService {
     return this.http.patch<any>(`${this.URL_API_USER}/`, body)
   }
 
-  userLeftEvent(idUser: string, idEvent: string, favourite: boolean){
+  userLeftEvent(idUser: number, idEvent: number, favourite: boolean){
     const body = {
       idUser,
       idEvent,
@@ -105,7 +106,7 @@ export class UserServiceService {
     return this.http.delete<any>(`${this.URL_API_USER}/${idUser}/${idEvent}`)
   }
 
-  userFavedForEvent(idUser: string, idEvent: string, favourite: boolean){
+  userFavedForEvent(idUser: number, idEvent: number, favourite: boolean){
     const body = {
       idUser,
       idEvent,

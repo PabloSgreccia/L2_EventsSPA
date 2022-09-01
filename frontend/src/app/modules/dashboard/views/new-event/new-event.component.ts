@@ -7,7 +7,7 @@ import { UserServiceService } from '@etp/shared/services';
 import { EventServiceService, LocationServiceService } from '@etp/dashboard/services';
 import { Event } from '../../interfaces/event/event';
 import { MatDialog } from '@angular/material/dialog';
-import { ModalMsgComponent } from '../modal-msg/modal-msg.component';
+import { ModalMsgComponent } from '../../components/modal-msg/modal-msg.component';
 
 interface FilterInput {
   value: string;
