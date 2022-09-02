@@ -55,7 +55,7 @@ export class UserServiceService {
   }
 
   // un usuario quiere eliminar su cuenta
-  desactivateUser(active: false){
+  desactivateUser(active: boolean){
     return this.http.patch<any>(`${this.URL_API_USER}/updateuser`, active)
   }
   
@@ -122,6 +122,12 @@ export class UserServiceService {
       favourite
     }
     return this.http.patch<any>(`${this.URL_API_USER}/favourite`, body)
+  }
+
+  // TODO: ver ruta y tipo de endpoint
+  // Usuario olvido contraseña
+  forgotPassword(email: string){
+    return this.http.patch<any>(`${this.URL_API_USER}/`, email)
   }
 
 }

@@ -1,0 +1,33 @@
+h2{
+    margin: 0px;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.flex-col{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.example-card{
+    max-width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.be-photo{
+    background-image: url('./be.jpg');
+}
+.fe-photo{
+    background-image: url('./fe.jpg');
+}

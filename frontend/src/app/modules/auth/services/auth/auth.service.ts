@@ -43,6 +43,7 @@ export class AuthService {
     return localStorage.getItem('token');
   }
   
+  // Obtiene la informacion del usuario logeado
   getLoggedUser(){
     return this.http.get<any>(`${this.URL_API_USER}/`)
   }

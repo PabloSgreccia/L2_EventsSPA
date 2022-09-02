@@ -1,12 +1,12 @@
-<h1 mat-dialog-title>Insert New Values:</h1>
-<form [formGroup]="dataForm" (ngSubmit)="saveData()" class="modify-sections">
-
+<p mat-dialog-title>Insert New Name:</p>
+<form [formGroup]="dataForm" (ngSubmit)="saveName()" class="modify-sections">
   <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
       <input matInput formControlName="name">
   </mat-form-field>
+  <span *ngIf="error">{{error}}</span>
   <div mat-dialog-actions>
-    <button mat-stroked-button color="warn" mat-dialog-close>Close</button>
-    <button mat-stroked-button color="primary">Save</button>
+    <button mat-stroked-button color="warn" type="button" [mat-dialog-close]="false">Cancel</button>
+    <button mat-stroked-button color="primary" type="submit">Save</button>
   </div> 
 </form>

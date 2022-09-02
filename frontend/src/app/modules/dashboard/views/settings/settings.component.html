@@ -9,7 +9,7 @@
       <!-- <td class="bold">Photo:</td> -->
       <td><img [src]="user.photo" class="user-img"></td>
       <td>
-        <button mat-raised-button (click)="changePhotoDialog()">Change</button></td>
+        <button class="btn-primary" mat-raised-button (click)="changePhotoDialog()">Change</button></td>
     </tr>
     <tr rowspan="2" class="bold">Name and Email:</tr>
     <tr>
@@ -19,37 +19,41 @@
           <p>{{user.email}}</p>
         </div>
       </td>
-      <td><button mat-raised-button (click)="changeDataDialog()">Edit</button></td>
+      <td><button class="btn-primary" mat-raised-button (click)="changeDataDialog()">Change</button></td>
     </tr>
     <tr rowspan="2" class="bold">Password:</tr>
     <tr>
       <td>***********</td>
-      <td><button mat-raised-button (click)="changePassDialog()">Change</button></td>
+      <td><button class="btn-primary" mat-raised-button (click)="changePassDialog()">Change</button></td>
     </tr>
     
     <tr rowspan="2" class="bold">Validation:</tr>
-    <tr *ngIf="user.validated === 1">
-      <!-- <td class="bold">Validation:</td> -->
-      <td>Not validated:</td>
-      <td><button mat-raised-button>Ask for</button></td>
-    </tr>
-
-    <tr *ngIf="user.validated === 2">
-      <!-- <td class="bold">Validation:</td> -->
-      <td>Pending</td>
-      <td><button mat-raised-button disabled="true">Pending</button></td>
-    </tr>
-
-    <tr *ngIf="user.validated === 3">
-      <!-- <td class="bold">Validation:</td> -->
-      <td>Validated</td>
-      <td>
+    <tr *ngIf="user.validated === 3; else pending">
+      <td>Validated User</td>
         <mat-icon>verified_user</mat-icon>
-      </td>
+    </tr>
+
+    <ng-template #pending>
+      <tr *ngIf="user.validated === 2; else notvalidated">
+        <td>Pending</td>
+        <td><button class="btn-primary" mat-raised-button disabled="true">Pending</button></td>
+      </tr>
+    </ng-template>
+
+    <ng-template #notvalidated>
+      <tr>
+        <td>Not validated</td>
+        <td><button class="btn-primary" mat-raised-button (click)="askForValidation()" [disabled]="askDisabled">Ask for</button></td>
+      </tr>
+    </ng-template>
+
+    <tr>
+      <td>
+        <button mat-stroked-button color="warn" (click)="deleteUser()">DELETE USER</button></td>
     </tr>
 
   </table>
 
-  <button>DELETE USER</button>
+  <span *ngIf="error">{{error}}</span>
 
 </mat-card>
