@@ -1,12 +1,12 @@
 const Router = require('express');
 const router = Router();
 
-const { index, newType, deleteType, update }  = require('../contrtoller/type.controller');
-const { adminRole }=require('../validators/auth')
+const { showAll, newType, deleteType, update }  = require('../contrtoller/type.controller');
+const { adminRole, verifyToken }=require('../validators/auth')
 
-router.get("/view",index);
-router.post("/create",adminRole,newType);
-router.patch("/update/:id",adminRole,update)
-router.delete("/delete/:id",adminRole,deleteType);
+router.get("/views",verifyToken,showAll);
+router.post("/create",verifyToken,adminRole,newType);
+router.patch("/update/:id",verifyToken,adminRole,update)
+router.delete("/delete/:id",verifyToken,adminRole,deleteType);
 
 module.exports = router;

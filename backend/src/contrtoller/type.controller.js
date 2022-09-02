@@ -1,10 +1,10 @@
 require('dotenv').config();
-const Type = require('../database/models/Type')
+const Type = require('../database/models/').type
 const Sequelize = require('sequelize');
 
 //--APIs--
 
-const index = async (req, res) => {
+const showAll = async (req, res) => {
     let types = await Type.findAll({
         attributes: ['id','type']
     })
@@ -61,7 +61,7 @@ const deleteType = async (req, res) => {
 }
 
 module.exports = {
-    index,
+    showAll,
     newType,
     deleteType,
     update

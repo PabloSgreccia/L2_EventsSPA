@@ -36,8 +36,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull:false,
       defaultValue:'user'
     },
-    idfoto: {
-      type:DataTypes.INTEGER,
+    foto: {
+      type:DataTypes.STRING,
     },
     validated: {
       type:DataTypes.INTEGER,

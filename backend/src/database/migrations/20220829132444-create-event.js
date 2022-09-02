@@ -33,10 +33,10 @@ module.exports = {
         type: Sequelize.STRING
       },
       init_date: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
       },
       end_date: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
       },
       cancelled: {
         type: Sequelize.BOOLEAN
@@ -44,17 +44,17 @@ module.exports = {
       idType: {
         type: Sequelize.INTEGER,
         references:{
-          model:'type',
+          model:'types',
           key:'id'
         }
       },
-      idFoto: {
-        type: Sequelize.INTEGER
+      foto: {
+        type: Sequelize.STRING
       },
       idUser_admin: {
         type: Sequelize.INTEGER,
         references:{
-          model:'user',
+          model:'users',
           key:'id'
         }
       },

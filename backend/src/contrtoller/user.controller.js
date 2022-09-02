@@ -1,15 +1,24 @@
 require('dotenv').config();
 const User = require('../database/models/').user
 const Event = require('../database/models/').event
+const Users_events = require('../database/models/').users_events
 const sequelize = require('sequelize');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-const {validationMail} = require('../contrtoller/mail.controller')
+const {
+    validationMail
+} = require('../contrtoller/mail.controller');
+const {
+    Op,
+    and
+} = require('sequelize');
 //API
 
 const showAll = async (req, res) => {
     let users = await User.findAll({
-        include: [Event],
+        attributes: {
+            exclude: ['password','createdAt', 'updatedAt']
+        },
         where: {
             active: true
         }
@@ -19,12 +28,32 @@ const showAll = async (req, res) => {
     })
 };
 
+const pendingValidationUser = async (req, res) => {
+    let users = await User.findAll({
+        where: {
+            validated: 2
+        },
+        attributes: {
+            exclude: ['createdAt', 'updatedAt', 'password']
+        },
+    })
+    return res.status(200).json({
+        users
+    })
+}
+
 const show = async (req, res) => {
     const id = req.params.id
     let user = await User.findOne({
+        attributes: {
+            exclude: ['password','createdAt', 'updatedAt']
+        },
         where: {
             id: id
-        }
+        },
+        include: [{
+            model: Event
+        }]
     });
     if (user) {
         return res.status(200).json({
@@ -125,14 +154,8 @@ const login = async (req, res) => {
                     expiresIn: "8h"
                 })
 
-                const cookiesOptions = {
-                    expire: new Date(Date.now() + process.env.TOKEN_EXPIRES * 24 * 60 * 60 * 1000),
-                    httpOnly: true
-                }
-                res.cookie('jwt', token, cookiesOptions)
 
                 return res.status(200).json({
-                    user,
                     token
                 })
             } else {
@@ -146,10 +169,71 @@ const login = async (req, res) => {
             return res.status(500).json(err.message)
         })
 }
+const userjoinevent = async (req, res) => {
+    const userId = req.userId;
+    const eventId = req.body.idEvent
+    const user = await User.findOne({
+        where: {
+            id: userId
+        }
+    })
+    if (!user) {
+        return res.status(404).json({
+            msg: "no se encontro el usuario"
+        })
+    }
+    const event = await Event.findOne({
+        where: {
+            id: eventId
+        }
+    })
+    if (!event) {
+        return res.status(404).json({
+            msg: "no se encontro el evento"
+        })
+    }
+    const join = await Users_events.create({
+        userId,
+        eventId
+    })
+    if (join) {
+        return res.status(200).json({
+            msg: "usuario anotado al evento"
+        })
+    } else {
+        return res.status(404).json({
+            msg: "error no se pudo anotar"
+        })
+    }
+}
+
+const userleftevent = async (req, res) => {
+    const userId = req.userId;
+    const eventId = req.params.idEvent
+    const userEvent = await Users_events.findOne({
+        attributes: ['userId', 'eventId'],
+        where: {
+            userId: userId,
+            eventId: eventId
+        }
+    })
+    if (!userEvent) {
+        return res.status(404).json({
+            msg: "No se completo la operación"
+        })
+    } else {
+        userEvent.destroy().then(userEvent => {
+            res.status(200).json({
+                userEvent
+            })
+        })
+    }
+}
 
 const updatePass = async (req, res) => {
-    const params = await bcrypt.hash(req.body.newPassword, 10)
-    const id = req.params.id;
+    const oldPass = req.body.oldPassword
+    const password = await bcrypt.hash(req.body.newPassword, 10)
+    const id = req.userId;
     let user = await User.findOne({
         where: {
             id: id
@@ -160,7 +244,9 @@ const updatePass = async (req, res) => {
             msg: "Usuario no encontrado"
         })
     } else {
-        user.update(params).then(user => {
+        await user.update({
+            password
+        }).then(user => {
             res.status(200).json({
                 user,
                 'msg': 'Contraseña actualizada correctamente'
@@ -170,8 +256,12 @@ const updatePass = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    const params = req.body;
-    const id = req.params.id;
+    const {
+        name,
+        active,
+        validated
+    } = req.body;
+    const id = req.userId;
     let user = await User.findOne({
         where: {
             id: id
@@ -182,7 +272,36 @@ const updateUser = async (req, res) => {
             msg: "Usuario no encontrado"
         })
     } else {
-        user.update(params).then(user => {
+
+        user.update({
+            name,
+            active,
+            validated
+        }).then(user => {
+            res.status(200).json({
+                user,
+                'msg': 'Se actualizó correctamente'
+            })
+        })
+    }
+}
+
+const downUser = async (req, res) => {
+    const id = req.userId;
+    const active = req.body.active;
+    let user = await User.findOne({
+        where: {
+            id: id
+        }
+    });
+    if (!user) {
+        return res.status(404).json({
+            msg: "Usuario no encontrado"
+        })
+    } else {
+        user.update({
+            active
+        }).then(user => {
             res.status(200).json({
                 user,
                 'msg': 'Se actualizó correctamente'
@@ -216,18 +335,24 @@ const logOut = async (req, res, next) => {
     //Eliminar cookie jwt
     res.clearCookie('jwt')
     //Redirigir a la vista de login
-    return res.redirect('/login')
+    res.status(200).json({
+        msg: 'sesion terminada'
+    })
 };
 
 
 module.exports = {
     showAll,
+    pendingValidationUser,
     show,
     register,
     login,
+    userjoinevent,
+    userleftevent,
     validationUser,
     updatePass,
     updateUser,
+    downUser,
     destroy,
     logOut
 };

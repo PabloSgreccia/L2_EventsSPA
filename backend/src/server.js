@@ -6,7 +6,6 @@ const {json} = require('body-parser');
 const app = express();
 
 //Requerir router
-const router = require('./routes/index.routes');
 const routerEvent = require('./routes/event.routes');
 const routerUser = require('./routes/user.routes');
 const routerType = require('./routes/type.routes');
@@ -18,7 +17,6 @@ app.use(express.urlencoded({extend:false}));
 app.use(json());
 
 //Rutas
-app.use('/api', router);
 app.use('/api/type',routerType);
 app.use('/api/event',routerEvent);
 app.use('/api/user',routerUser);

@@ -20,8 +20,8 @@ module.exports = {
       role: {
         type: Sequelize.STRING
       },
-      idfoto: {
-        type: Sequelize.INTEGER
+      foto: {
+        type: Sequelize.STRING
       },
       validated: {
         type: Sequelize.INTEGER
