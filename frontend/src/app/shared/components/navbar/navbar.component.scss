@@ -15,6 +15,13 @@ mat-toolbar{
     padding-left: 10%;
 }
 
+#mobile-navbar{
+  display: none;
+}
+#desktop-navbar{
+  display: inline;
+}
+
 @media screen and (max-width: 600px) {
     .mat-toolbar {
         padding-right: 1em;
@@ -31,3 +38,12 @@ button{
 button:hover{
   background-color: #172029;
 }
+
+@media screen and (max-width: 450px) {
+  #mobile-navbar{
+    display: inline;
+  }
+  #desktop-navbar{
+    display: none;
+  }
+  }

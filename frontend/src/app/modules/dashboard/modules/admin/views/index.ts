@@ -1,0 +1,6 @@
+export * from './events/events.component'
+export * from './panel/panel.component'
+export * from './types/types.component'
+export * from './users/users.component'
+export * from './verifications/verifications.component'
+export * from './contact-list/contact-list.component'

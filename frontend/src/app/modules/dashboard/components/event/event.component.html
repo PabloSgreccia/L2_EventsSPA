@@ -1,7 +1,7 @@
 <div class="event-card" [ngClass]="event.finished ? 'finished-event' : 'active-event'">
 
     <div class="event-card-header event-linker">
-      <img [src]="event.adminPhoto" class="user-img" [routerLink]="['/dashboard/profile', user._id]">
+      <img [src]="event.adminPhoto" class="user-img" [routerLink]="['/dashboard/profile', idUser]">
       <div class="event-card-header-info" (click)="redirectEventDetails(event)">
 
         <div class="card-title">
@@ -27,7 +27,7 @@
           {{event.link}}
         </div>
 
-        <div class="aligned-elements user" [routerLink]="['/dashboard/profile', user._id]">
+        <div class="aligned-elements user" [routerLink]="['/dashboard/profile', idUser]">
           <mat-icon>face</mat-icon>
           {{event.adminUser}}
         </div>
@@ -38,25 +38,22 @@
     <img [src]="event.photo" class="event-img event-linker" (click)="redirectEventDetails(event)">
 
     <div class="event-card-footer">
-        <button mat-button *ngIf="event.adminUserId === user._id; else participate" disabled="true">OWNER</button>
+      <div>
+        <div *ngIf="event.cancelled" class="canceled">
+          Event Cancelled
+        </div>
+      </div>
+        <!-- <button mat-button *ngIf="event.idUser === idUser; else participate" disabled="true">OWNER</button>
         <ng-template #participate>
           <button mat-button (click)="joinEvent(event._id)" *ngIf="!event.participateDisabled; else participating">PARTICIPATE</button>
         </ng-template>
         <ng-template #participating>
             <button mat-button disabled="true">PARTICIPATING</button>
-        </ng-template>
+        </ng-template> -->
       <div class="event-card-footer-stats">
           <div class="event-card-footer-stats-ppl">
               <mat-icon>people</mat-icon>
               {{event.people}}
-          </div>
-          <div class="event-card-footer-stats-value" *ngIf="event.end_date == today">
-              <mat-icon>star</mat-icon>
-              <mat-icon>star</mat-icon>
-              <mat-icon>star</mat-icon>
-              <mat-icon>star</mat-icon>
-              <mat-icon>star</mat-icon>
-              {{event.valor}}
           </div>
       </div>
     </div>

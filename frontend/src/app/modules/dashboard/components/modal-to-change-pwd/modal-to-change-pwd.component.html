@@ -1,0 +1,17 @@
+
+        <form [formGroup]="passForm" (ngSubmit)="savePass()" class="modify-sections">
+
+            <mat-form-field appearance="fill">
+                <mat-label>Old Password</mat-label>
+                <input type="password" matInput formControlName="oldPass">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>New Password</mat-label>
+                <input type="password" matInput formControlName="newPass">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Repeat New Password</mat-label>
+                <input type="password" matInput formControlName="repPass">
+            </mat-form-field>
+            <button mat-button>Save</button>
+        </form>

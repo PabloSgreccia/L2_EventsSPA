@@ -56,6 +56,12 @@
     margin-bottom: 5px;
 }
 
+@media screen and (max-width: calc(400px + 2em)) {
+    .event-img {
+        width: calc(100% + 2em);
+    }
+  }
+
 .event-card-footer{
     display: flex;
     flex-direction: row;
@@ -98,4 +104,9 @@ button{
 
 .finished-event{
     opacity: 45%;
+}
+
+.canceled{
+    color: red;
+    font-weight: bold;
 }

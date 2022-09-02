@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Event, User } from '@etp/shared/interfaces'
-import { EventServiceService } from '@etp/shared/services';
+// Interfaces
+import { User } from '@etp/shared/interfaces'
+import { Event } from '@etp/dashboard/interfaces'
+// Services
+import { EventServiceService } from '@etp/dashboard/services';
 
 @Component({
   selector: 'etp-event',
@@ -13,10 +16,8 @@ export class EventComponent implements OnInit {
   @Input() event!: Event;
   today = new Date();
 
-  user: User = {
-    _id:24,
-  }
-
+  idUser!: number
+  
   constructor(
     private eventService: EventServiceService,
     private router: Router,
@@ -36,6 +37,6 @@ export class EventComponent implements OnInit {
     
   redirectEventDetails(event: Event){
     this.eventService.setEvent(event);
-    this.router.navigate([`/dashboard/event/${this.event._id}`]);
+    this.router.navigate([`/dashboard/event/${this.event.id}`]);
   }
 }

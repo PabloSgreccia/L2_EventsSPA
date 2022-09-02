@@ -1,2 +1,2 @@
 export * from './user/user';
-export * from './event/event';
+export * from './contact/contact';
