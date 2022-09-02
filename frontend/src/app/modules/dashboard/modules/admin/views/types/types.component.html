@@ -1,29 +1,48 @@
 <div class="main-list">
-    <div class="table-title">
-      <h2>Types List</h2>
-    </div>
-    <button>filtrar</button>
-    <br>
-  
-    <table>
-      <thead>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Delete</th>
-      </thead>
-      <tbody *ngIf="typesList">
-        <tr *ngFor="let type of typesList">
-          <td>{{type.id}}</td>
-          <td>{{type.type}}</td>
-          <td class="actions">
-            <button>delete</button>
-          </td>
-        </tr>
-      <tbody *ngIf="!typesList">
-        <tr class="no-data">
-          <td colspan="2">No types!</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="table-title">
+    <mat-icon [routerLink]="['/admin']">arrow_back</mat-icon>
+    <h2>Types List</h2>
   </div>
-  
+  <br>
+  <div class="flex-row">
+    <form [formGroup]="typeForm" (ngSubmit)="addOdrEditType()">
+
+      <mat-form-field appearance="fill" class="type-input">
+        <mat-label>Add or edit types</mat-label>
+        <input matInput formControlName="type">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="type-input">
+        <mat-label>ID</mat-label>
+        <input type="number" matInput formControlName="id">
+      </mat-form-field>
+
+      <button mat-raised-button class="btn-primary" (click)="resetForm()">Clean</button>
+      <button mat-raised-button type="submit" class="btn-primary" [disabled]="!typeForm.valid">Save</button>
+    </form>
+  </div>
+
+  <br>
+
+  <table>
+    <thead>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Actions</th>
+    </thead>
+    <tbody *ngIf="initTypesList">
+      <tr *ngFor="let type of initTypesList">
+        <td>{{type.id}}</td>
+        <td>{{type.type}}</td>
+        <td class="actions">
+          <mat-icon (click)="deleteType(type.id)">delete_forever</mat-icon>
+          <mat-icon (click)="editType(type)">edit</mat-icon>
+        </td>
+      </tr>
+    <tbody *ngIf="!initTypesList">
+      <tr class="no-data">
+        <td colspan="3">No Types!</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,6 +1,9 @@
+<br>
+<h2 class="form-container">Edit Event</h2>
+
 <div class="form-container">
   <div class="sub-form-container">
-    <form [formGroup]="eventForm" (ngSubmit)="createEvent()">
+    <form [formGroup]="eventForm" (ngSubmit)="editEvent()">
 
       <mat-form-field appearance="fill">
         <mat-label>Title</mat-label>
@@ -61,51 +64,44 @@
         <input matInput placeholder="Placeholder" formControlName="link">
       </mat-form-field>
 
-      <!-- <mat-form-field appearance="fill">
-                <mat-label>Enter a date range</mat-label>
-                <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate placeholder="Start date">
-                  <input matEndDate placeholder="End date">
-                </mat-date-range-input>
-                <mat-hint>MM/DD/YYYY  MM/DD/YYYY</mat-hint>
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker>
-              </mat-form-field> -->
+      <mat-form-field appearance="fill">
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [formGroup]="eventForm" [rangePicker]="picker">
+          <input matStartDate formControlName="init_date" placeholder="Start day">
+          <input matEndDate formControlName="end_date" placeholder="End day">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
 
+        <mat-error *ngIf="eventForm.controls.init_date.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+        <mat-error *ngIf="eventForm.controls.end_date.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+      </mat-form-field>
       <div class="same-row-inputs">
-        <div>
-          <mat-form-field appearance="outline">
-            <mat-label>Init Day</mat-label>
-            <input matInput type="datetime-local" placeholder="Start date" formControlName="init_date">
-          </mat-form-field>
-        </div>
-
-        <div>
-          <mat-form-field appearance="outline">
-            <mat-label>End Day</mat-label>
-            <input matInput type="datetime-local" placeholder="End date" formControlName="end_date">
-          </mat-form-field>
-        </div>
+        <mat-form-field appearance="fill">
+          <mat-label>Start Hour</mat-label>
+          <input matInput type="number" min="00" max="23" formControlName="init_hour">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>End Hour</mat-label>
+          <input matInput type="number" min="00" max="23" formControlName="end_hour">
+        </mat-form-field>
       </div>
 
       <mat-form-field appearance="fill">
         <mat-label>Type</mat-label>
         <mat-select formControlName="idType">
-          <mat-option *ngFor="let type of types" value="{{type}}">{{type}}</mat-option>
-          <!-- <mat-option value="virtual">Virtual</mat-option>
-                    <mat-option value="mixed">Mixed</mat-option> -->
+          <mat-option *ngFor="let type of types" value="{{type.id}}">{{type.type}}</mat-option>
         </mat-select>
       </mat-form-field>
 
-      <!-- <input type="file" (change)="onFileSelected($event)" formControlName="photo"> -->
-      <input type="file" formControlName="photo" (change)="handleFileInput($event)">
+      <!-- <input type="file" accept=".jpg,.png" (change)="handleFileInput($event)"> -->
 
       <span class="separator">
         <div *ngIf="error" class="errormsg">{{error}}</div>
       </span>
 
-      <!-- <button mat-flat-button type="submit">Continue</button> -->
       <button mat-flat-button type="submit" [disabled]="!eventForm.valid">Continue</button>
+      <!-- <button mat-flat-button type="submit">Continue</button> -->
     </form>
   </div>
 

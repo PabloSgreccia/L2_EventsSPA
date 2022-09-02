@@ -37,6 +37,6 @@ export class EventComponent implements OnInit {
     
   redirectEventDetails(event: Event){
     this.eventService.setEvent(event);
-    this.router.navigate([`/dashboard/event/${this.event._id}`]);
+    this.router.navigate([`/dashboard/event/${this.event.id}`]);
   }
 }

@@ -8,6 +8,9 @@ import { EventsComponent } from './views/events/events.component';
 import { TypesComponent } from './views/types/types.component';
 import { UsersComponent } from './views/users/users.component';
 import { VerificationsComponent } from './views/verifications/verifications.component';
+import { MaterialModule } from '@etp/shared/modules';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ContactListComponent } from './views/contact-list/contact-list.component';
 
 
 @NgModule({
@@ -17,11 +20,15 @@ import { VerificationsComponent } from './views/verifications/verifications.comp
     EventsComponent,
     TypesComponent,
     UsersComponent,
-    VerificationsComponent
+    VerificationsComponent,
+    ContactListComponent
   ],
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class AdminModule { }

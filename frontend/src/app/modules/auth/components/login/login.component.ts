@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
             
             // Cambiar por la respuesta del BE
             const user: User = {
-              _id: 3, 
+              id: 3, 
               name: 'Pablo Sgreccia', 
               email: 'pablosgreccia@gmail.com', 
               role: 'user', 

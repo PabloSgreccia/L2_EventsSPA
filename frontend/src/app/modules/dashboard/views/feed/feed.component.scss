@@ -55,13 +55,24 @@ mat-form-field{
   }
 
 
-.events-header, .filters-header{
+  .filters-header{
     margin-top: 1rem;
     background-color: rgb(228, 228, 228);
     padding: 0.5em;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.events-header{
+    margin-top: 1rem;
+    background-color: rgb(240, 240, 240);
+    padding: 0.5em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
     border-radius: 5px;
 }

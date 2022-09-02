@@ -1,13 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 // Services
-import { AuthService } from '@etp/auth/services';
-import { UserServiceService } from '@etp/shared/services';
-import { EventServiceService, LocationServiceService } from '@etp/dashboard/services';
-import { Event } from '../../interfaces/event/event';
+import { EventServiceService, LocationServiceService, TypeServiceService } from '@etp/dashboard/services';
 import { MatDialog } from '@angular/material/dialog';
-import { ModalMsgComponent } from '../modal-msg/modal-msg.component';
+import { ModalMsgComponent } from '../../components/modal-msg/modal-msg.component';
+import { Type } from '../../interfaces/type/type';
 
 interface FilterInput {
   value: string;
@@ -29,25 +26,20 @@ export class NewEventComponent implements OnInit {
     province: new FormControl(''),
     city: new FormControl(''),
     street: new FormControl(''),
-    number: new FormControl(''),
+    number: new FormControl(0),
     link: new FormControl(''),
     init_date: new FormControl('', {validators: [Validators.required]}),
     end_date: new FormControl('', {validators: [Validators.required]}),
-    idType: new FormControl('', {validators: [Validators.required]}),
-    photo: new FormControl(''),
-  }, {validators: locationValidator})
+    init_hour: new FormControl(0, {validators: [Validators.required]}),
+    end_hour: new FormControl(0, {validators: [Validators.required]}),
+    idType: new FormControl(0, {validators: [Validators.required]}),
+  }, {validators: [locationValidator]})
 
-  types: String[] = ['Sports', 'Party', 'Conference', 'Meeting']
+  types!: Type[]
 
-  fileToUpload!: File | null;
-  fileName = '';
   file!: File
 
-
   error: String = '';
-
-  @ViewChild("passwordInput") passwordInput!: ElementRef;
-  @ViewChild("reppasswordInput") reppasswordInput!: ElementRef;
   
   provinces:FilterInput[] = [
     {value: "", viewValue: ""},
@@ -60,11 +52,12 @@ export class NewEventComponent implements OnInit {
   constructor(
     private locationService: LocationServiceService,
     private eventService: EventServiceService,
+    private typeService: TypeServiceService,
     public dialog: MatDialog
     ) { }
 
   ngOnInit(): void {
-
+    // Get external API info about provinces and cities in Argentina
     this.locationService.getProvinces()
     .subscribe({
       next: res => {
@@ -80,15 +73,31 @@ export class NewEventComponent implements OnInit {
         this.provinces.sort((a, b) => (a.value > b.value) ? 1 : -1)
       }
     })
+
+    // Get types of events from BE
+    this.typeService.getTypes()
+    .subscribe({
+      next: (res) => {
+        if (res.status === 200) {
+          this.types = res.type
+        } 
+        else{
+          this.error = res.msg 
+        }       
+      },
+      error: ((err: any) => {
+        console.log(err);
+      })
+    })
   }
 
+  // When a user select a province, we search the cities of that province
   changeProvince(){
     this.locationService.getProvincesCities(this.eventForm.controls.province.value || '')
     .subscribe({
       next: res => {
         this.cities = (res.localidades).map(
           function(city:any) { 
-            // console.log(city.nombre);
             let mapCity:FilterInput = {
               value: city.nombre,
               viewValue:city.nombre 
@@ -97,60 +106,70 @@ export class NewEventComponent implements OnInit {
           }
         )
         this.cities.sort((a, b) => (a.value > b.value) ? 1 : -1)
-
       }
     })
   }
 
+  // Craete an event
   createEvent(){
-    // console.log(this.eventForm.controls.photo);
-    
     if (this.eventForm.status === 'VALID') {
-      if (this.file) {
-        const formData = new FormData();
-        formData.append("thumbnail", this.file);
-      }
-      this.eventService.createEvent(this.eventForm.value, this.file)
-        .subscribe({
-          next: (res: { status: number; msg: String; }) => {
-            if (res.status === 200) {
+      // Formatting dates
+      const startevent = new Date(`${this.eventForm.controls.init_date.value}`);
+      startevent.setHours(this.eventForm.controls.init_hour.value || 0);
+      const endevent = new Date(`${this.eventForm.controls.end_date.value}`);
+      endevent.setHours(this.eventForm.controls.end_hour.value || 0);
 
-              this.openDialog('Event successfully created')
-            } 
-            else{
-              this.error = '';
-              this.error = res.msg 
-            }       
-          }
-          ,
-          error: ((err: any) => {
-            console.log(err);
+      // Validate if some hour is higer than 23
+      if (
+        this.eventForm.controls.init_hour.value 
+        && this.eventForm.controls.end_hour.value   
+        && (this.eventForm.controls.init_hour.value > 23 || this.eventForm.controls.end_hour.value > 23) ) {
+          this.error = 'Error in hours.' 
+      // Validate if there is end date is lower than init date
+      } else if (startevent > endevent) {
+        this.error = 'Error in dates.' 
+      // Validate if the file isnt an image
+      } else if (this.file && !(this.file.type).includes("image")) {
+        this.error = 'Error in File.' 
+      } else {
+                
+        let newEvent = this.eventForm.value;
+        newEvent.init_date = startevent.toString()
+        newEvent.end_date = endevent.toString()
+
+        // BE API
+        this.eventService.createEvent(newEvent, this.file)
+          .subscribe({
+            next: (res: { status: number; msg: String; }) => {
+              if (res.status === 200 || res.status === 201 ) {
+                this.openDialog('Event successfully created')
+              } 
+              else{
+                this.error = res.msg 
+              }       
+            },            
+            error: ((err: any) => {
+              console.log(err);
+            })
           })
-        })
-      
+      }
     }
   }
 
+  // Show dialog
   openDialog(msg: string) {
     this.dialog.open(ModalMsgComponent, {
       data: { msg },
     });
   }
 
+  // File input manager
   handleFileInput(event: any) {
     const file:File = event.target.files[0];
-    console.log(event.target.files[0]);
-    console.log((event.target.files[0].type).includes("image"));
-
     this.file = file;
-
-    if (file) {
-        this.fileName = file.name;
-    }
-  
   }
 
-
+  // Reset form data when user changes the event mode (virtual/on-site/mixed)
   modeChange(){
     this.eventForm.controls.province.reset();
     this.eventForm.controls.city.reset();
@@ -159,11 +178,10 @@ export class NewEventComponent implements OnInit {
     this.eventForm.controls.link.reset();
   }
 
+
   get f() { return this.eventForm }
   get mode() { return this.eventForm.controls.mode }
   get title() { return this.eventForm.controls.title }
-  get init_day() { return this.eventForm.controls.init_date }
-  get end_day() { return this.eventForm.controls.end_date }
   get province() { return this.eventForm.controls.province }
 }
 
@@ -183,3 +201,4 @@ export const locationValidator: ValidatorFn = (control: AbstractControl): Valida
   return { passDoesntMatch: true } 
 
 };
+

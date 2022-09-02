@@ -24,7 +24,7 @@ export class AuthService {
       email, 
       password
     }
-    return this.http.post<any>(`${this.URL_API_USER}/signup`, body)
+    return this.http.post<any>(`${this.URL_API_USER}/register`, body)
   }
   
   logIn(email: string, password: string){
@@ -32,7 +32,7 @@ export class AuthService {
       email,
       password
     }
-    return this.http.post<any>(`${this.URL_API_USER}/signin`, body)
+    return this.http.post<any>(`${this.URL_API_USER}/login`, body)
   }
   
   loggedIn(): boolean {

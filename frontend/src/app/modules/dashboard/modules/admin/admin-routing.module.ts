@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminGuard } from '@etp/shared/guards';
 import { AdminComponent } from './admin.component';
 import { VerificationsComponent } from './views';
+import { ContactListComponent } from './views/contact-list/contact-list.component';
 import { EventsComponent } from './views/events/events.component';
 import { PanelComponent } from './views/panel/panel.component';
 import { TypesComponent } from './views/types/types.component';
@@ -41,6 +42,11 @@ const routes: Routes = [
       { 
         path: 'verifications', 
         component: VerificationsComponent, 
+        canActivate:[AdminGuard],
+      },
+      { 
+        path: 'contact', 
+        component: ContactListComponent, 
         canActivate:[AdminGuard],
       },
     ]

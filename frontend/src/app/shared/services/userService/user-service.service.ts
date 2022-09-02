@@ -13,7 +13,7 @@ export class UserServiceService {
 
   private initialState: User = 
     {
-      _id: 0, 
+      id: 0, 
       name: '', 
       email: '', 
       role: '', 
@@ -27,6 +27,8 @@ export class UserServiceService {
   ){}
 
   // Observable
+  // Observable
+  // Observable
   getUser():Observable<User> {
     return this._user$.asObservable()
   }
@@ -39,79 +41,88 @@ export class UserServiceService {
     this._user$.next(this.initialState)
   }
   // Observable
+  // Observable
+  // Observable
 
-  getOneUser(userId: number){
-    return this.http.get<any>(`${this.URL_API_USER}/${userId}`)
+  // traer datos de un usuario (ej: cuando visitas el perfil), o cuando se logea un usuario
+  getOneUser(id: number){
+    return this.http.get<any>(`${this.URL_API_USER}/view/${id}`)
   }
 
-  desactivateUser(userId: number){
-    return this.http.patch<any>(`${this.URL_API_USER}/`, userId)
+  // TODO: definir
+  getVerificationPendingsUsers(){
+    return this.http.get<any>(`${this.URL_API_USER}/view/`)
   }
 
+  // un usuario quiere eliminar su cuenta
+  desactivateUser(active: false){
+    return this.http.patch<any>(`${this.URL_API_USER}/updateuser`, active)
+  }
+  
+  // el adimin elimina un usuario
+  deleteUser(id: number){
+    return this.http.delete<any>(`${this.URL_API_USER}/delete/${id}`)
+  }
+
+  // editar datos de usuario
   editUserData(name: string){
-    return this.http.patch<any>(`${this.URL_API_USER}/`, name)
+    return this.http.patch<any>(`${this.URL_API_USER}/updateuser`, name)
   }
 
-  editUserPrivacity(privacy: string){
-    return this.http.patch<any>(`${this.URL_API_USER}/`, privacy)
+  // usuario solicita verificacion de usuario
+  updateVerifyStatus(id:number, validated: number){
+    const body = {
+      id,
+      validated
+    }
+    return this.http.patch<any>(`${this.URL_API_USER}/updateuser`, body)
   }
 
-  updateVerifyStatus(validated: number){
-    return this.http.patch<any>(`${this.URL_API_USER}/`, validated)
-  }
-
+  // usuario cambia su contraseña
   editUserPwd(oldPassword: string, newPassword: string){
     const body = {
       oldPassword,
       newPassword
     }
-    return this.http.patch<any>(`${this.URL_API_USER}/`, body)
+    return this.http.patch<any>(`${this.URL_API_USER}/updatepass`, body)
   }
 
-  editUserPhoto(fileToUpload: File | null){
-    if (fileToUpload) {
-      const formData: FormData = new FormData();
-      formData.append('fileKey', fileToUpload, fileToUpload.name);
-    }
-    return this.http.patch<any>(`${this.URL_API_USER}/`, fileToUpload)
+  // usuario cambia su foto
+  editUserPhoto(photo: File){
+    const formdata = new FormData()
+    formdata.append('photo', photo)
+    return this.http.patch<any>(`${this.URL_API_USER}/updateuser`, formdata)
   }
 
-  getEventsCreatedByUser(idUser: number){
-    return this.http.get<any>(`${this.URL_API_USER}/${idUser}`)
+  // cuando entras al perfil de un usuario, devolver los eventos que creó
+  getEventsCreatedByUser(id: number){
+    return this.http.get<any>(`${this.URL_API_USER}/eventscreatedbyuser/${id}`)
   }
 
-  getEventsFollowedByUser(idUser: number){
-    return this.http.get<any>(`${this.URL_API_USER}/${idUser}`)
+  // cuando entras al perfil de un usuario, devolver los eventos que se anotó
+  getEventsFollowedByUser(id: number){
+    return this.http.get<any>(`${this.URL_API_USER}/eventsfollowedbyuser/${id}`)
   }
 
-  getUsersByName(name: string){
-    return this.http.get<any>(`${this.URL_API_USER}/${name}`)
+  // usuario se anota a un evento
+  userJoinsEvent(idEvent: number){
+    return this.http.post<any>(`${this.URL_API_USER}/userjoinevent`, idEvent)
   }
 
+  // usuario se va a un evento
+  userLeftEvent(idEvent: number){
+    return this.http.delete<any>(`${this.URL_API_USER}/userleftevent/${idEvent}`)
+  }
 
-  userJoinsEvent(idUser: string, idEvent: string){
+  // Admin del evento favea a un usuario de su evento
+  userFavedForEvent(id: number, idEvent: number, favourite: boolean){
     const body = {
-      idUser,
-      idEvent
-    }
-    return this.http.patch<any>(`${this.URL_API_USER}/`, body)
-  }
-
-  userLeftEvent(idUser: string, idEvent: string, favourite: boolean){
-    const body = {
-      idUser,
-      idEvent,
-    }
-    return this.http.delete<any>(`${this.URL_API_USER}/${idUser}/${idEvent}`)
-  }
-
-  userFavedForEvent(idUser: string, idEvent: string, favourite: boolean){
-    const body = {
-      idUser,
+      id,
       idEvent,
       favourite
     }
-    return this.http.patch<any>(`${this.URL_API_USER}/`, body)
+    return this.http.patch<any>(`${this.URL_API_USER}/favourite`, body)
   }
 
 }
+
