@@ -86,7 +86,7 @@ export class NewEventComponent implements OnInit {
         }       
       },
       error: ((err: any) => {
-        console.log(err);
+        this.error = 'Something went wrong trying to get data.';
       })
     })
   }
@@ -149,6 +149,7 @@ export class NewEventComponent implements OnInit {
               }       
             },            
             error: ((err: any) => {
+              this.error = 'Something went wrong trying to create the event.';
               console.log(err);
             })
           })

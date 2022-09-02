@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '@etp/shared/interfaces';
 import { UserServiceService } from '@etp/shared/services';
+import { AuthService } from '../auth/services/auth/auth.service';
 
 @Component({
   selector: 'etp-dashboard',
@@ -10,24 +11,16 @@ import { UserServiceService } from '@etp/shared/services';
 export class DashboardComponent implements OnInit {
 
   constructor(
-    private userService: UserServiceService
+    private userService: UserServiceService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
-     // this.authService.getUser().subscribe({
-        //       next: (user:User) => {
-        //         this.userService.updateUser(user);
-        //       }
-        //      })
-       const user: User = {
-          id: 3, 
-          name: 'Pablo Sgreccia', 
-          email: 'pablosgreccia@gmail.com', 
-          role: 'admin', 
-          validated: 1, 
-          photo: 'https://thumbs.dreamstime.com/b/icono-del-var%C3%B3n-del-usuario-ninguna-cara-43652345.jpg',
-        }
+    // Get and save logged user data (anti refresh)
+     this.authService.getLoggedUser().subscribe({
+      next: (user:User) => {
         this.userService.updateUser(user);
+      }
+    })
   }
-
 }
