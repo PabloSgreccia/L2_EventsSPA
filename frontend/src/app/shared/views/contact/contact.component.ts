@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 // Interfaces
-import { User } from '@etp/shared/interfaces';
+import { Contact, User } from '@etp/shared/interfaces';
 // Services
 import { AuthService } from '@etp/auth/services';
 import { UserServiceService } from '@etp/shared/services';
 import { ModalMsgComponent } from 'src/app/modules/dashboard/components/modal-msg/modal-msg.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ContactServiceService } from '../../services/contactService/contact-service.service';
 
 @Component({
   selector: 'etp-contact',
@@ -26,7 +27,8 @@ export class ContactComponent implements OnInit {
   
   constructor(
     private userService: UserServiceService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private contactService: ContactServiceService
   ) { }
 
   ngOnInit(): void {
@@ -56,20 +58,23 @@ export class ContactComponent implements OnInit {
   sendForm(){
     
     if (this.contactForm.status === 'VALID') {
-      // this.contactForm.reset();
+
+      let newContact: Contact = {
+        name: this.contactForm.controls.subject.value || '',
+        email: this.contactForm.controls.subject.value || '',
+        subject: this.contactForm.controls.subject.value || '',
+        description: this.contactForm.controls.subject.value || '',
+        date: (new Date()).toString(),
+      }
+
+      this.contactService.createContact(newContact)      
+
       this.contactForm.controls.subject.setValue('')
       this.contactForm.controls.description.setValue('')
       this.contactForm.controls.subject.markAsUntouched;
       this.contactForm.controls.description.markAsUntouched;
-      console.log("simulacro de envío terminado");
       
       this.openDialog('Your email was sent. we will contact you shortly.')
-
-      // this.user = {
-      //   name: this.eventForm.controls.name.value || '',
-      //   email: this.eventForm.controls.email.value || '',
-      //   password: this.eventForm.controls.password.value || ''
-      // }
 
     } else {
       this.contactForm.markAllAsTouched;

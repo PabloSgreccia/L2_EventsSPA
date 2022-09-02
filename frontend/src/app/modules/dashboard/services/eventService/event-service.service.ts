@@ -53,73 +53,29 @@ export class EventServiceService {
   }
   // Observable
 
-  // private event!:Event 
-  // setEvent(event: any){
-  //   document.cookie = `event=${JSON.stringify(event)}`;    
-  // }
-
-  // getEvent(): Event {    
-  //   // Get cookie
-  //   let cookieValue = '';
-
-  //   let ca: Array<string> = document.cookie.split(';');
-  //       let caLen: number = ca.length;
-  //       let cookieName = `event=`;
-  //       let c: string;
-
-  //       for (let i: number = 0; i < caLen; i += 1) {
-  //           c = ca[i].replace(/^\s+/g, '');
-  //           if (c.indexOf(cookieName) == 0) {
-  //               cookieValue = c.substring(cookieName.length, c.length);
-  //           }
-  //       }
-
-  //   if (cookieValue) {
-  //     let evento = JSON.parse(cookieValue)
-  //     return (evento);
-  //   }
-  //   return this.event
-  // }
   
-  // TODO: ver tema de la foto
   // usuario crea un evneto
-  createEvent(event:any, fileToUpload: File | null){
-    if (fileToUpload) {
-      const formData: FormData = new FormData();
-      formData.append('fileKey', fileToUpload, fileToUpload.name);
+  createEvent(event:any, photo?: File){
+    const formdata = new FormData()
+    if (photo) {
+      formdata.append('photo', photo)
     }
-    let body = {
-      event,
-      fileToUpload
-    }
-    return this.http.post<any>(`${this.URL_API_EVENT}/create`, body)
+    formdata.append('payload', JSON.stringify(event))
+    // JSON.parse(payload) --> BE
+    return this.http.post<any>(`${this.URL_API_EVENT}/create`, formdata)
   }
-
-//   postFile(fileToUpload: File): Observable<boolean> {
-//     const endpoint = 'your-destination-url';
-//     const formData: FormData = new FormData();
-//     formData.append('fileKey', fileToUpload, fileToUpload.name);
-//     return this.httpClient
-//       .post(endpoint, formData, { headers: yourHeadersConfig })
-//       .map(() => { return true; })
-//       .catch((e) => this.handleError(e));
-// }
-
 
   // el admin de un evento, actualiza un evento
-  updateEvent(event: any, fileToUpload: File | null){
-    if (fileToUpload) {
-      const formData: FormData = new FormData();
-      formData.append('fileKey', fileToUpload, fileToUpload.name);
+  updateEvent(event: any, photo?: File){
+    const formdata = new FormData()
+    if (photo) {
+      formdata.append('photo', photo)
     }
-    let body = {
-      event,
-      fileToUpload
-    }
-    return this.http.patch<any>(`${this.URL_API_EVENT}/update`, body)
+    formdata.append('payload', JSON.stringify(event))
+    // JSON.parse(payload) --> BE
+    return this.http.patch<any>(`${this.URL_API_EVENT}/create`, formdata)
   }
 
-  // TODO: pasar evento { id, cancelled }
   // el admin del evento, cancela un evento
   cancelEvent(id: number, cancelled = true){
     const body = {

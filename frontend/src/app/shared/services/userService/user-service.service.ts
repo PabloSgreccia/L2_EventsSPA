@@ -87,14 +87,11 @@ export class UserServiceService {
     return this.http.patch<any>(`${this.URL_API_USER}/updatepass`, body)
   }
 
-  // TODO: revisar el tema de la foto
   // usuario cambia su foto
-  editUserPhoto(fileToUpload: File | null){
-    if (fileToUpload) {
-      const formData: FormData = new FormData();
-      formData.append('fileKey', fileToUpload, fileToUpload.name);
-    }
-    return this.http.patch<any>(`${this.URL_API_USER}/updateuser`, fileToUpload)
+  editUserPhoto(photo: File){
+    const formdata = new FormData()
+    formdata.append('photo', photo)
+    return this.http.patch<any>(`${this.URL_API_USER}/updateuser`, formdata)
   }
 
   // cuando entras al perfil de un usuario, devolver los eventos que creó

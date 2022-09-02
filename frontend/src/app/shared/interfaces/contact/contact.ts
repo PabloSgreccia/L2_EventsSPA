@@ -1,7 +1,8 @@
 export interface Contact {
-    id:number,
+    id?:number,
     name:string,
     email:string,
     subject:string,
     description:string,
+    date:string
 }
