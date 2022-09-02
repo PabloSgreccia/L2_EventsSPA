@@ -324,7 +324,6 @@ const destroy = async (req, res) => {
     } else {
         user.destroy().then(user => {
             res.status(200).json({
-                status: 200,
                 user
             })
         })

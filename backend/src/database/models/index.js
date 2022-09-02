@@ -9,6 +9,7 @@ const Type = require('./Type')
 const User = require('./User')
 const Event = require('./Event')
 const Users_events = require('./Users_events')
+const Contac = require('./Contac')
 const db = {};
 
 let sequelize = new Sequelize(config.database, config.username, config.password, config);

@@ -77,8 +77,30 @@ const passValidation = async (req, res, next) => {
 
 };
 
+const validateContac = [
+
+  check('name')
+  .exists()
+  .withMessage('Debe ingresar un nombre'),
+  check('email')
+  .exists()
+  .isEmail()
+  .withMessage('No contiene un formato de email valido'),
+  check('subject')
+  .exists()
+  .withMessage('Debe ingresar sus nombre'),
+  check('description')
+  .exists()
+  .withMessage('Debe escribir algún mensaje'),
+
+  (req, res, next) => {
+    validateResult(req, res, next)
+  }
+]
+
 module.exports = {
   validateRegister,
   EmailIsUnique,
-  passValidation
+  passValidation,
+  validateContac
 }
