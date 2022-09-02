@@ -24,12 +24,16 @@
       <br>
       <div class="lista-eventos">
         <div class="evento" *ngFor="let event of createdEvents">
-
+          
+          
           <etp-event [event]="event"></etp-event>
-
+          
         </div>
       </div>
-
+      
+      <div *ngIf="!createdEvents">
+        <h3>this user has'n created any events yet</h3>
+      </div>
     </mat-tab>
     <mat-tab label="Followed Events">
       <br>
@@ -41,6 +45,9 @@
         </div>
       </div>
 
+      <div *ngIf="!followedEvents">
+        <h3>this user has'n participated in any event yet</h3>
+      </div>
     </mat-tab>
   </mat-tab-group>
 </div>

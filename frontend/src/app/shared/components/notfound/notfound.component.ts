@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '@etp/auth/services';
 import { User } from '@etp/shared/interfaces';
 import { UserServiceService } from '../../services/userService/user-service.service';
 
@@ -10,26 +11,16 @@ import { UserServiceService } from '../../services/userService/user-service.serv
 export class NotfoundComponent implements OnInit {
 
   constructor(
-    private userService: UserServiceService
+    private userService: UserServiceService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
-    // this.authService.getLoggedUser().subscribe({
-       //       next: (user:User) => {
-       //         this.userService.updateUser(user);
-       //       }
-       //      })
-       const user: User = {
-         id: 3, 
-         name: 'Pablo Sgreccia', 
-         email: 'pablosgreccia@gmail.com', 
-         role: 'admin', 
-         validated: 1, 
-         photo: 'https://thumbs.dreamstime.com/b/icono-del-var%C3%B3n-del-usuario-ninguna-cara-43652345.jpg',
-       }
-       this.userService.updateUser(user);
+    // Get and save logged user data (anti refresh)
+     this.authService.getLoggedUser().subscribe({
+      next: (user:User) => {
+        this.userService.updateUser(user);
+      }
+    })
   }
-
-  }
-
-
+}

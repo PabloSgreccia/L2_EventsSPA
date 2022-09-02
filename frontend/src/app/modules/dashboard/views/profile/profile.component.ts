@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 // Interfaces
 import { Event } from '@etp/dashboard/interfaces'
 import { User } from '@etp/shared/interfaces'
 // Services
-import { EventServiceService, LocationServiceService } from '@etp/dashboard/services';
+import { EventServiceService } from '@etp/dashboard/services';
+import { UserServiceService } from '@etp/shared/services';
 
 @Component({
   selector: 'etp-profile',
@@ -139,31 +141,80 @@ export class ProfileComponent implements OnInit {
 
 
   constructor(
-    private locationService: LocationServiceService,
-    private eventService: EventServiceService
+    private eventService: EventServiceService,
+    private userService: UserServiceService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    
     // get user info --> BE
-    // get created events  --> BE
-    // get followed events --> BE
+    if (id) {  
+      this.userService.getOneUser(parseInt(id, 10))
+      .subscribe({
+        next: (res) => {
+          if (res.status === 200) {
+            this.user = res.user
+          } 
+          else{
+            console.log(res.msg);
+            this.router.navigate(['/notfound']);
+          }       
+        },
+        error: ((err: any) => {
+          console.log(err);
+          this.router.navigate(['/notfound']);
+        })
+      })
 
-    this.createdEvents.sort(
-      function(a, b) {          
-         if (a.finished === b.finished) {
-            return b.init_date > a.init_date? 1 : -1;
-         }
-         return a.finished > b.finished ? 1 : -1;
-      });
+      // get created events ny this user  --> BE
+      this.userService.getEventsCreatedByUser(parseInt(id, 10))
+      .subscribe({
+        next: (res) => {
+          if (res.status === 200) {
+            this.createdEvents = res.events
+            // Sort created events by init date
+            this.createdEvents.sort(
+              function(a, b) {          
+                    return b.init_date > a.init_date? 1 : -1;
+              });
+          } 
+          else{
+            console.log(res.msg);
+            this.router.navigate(['/notfound']);
+          }       
+        },
+        error: ((err: any) => {
+          console.log(err);
+          this.router.navigate(['/notfound']);
+        })
+      })
       
-    this.followedEvents.sort(
-      function(a, b) {          
-         if (a.finished === b.finished) {
-            return b.init_date > a.init_date? 1 : -1;
-         }
-         return a.finished > b.finished ? 1 : -1;
-      });
-
+      // get followed events --> BE
+      this.userService.getEventsFollowedByUser(parseInt(id, 10))
+      .subscribe({
+        next: (res) => {
+          if (res.status === 200) {
+            this.followedEvents = res.events
+            // Sort followed events by init date
+            this.followedEvents.sort(
+              function(a, b) {          
+                    return b.init_date > a.init_date? 1 : -1;
+              });
+        
+          } 
+          else{
+            console.log(res.msg);
+            this.router.navigate(['/notfound']);
+          }       
+        },
+        error: ((err: any) => {
+          console.log(err);
+          this.router.navigate(['/notfound']);
+        })
+      })
+    }
   }
- 
 }
