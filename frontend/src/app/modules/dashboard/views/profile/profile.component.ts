@@ -20,11 +20,10 @@ export class ProfileComponent implements OnInit {
     email: 'asd@asd.com',
     photo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1WeNyqqvZ4xPqhmoF5Jcz3UYO_Gk2AUNgSKU59LJYLETM8tElgPD2931E8-7dauowdAQ&usqp=CAU',
     validated: 3,
-    cantEvents: 2,
     role: 'user'
   }
 
-  // Events vars
+  cantEvents!: number
 
   createdEvents: Event[] = [{
     id: 1,
@@ -180,6 +179,7 @@ export class ProfileComponent implements OnInit {
               function(a, b) {          
                     return b.init_date > a.init_date? 1 : -1;
               });
+            this.cantEvents = this.createdEvents.length
           } 
           else{
             console.log(res.msg);
