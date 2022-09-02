@@ -2,10 +2,10 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+// Services
 import { AuthService } from '@etp/auth/services';
-import { User } from '@etp/shared/interfaces';
-import { UserServiceService } from '@etp/shared/services';
-import { ModalMsgComponent } from 'src/app/modules/dashboard/components/modal-msg/modal-msg.component';
+// Components
+import { ModalMsgComponent } from '@etp/dashboard/components';
 
 @Component({
   selector: 'etp-signup',
@@ -14,23 +14,27 @@ import { ModalMsgComponent } from 'src/app/modules/dashboard/components/modal-ms
 })
 export class SignupComponent implements OnInit {
 
+  // Vars
   newUser = {
     name: '',
     email: '',
     password: ''
   };
+  inputTypeValue: string = "password"
+  error: String = '';
   
+  // Form
   signUpForm = new FormGroup({
     name: new FormControl('', {validators: [Validators.required]}),
     email: new FormControl('', {validators: [Validators.required, Validators.email]}),
-    password: new FormControl('', {validators: [Validators.required, Validators.pattern(""), Validators.minLength(8)]}),
+    password: new FormControl('', {validators: [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}')]}),
     repeatpassword: new FormControl('', {validators: [Validators.required]}),
   }, {validators: passwordsValidator})
-
-  error: String = '';
-
-  @ViewChild("passwordInput") passwordInput!: ElementRef;
-  @ViewChild("reppasswordInput") reppasswordInput!: ElementRef;
+  get f() { return this.signUpForm }
+  get name() { return this.signUpForm.controls.name }
+  get email() { return this.signUpForm.controls.email }
+  get password() { return this.signUpForm.controls.password }
+  get repPassword() { return this.signUpForm.controls.repeatpassword }
   
   constructor(
     private router: Router,
@@ -38,74 +42,66 @@ export class SignupComponent implements OnInit {
     public dialog: MatDialog
     ) { }
 
+    // If logged, redirect to feed
   ngOnInit(): void {
     if (this.authService.loggedIn()) {
       this.router.navigate(['/dashboard']);
     }
   }
 
+  // ########################## Functionalities
+  // ########################## Functionalities
+  // ########################## Functionalities
   signUp(){    
-    if (this.signUpForm.status === 'VALID') {
+    if (this.signUpForm.status === 'VALID' && this.name.value && this.email.value && this.password.value ) {
       this.newUser = {
-        name: this.signUpForm.controls.name.value || '',
-        email: this.signUpForm.controls.email.value || '',
-        password: this.signUpForm.controls.password.value || ''
+        name: this.name.value,
+        email: this.email.value,
+        password: this.password.value
       }
-
+      // Sign up --> BE
       this.authService.signUp(this.newUser.name, this.newUser.email, this.newUser.password, )
         .subscribe({
           next: res => {
-          if (res.status === 200) {
-            // localStorage.setItem('token', res.token);
-            // this.router.navigate(['/dashboard']);
-            this.openDialog('We sent you a verification email, please check it. This will allows you to login.')
-            
-          }
+            if (res.status === 200) {
+              this.openDialog('We sent you a verification email, please check it. This will allows you to login.')
+            } else{
+              this.error = res.msg
+            }
           },
           error: ((err) => {
-            this.error = '';
             this.signUpForm.controls.password.reset();
             this.signUpForm.controls.repeatpassword.reset();
-            this.error = err.error.msg 
+            this.error = 'Something went wrong. Try Again' 
           })
         })
     }
   }
   
+  // Show dialog with message
   openDialog(msg: string) {
-    this.dialog.open(ModalMsgComponent, {
-      data: { msg },
-    }).afterClosed().subscribe({
-          next: next => {
-            window.location.reload();
-          },
-          error: (err) => {}
-        });
+    this.dialog.open(ModalMsgComponent, {data: { msg }})
+    .afterClosed()
+      .subscribe({
+        next: next => {
+          window.location.reload();
+        },
+        error: (err) => {
+          window.location.reload();}
+      });
   }
 
-  showPassword(value: number){
-    if (value === 1) {
-      if (this.passwordInput.nativeElement.type === 'password') {
-        this.passwordInput.nativeElement.type = 'text'
-      } else {
-        this.passwordInput.nativeElement.type = 'password'
-      }
+  // Show or hide password functionality
+  showPassword(){
+    if (this.inputTypeValue === 'password') {
+      this.inputTypeValue = 'text'
     } else {
-      if (this.reppasswordInput.nativeElement.type === 'password') {
-        this.reppasswordInput.nativeElement.type = 'text'
-      } else {
-        this.reppasswordInput.nativeElement.type = 'password'
-      }
+      this.inputTypeValue = 'password'
     }
   }
-
-  get f() { return this.signUpForm }
-  get name() { return this.signUpForm.controls.name }
-  get email() { return this.signUpForm.controls.email }
-  get password() { return this.signUpForm.controls.password }
 }
 
-export const passwordsValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+const passwordsValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const password = control.get('password');
   const repeatPassword = control.get('repeatpassword');
 

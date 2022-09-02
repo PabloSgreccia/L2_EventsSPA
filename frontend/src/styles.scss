@@ -1,14 +1,11 @@
-// html, body { height: 100%; }
-// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-// /*################# Generals #################*/
-// :root{
-//     --background-color: #e0e0e0; 
-//     --main-color: #2c3e50;
-//     --main-border-color: #2c3e50;
-//     --main-hover-color: #172029; 
-//     --padding-for-header: calc(4.5rem + 16px);
-// }
+/*################# Generals #################*/
+:root{
+    --background-color: #e0e0e0; 
+    --main-color: #2c3e50;
+    --main-border-color: #2c3e50;
+    --main-hover-color: #172029; 
+    --padding-for-header: calc(4.5rem + 16px);
+}
 
 * {
     margin: 0;
@@ -32,16 +29,16 @@
   }
 
 .btn-primary{
-    background-color: #2c3e50; 
+    background-color: var(--main-color); 
     color: white;
 }
 
 .btn-primary:hover{
-    background-color: #172029; 
+    background-color: var(--main-hover-color); 
 }
 
 .floating-button{
-    border: 1px solid #172029;
+    border: 1px solid var(--main-hover-color);
     width: 55px;
     height: 55px;
     border-radius: 50%;
@@ -65,7 +62,14 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    justify-content: stretch;
     gap: 10px;
+}
+.flex-col-str-str{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
 }
 .flex-row-stretch{
     display: flex;
@@ -84,6 +88,21 @@
     flex-direction: row;
     align-items: center;
     gap: 10px;
+}
+
+// Forms
+.form-error-msg{
+    color:red;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.hint{
+    color: red
+}
+
+.pointer:hover{
+    cursor: pointer;
 }
 
 

@@ -1,25 +1,24 @@
-<form [formGroup]="logInForm" (ngSubmit)="logIn()">
+<form [formGroup]="logInForm" (ngSubmit)="logIn()" class="flex-col-str-str">
 
     <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
         <input matInput placeholder="Placeholder" formControlName="email">
         <mat-icon matSuffix>alternate_email</mat-icon>
-        <mat-hint *ngIf="email.errors?.['email']">Should be a valid email.</mat-hint>
+        <mat-hint class="hint" *ngIf="email.errors?.['email']">Should be a valid email.</mat-hint>
     </mat-form-field>
     
     <mat-form-field appearance="outline">
         <mat-label>Password</mat-label>
-        <input type="password" matInput placeholder="Placeholder" #passwordInput formControlName="password">
-        <mat-icon matSuffix class="show-password" (click)="showPassword()">remove_red_eye</mat-icon>
-        <mat-hint *ngIf="password.errors?.['minlength']">At least eight characters, one number and one special character.</mat-hint>
+        <input [type]="inputTypeValue" matInput placeholder="Placeholder" formControlName="password">
+        <mat-icon matSuffix class="pointer" (click)="showPassword()">remove_red_eye</mat-icon>
+        <mat-hint class="hint" *ngIf="password.errors?.['pattern']">At least eight characters, one number, one uppercase and one lowercase.</mat-hint>
     </mat-form-field>
+    <span class="separator" *ngIf="password.errors?.['pattern']"></span>
     
-    <span class="separator">
-        <div *ngIf="error" class="errormsg">{{error}}</div >
-    </span>
+    <div *ngIf="error" class="form-error-msg">{{error}}</div >
 
     <div class="flex-col-stretch">
-        <button mat-flat-button type="submit" [disabled]="!logInForm.valid">Log In</button>    
-        <button mat-flat-button type="button" (click)="forgotPass()">Forgot Password</button>    
+        <button mat-flat-button type="submit" [disabled]="!logInForm.valid" class="btn-primary">Log In</button>    
+        <button mat-flat-button type="button" (click)="forgotPass()" class="btn-primary">Forgot Password</button>    
     </div>
 </form>

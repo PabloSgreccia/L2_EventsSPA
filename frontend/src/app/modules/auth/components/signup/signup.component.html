@@ -1,4 +1,4 @@
-<form [formGroup]="signUpForm" (ngSubmit)="signUp()">
+<form [formGroup]="signUpForm" (ngSubmit)="signUp()" class="flex-col-str-str">
 
     <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
@@ -10,27 +10,26 @@
         <mat-label>Email</mat-label>
         <input matInput placeholder="Placeholder" formControlName="email">
         <mat-icon matSuffix>alternate_email</mat-icon>
-        <mat-hint *ngIf="email.errors?.['email']">Should be a valid email.</mat-hint>
+        <mat-hint class="hint" *ngIf="email.errors?.['email']">Should be a valid email.</mat-hint>
     </mat-form-field>
     
     <mat-form-field appearance="outline">
         <mat-label>Password</mat-label>
-        <input type="password" matInput placeholder="Placeholder" #passwordInput formControlName="password">
-        <mat-icon matSuffix class="show-password" (click)="showPassword(1)">remove_red_eye</mat-icon>
-        <mat-hint *ngIf="password.errors?.['minlength']">At least eight characters, one number and one special character.</mat-hint>
+        <input [type]="inputTypeValue" matInput placeholder="Placeholder" #passwordInput formControlName="password">
+        <mat-icon matSuffix class="pointer" (click)="showPassword()">remove_red_eye</mat-icon>
+        <mat-hint class="hint" *ngIf="password.errors?.['pattern']">At least eight characters, one number, one uppercase and one lowercase.</mat-hint>
     </mat-form-field>
+    <span *ngIf="password.errors?.['pattern']" class="separator"></span>
 
     <mat-form-field appearance="outline">
         <mat-label>Repeat Password</mat-label>
-        <input type="password" matInput placeholder="Placeholder" #reppasswordInput formControlName="repeatpassword">
-        <mat-icon matSuffix class="show-password" (click)="showPassword(2)">remove_red_eye</mat-icon>
-        <mat-hint *ngIf="f.errors?.['passDoesntMatch']">Passwords doesn't match.</mat-hint>
+        <input [type]="inputTypeValue" matInput placeholder="Placeholder" #reppasswordInput formControlName="repeatpassword">
+        <mat-icon matSuffix class="pointer" (click)="showPassword()">remove_red_eye</mat-icon>
+        <mat-hint class="hint" *ngIf="f.errors?.['passDoesntMatch']">Passwords doesn't match.</mat-hint>
     </mat-form-field>
 
-    <span class="separator">
-        <div *ngIf="error" class="errormsg">{{error}}</div >
-    </span>
+        <div *ngIf="error" class="form-error-msg">{{error}}</div >
 
-    <button mat-flat-button type="submit" [disabled]="!signUpForm.valid">Sign Up</button>    
+    <button mat-flat-button type="submit" class="btn-primary" [disabled]="!signUpForm.valid">Sign Up</button>    
 </form>
 
