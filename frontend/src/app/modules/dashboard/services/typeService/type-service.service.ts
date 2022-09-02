@@ -14,18 +14,18 @@ export class TypeServiceService {
   ) { }
   
   createType(type: string){
-    return this.http.post<any>(`${this.URL_API_TYPE}/`, type)
+    return this.http.post<any>(`${this.URL_API_TYPE}/create`, type)
   }
   
-  updateType(type: Type){
-    return this.http.patch<any>(`${this.URL_API_TYPE}/`, type)
+  updateType(id: number, type: string){
+    return this.http.patch<any>(`${this.URL_API_TYPE}/update/${id}`, type)
   }
 
-  deleteType(typeId: number){
-    return this.http.delete<any>(`${this.URL_API_TYPE}/${typeId}`)
+  deleteType(id: number){
+    return this.http.delete<any>(`${this.URL_API_TYPE}/delete/${id}`)
   }
   
   getTypes(){
-    return this.http.get<any>(`${this.URL_API_TYPE}/`)
+    return this.http.get<any>(`${this.URL_API_TYPE}/views`)
   }
 }

@@ -74,13 +74,13 @@ export class EventDetailComponent implements OnInit {
     // this.event = this.eventService.getEvent() 
     this.userService.getUser().subscribe({
       next: user => {
-        this.idUser = user._id
+        this.idUser = user.id
         this.userName = user.name
       },
       error: (err) => {}
     })
 
-    this.eventService.getUsersByEvent(this.event._id)
+    this.eventService.getUsersByEvent(this.event.id)
     .subscribe({
       next: (res) => {
         if (res.status === 200) {
@@ -115,22 +115,22 @@ export class EventDetailComponent implements OnInit {
       name: this.userName,
       star: false
     })
-    this.userService.userJoinsEvent(this.idUser, this.event._id)
+    this.userService.userJoinsEvent(this.event.id)
   }
   
   quitEvent(){
     this.event.people = (this.event.people || 0) - 1  
     this.userParticipateEvent = false
     this.userEvents = this.userEvents.filter(user => user.id !== this.idUser)
-    this.userService.userJoinsEvent(this.idUser, this.event._id)
+    this.userService.userJoinsEvent(this.event.id)
   }
 
   cancelEvent(){
-    this.eventService.cancelEvent(this.event._id, true)
+    this.eventService.cancelEvent(this.event.id, true)
   }
 
   deleteEvent(){
-    this.eventService.deleteEvent(this.event._id)
+    this.eventService.deleteEvent(this.event.id)
   }
 
   editEvent(){
@@ -144,7 +144,7 @@ export class EventDetailComponent implements OnInit {
       }
       return user})
     
-    this.userService.userFavedForEvent(idusuario, this.event._id, fav)
+    this.userService.userFavedForEvent(idusuario, this.event.id, fav)
   }
 
 }

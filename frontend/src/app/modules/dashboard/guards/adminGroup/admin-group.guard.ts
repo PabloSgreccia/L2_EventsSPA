@@ -22,7 +22,7 @@ export class AdminGroupGuard implements CanActivate {
     // get user by observable
     this.userService.getUser().subscribe({
       next: user => {
-        userid = user._id
+        userid = user.id
       },
       error: (err) => {}
     })

@@ -50,7 +50,7 @@ export class FeedComponent implements OnInit {
   // initialEvents!: Event[]
   
   events: Event[] = [{
-    _id: 1,
+    id: 1,
     title: 'AWS - Webinar... Con show de fuegos artificios',
     description: 'Aprende todo sobre amazon web services',
     mode: 'Virtual',
@@ -70,7 +70,7 @@ export class FeedComponent implements OnInit {
     participateDisabled:false,
   },
   {
-    _id: 2,
+    id: 2,
     title: 'Las Pastillas del Abuelo',
     description: 'Vení a ver las pastillas del abuelo al anfiteatro, costo entrada 1000$',
     mode: 'Presencial',
@@ -93,7 +93,7 @@ export class FeedComponent implements OnInit {
     participateDisabled:false,
   },
   {
-    _id: 3,
+    id: 3,
     title: 'Chacarita vs Boca Jrs',
     description: 'Recibimos a Boca Jrs por la 8va fecha del torneo nacional. Veni a alentar a Charcarita',
     mode: 'Mixto',
@@ -117,7 +117,7 @@ export class FeedComponent implements OnInit {
     participateDisabled:false,
   },
   {
-    _id: 3,
+    id: 3,
     title: 'Chacarita vs NOB',
     description: 'Recibimos a NOB por la 7ma fecha del torneo nacional. Veni a alentar a Charcarita',
     mode: 'Mixto',
@@ -140,7 +140,7 @@ export class FeedComponent implements OnInit {
     idUser: 1,
     participateDisabled:false,
   },{
-    _id: 1,
+    id: 1,
     title: 'Mi Cumpleaños',
     description: 'Traer su propia comida, yo pongo la bebida',
     province: 'Santa Fe',
@@ -163,7 +163,7 @@ export class FeedComponent implements OnInit {
     participateDisabled:false,
   },
   {
-    _id: 2,
+    id: 2,
     title: 'Partido vs Atalaya',
     province: 'Santa Fe',
     city: 'Rosario',

@@ -1,25 +1,7 @@
-/*################# Generals #################*/
-:root{
-    --background-color: #e0e0e0; 
-    --main-color: #2c3e50;
-    --main-border-color: #2c3e50;
-    --main-hover-color: #172029; 
-    --padding-for-header: calc(4.5rem + 16px);
+h2{
+    margin: 0px
 }
 
-* {
-    margin: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-html{
-    background-color: #e0e0e0;
-}
-
-
-
-/*################# List View #################*/
 .main-list {
     padding-top: var(--padding-for-header);
     display: flex;
@@ -28,32 +10,27 @@ html{
     gap: 10%;
 }
 
-.table-title {
+.table-title{
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
+    gap: 10px;
 }
 
 table{
     text-align: center;
-    font-size: 1.15rem;
     border-collapse: collapse;
 }
 
 thead{
     border-top: 1px solid #172029;
     border-bottom: 1px solid #172029;
-    padding-top: 10px;
-    line-height: 3rem;
+    line-height: 2rem;
     background-color: rgb(206, 206, 206);
 }
 
 tbody tr{
-    padding-top: 10px;
-    line-height: 3rem;
+    line-height: 2rem;
     background-color: #f0f0f0;
     border-bottom: 1px solid #e7e7e7;
 }
@@ -61,22 +38,11 @@ tbody tr{
 tbody tr:hover{
     background-color: rgb(224, 224, 224);
     transition: 0.3s;
+    cursor: pointer;
 }
 
-td, .messageText {
+td {
     text-transform: capitalize;
-}
-
-.actions{
-    margin-top: 3px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-tbody .no-data{
-    background-color: #f0f0f0;
 }
 
 .floating-message{
@@ -99,5 +65,9 @@ tbody .no-data{
 .floating-message:hover{
     opacity: 100%;
     transition: 0.3s;
+    cursor: pointer;
+}
+
+mat-icon{
     cursor: pointer;
 }

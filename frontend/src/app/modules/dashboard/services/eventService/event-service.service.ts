@@ -12,7 +12,7 @@ export class EventServiceService {
   
   private initialState: Event = 
   {
-    _id: 0,
+    id: 0,
     title: '',
     description: '',
     mode: '',
@@ -81,6 +81,8 @@ export class EventServiceService {
   //   return this.event
   // }
   
+  // TODO: ver tema de la foto
+  // usuario crea un evneto
   createEvent(event:any, fileToUpload: File | null){
     if (fileToUpload) {
       const formData: FormData = new FormData();
@@ -90,7 +92,7 @@ export class EventServiceService {
       event,
       fileToUpload
     }
-    return this.http.post<any>(`${this.URL_API_EVENT}/editdata`, body)
+    return this.http.post<any>(`${this.URL_API_EVENT}/create`, body)
   }
 
 //   postFile(fileToUpload: File): Observable<boolean> {
@@ -104,6 +106,7 @@ export class EventServiceService {
 // }
 
 
+  // el admin de un evento, actualiza un evento
   updateEvent(event: any, fileToUpload: File | null){
     if (fileToUpload) {
       const formData: FormData = new FormData();
@@ -113,28 +116,35 @@ export class EventServiceService {
       event,
       fileToUpload
     }
-    return this.http.patch<any>(`${this.URL_API_EVENT}/`, body)
+    return this.http.patch<any>(`${this.URL_API_EVENT}/update`, body)
   }
 
-  cancelEvent(eventId: number, cancelled = true){
+  // TODO: pasar evento { id, cancelled }
+  // el admin del evento, cancela un evento
+  cancelEvent(id: number, cancelled = true){
     const body = {
-      eventId, cancelled
+      id, 
+      cancelled
     }
-    return this.http.patch<any>(`${this.URL_API_EVENT}/`, body)
+    return this.http.patch<any>(`${this.URL_API_EVENT}/update`, body)
   }
 
-  deleteEvent(eventId: number){
-    return this.http.delete<any>(`${this.URL_API_EVENT}/${eventId}`)
+  // el admin del evento o el admin general, elimina un evento
+  deleteEvent(id: number){
+    return this.http.delete<any>(`${this.URL_API_EVENT}/delete/${id}`)
   }
 
-  getOneEvent(eventId: number){
-    return this.http.get<any>(`${this.URL_API_EVENT}/${eventId}`)
-  }
+  // obtener datos de un evento - lo usamos para algo?
+  // getOneEvent(id: number){
+  //   return this.http.get<any>(`${this.URL_API_EVENT}/${id}`)
+  // }
   
+  // obtener listado de eventos (feed)
   getManyEvent(){
-    return this.http.get<any>(`${this.URL_API_EVENT}/`)
+    return this.http.get<any>(`${this.URL_API_EVENT}/views`)
   }
 
+  // obtener listado de usuarios deun evento
   getUsersByEvent(idEvent: number){
     return this.http.get<any>(`${this.URL_API_EVENT}/${idEvent}`)
   }

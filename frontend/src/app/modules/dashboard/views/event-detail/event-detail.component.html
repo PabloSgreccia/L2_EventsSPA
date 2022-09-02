@@ -44,8 +44,8 @@
   </mat-card>
 <br>
 
-  <div class="actions" *ngIf="2 === 2; else notowner">
-  <!-- <div class="actions" *ngIf="event.idUser === idUser; else notowner"> -->
+  <!-- <div class="actions" *ngIf="2 === 2; else notowner"> -->
+  <div class="actions" *ngIf="event.idUser === idUser; else notowner">
     <button mat-stroked-button color="warn" (click)="cancelEvent()" *ngIf="event.end_date > today && !event.cancelled ">Cancel Event</button>
     <button mat-stroked-button color="warn" (click)="deleteEvent()">Delete Event</button>
     <button mat-stroked-button color="primary" (click)="editEvent()" *ngIf="event.end_date > today && !event.cancelled">Edit Event</button>

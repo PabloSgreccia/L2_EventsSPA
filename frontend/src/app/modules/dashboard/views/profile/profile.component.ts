@@ -13,7 +13,7 @@ import { EventServiceService, LocationServiceService } from '@etp/dashboard/serv
 export class ProfileComponent implements OnInit {
 
   user: User = {
-    _id: 0,
+    id: 0,
     name: 'Pablo Sgreccia',
     email: 'asd@asd.com',
     photo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1WeNyqqvZ4xPqhmoF5Jcz3UYO_Gk2AUNgSKU59LJYLETM8tElgPD2931E8-7dauowdAQ&usqp=CAU',
@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit {
   // Events vars
 
   createdEvents: Event[] = [{
-    _id: 1,
+    id: 1,
     title: 'Mi Cumpleaños',
     description: 'Traer su propia comida, yo pongo la bebida',
     province: 'Santa Fe',
@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit {
     participateDisabled:false,
   },
   {
-    _id: 2,
+    id: 2,
     title: 'Partido vs Atalaya',
     province: 'Santa Fe',
     city: 'Rosario',
@@ -70,7 +70,7 @@ export class ProfileComponent implements OnInit {
   }]
 
   followedEvents: Event[] = [{
-    _id: 1,
+    id: 1,
     title: 'AWS - Webinar... Con show de fuegos artificios',
     description: 'Aprende todo sobre amazon web services',
     mode: 'Virtual',
@@ -90,7 +90,7 @@ export class ProfileComponent implements OnInit {
     participateDisabled:false,
   },
   {
-    _id: 2,
+    id: 2,
     title: 'Las Pastillas del Abuelo',
     description: 'Vení a ver las pastillas del abuelo al anfiteatro, costo entrada 1000$',
     mode: 'Presencial',
@@ -113,7 +113,7 @@ export class ProfileComponent implements OnInit {
     participateDisabled:false,
   },
   {
-    _id: 3,
+    id: 3,
     title: 'Chacarita vs Boca Jrs',
     description: 'Recibimos a Boca Jrs por la 8va fecha del torneo nacional. Veni a alentar a Charcarita',
     mode: 'Mixto',
