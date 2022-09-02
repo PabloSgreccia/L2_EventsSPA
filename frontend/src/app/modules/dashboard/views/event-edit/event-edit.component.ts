@@ -1,16 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 // Services
-import { EventServiceService, LocationServiceService } from '@etp/dashboard/services';
+import { EventServiceService, LocationServiceService, TypeServiceService } from '@etp/dashboard/services';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalMsgComponent } from '../../components/modal-msg/modal-msg.component';
+import { Type } from '@etp/dashboard/interfaces';
 
 interface FilterInput {
   value: string;
-  viewValue: string;
-}
-interface TypeInput {
-  value: number;
   viewValue: string;
 }
 
@@ -19,6 +16,7 @@ interface TypeInput {
   templateUrl: './event-edit.component.html',
   styleUrls: ['./event-edit.component.scss']
 })
+
 export class EventEditComponent implements OnInit {
 
   eventForm = new FormGroup({
@@ -32,23 +30,16 @@ export class EventEditComponent implements OnInit {
     link: new FormControl(''),
     init_date: new FormControl('', {validators: [Validators.required]}),
     end_date: new FormControl('', {validators: [Validators.required]}),
+    init_hour: new FormControl(0, {validators: [Validators.required]}),
+    end_hour: new FormControl(0, {validators: [Validators.required]}),
     idType: new FormControl(0, {validators: [Validators.required]}),
-    photo: new FormControl(''),
-  }, {validators: [locationValidator, dateValidator]})
+  }, {validators: [locationValidator]})
 
-  types: String[] = ['Sports', 'Party', 'Conference', 'Meeting']
+  types!: Type[]
 
-  typesId!:TypeInput[]
-
-  fileToUpload!: File | null;
-  fileName = '';
   file!: File
 
-
   error: String = '';
-
-  @ViewChild("passwordInput") passwordInput!: ElementRef;
-  @ViewChild("reppasswordInput") reppasswordInput!: ElementRef;
   
   provinces:FilterInput[] = [
     {value: "", viewValue: ""},
@@ -61,11 +52,12 @@ export class EventEditComponent implements OnInit {
   constructor(
     private locationService: LocationServiceService,
     private eventService: EventServiceService,
+    private typeService: TypeServiceService,
     public dialog: MatDialog
     ) { }
 
   ngOnInit(): void {
-
+    // Get external API info about provinces and cities in Argentina
     this.locationService.getProvinces()
     .subscribe({
       next: res => {
@@ -82,8 +74,23 @@ export class EventEditComponent implements OnInit {
       }
     })
 
-    
-    // get event byu observable
+    // Get types of events from BE
+    this.typeService.getTypes()
+    .subscribe({
+      next: (res) => {
+        if (res.status === 200) {
+          this.types = res.type
+        } 
+        else{
+          this.error = res.msg 
+        }       
+      },
+      error: ((err: any) => {
+        console.log(err);
+      })
+    })
+      
+    // get event info by observable
     this.eventService.getEvent().subscribe({
       next: event => {
         this.eventForm.controls.title.setValue(event.title || '')
@@ -96,19 +103,19 @@ export class EventEditComponent implements OnInit {
         this.eventForm.controls.link.setValue(event.link || '')
         this.eventForm.controls.init_date.setValue((event.init_date).toString())
         this.eventForm.controls.end_date.setValue((event.end_date).toString())
-        this.eventForm.controls.photo.setValue(event.photo || '' )
+        this.eventForm.controls.idType.setValue(event.idType)
       },
       error: (err) => {}
     })
   }
 
+  // When a user select a province, we search the cities of that province
   changeProvince(){
     this.locationService.getProvincesCities(this.eventForm.controls.province.value || '')
     .subscribe({
       next: res => {
         this.cities = (res.localidades).map(
           function(city:any) { 
-            // console.log(city.nombre);
             let mapCity:FilterInput = {
               value: city.nombre,
               viewValue:city.nombre 
@@ -117,37 +124,49 @@ export class EventEditComponent implements OnInit {
           }
         )
         this.cities.sort((a, b) => (a.value > b.value) ? 1 : -1)
-
       }
     })
   }
 
+  // Edit an event
   editEvent(){
-    // console.log(this.eventForm.controls.photo);
-    
     if (this.eventForm.status === 'VALID') {
-      if (this.file) {
-        const formData = new FormData();
-        formData.append("thumbnail", this.file);
-      }
-      this.eventService.createEvent(this.eventForm.value, this.file)
-        .subscribe({
-          next: (res: { status: number; msg: String; }) => {
-            if (res.status === 200) {
+      // Formatting dates
+      const startevent = new Date(`${this.eventForm.controls.init_date.value}`);
+      startevent.setHours(this.eventForm.controls.init_hour.value || 0);
+      const endevent = new Date(`${this.eventForm.controls.end_date.value}`);
+      endevent.setHours(this.eventForm.controls.end_hour.value || 0);
 
-              this.openDialog('Event successfully created')
-            } 
-            else{
-              this.error = '';
-              this.error = res.msg 
-            }       
-          }
-          ,
-          error: ((err: any) => {
-            console.log(err);
+      // Validate if some hour is higer than 23
+      if (
+        this.eventForm.controls.init_hour.value 
+        && this.eventForm.controls.end_hour.value   
+        && (this.eventForm.controls.init_hour.value > 23 || this.eventForm.controls.end_hour.value > 23) ) {
+          this.error = 'Error in hours.' 
+      // Validate if there is end date is lower than init date
+      } else if (startevent > endevent) {
+        this.error = 'Error in dates.' 
+      } else {
+        let newEvent = this.eventForm.value;
+        newEvent.init_date = startevent.toString()
+        newEvent.end_date = endevent.toString()
+
+        // BE API
+        this.eventService.updateEvent(newEvent)
+          .subscribe({
+            next: (res: { status: number; msg: String; }) => {
+              if (res.status === 200 || res.status === 201 ) {
+                this.openDialog('Event successfully updated')
+              } 
+              else{
+                this.error = res.msg 
+              }       
+            },            
+            error: ((err: any) => {
+              console.log(err);
+            })
           })
-        })
-      
+      }
     }
   }
 
@@ -157,20 +176,14 @@ export class EventEditComponent implements OnInit {
     });
   }
 
-  handleFileInput(event: any) {
-    const file:File = event.target.files[0];
-    console.log(event.target.files[0]);
-    console.log((event.target.files[0].type).includes("image"));
+  // handleFileInput(event: any) {
+  //   const file:File = event.target.files[0];
+  //   console.log(event.target.files[0]);
+  //   console.log((event.target.files[0].type).includes("image"));
+  //   this.file = file;
+  // }
 
-    this.file = file;
-
-    if (file) {
-        this.fileName = file.name;
-    }
-  
-  }
-
-
+  // Reset form data when user changes the event mode (virtual/on-site/mixed)
   modeChange(){
     this.eventForm.controls.province.reset();
     this.eventForm.controls.city.reset();
@@ -182,8 +195,6 @@ export class EventEditComponent implements OnInit {
   get f() { return this.eventForm }
   get mode() { return this.eventForm.controls.mode }
   get title() { return this.eventForm.controls.title }
-  get init_date() { return this.eventForm.controls.init_date }
-  get end_date() { return this.eventForm.controls.end_date }
   get province() { return this.eventForm.controls.province }
 }
 
@@ -201,19 +212,5 @@ export const locationValidator: ValidatorFn = (control: AbstractControl): Valida
     return null
   }
   return { passDoesntMatch: true } 
-
-};
-
-export const dateValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-  // this.eventForm.controls.init_date < this.eventForm.controls.end_date
-
-  const init = control.get('init_date');
-  const end = control.get('end_date');
-
-  if (init && end && end >= init) {
-    return null
-  } else {
-    return { passDoesntMatch: true } 
-  }
 
 };

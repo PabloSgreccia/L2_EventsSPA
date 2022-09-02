@@ -151,7 +151,6 @@ export class ProfileComponent implements OnInit {
     this.createdEvents.sort(
       function(a, b) {          
          if (a.finished === b.finished) {
-            // Price is only important when cities are the same
             return b.init_date > a.init_date? 1 : -1;
          }
          return a.finished > b.finished ? 1 : -1;
@@ -160,7 +159,6 @@ export class ProfileComponent implements OnInit {
     this.followedEvents.sort(
       function(a, b) {          
          if (a.finished === b.finished) {
-            // Price is only important when cities are the same
             return b.init_date > a.init_date? 1 : -1;
          }
          return a.finished > b.finished ? 1 : -1;

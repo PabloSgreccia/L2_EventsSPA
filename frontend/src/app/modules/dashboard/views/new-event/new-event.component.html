@@ -72,18 +72,18 @@
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
-      
+
         <mat-error *ngIf="eventForm.controls.init_date.hasError('matStartDateInvalid')">Invalid start date</mat-error>
         <mat-error *ngIf="eventForm.controls.end_date.hasError('matEndDateInvalid')">Invalid end date</mat-error>
       </mat-form-field>
       <div class="same-row-inputs">
         <mat-form-field appearance="fill">
           <mat-label>Start Hour</mat-label>
-          <input matInput type="number" min="00" max="23" formControlName="init_hour" >
+          <input matInput type="number" min="00" max="23" formControlName="init_hour">
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>End Hour</mat-label>
-          <input matInput type="number" min="00" max="23" formControlName="end_hour" >
+          <input matInput type="number" min="00" max="23" formControlName="end_hour">
         </mat-form-field>
       </div>
 

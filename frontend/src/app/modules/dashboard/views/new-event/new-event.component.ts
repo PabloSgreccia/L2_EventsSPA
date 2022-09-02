@@ -106,7 +106,6 @@ export class NewEventComponent implements OnInit {
           }
         )
         this.cities.sort((a, b) => (a.value > b.value) ? 1 : -1)
-
       }
     })
   }
