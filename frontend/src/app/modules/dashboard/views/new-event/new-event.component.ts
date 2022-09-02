@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 // Services
 import { EventServiceService, LocationServiceService, TypeServiceService } from '@etp/dashboard/services';
@@ -86,7 +86,7 @@ export class NewEventComponent implements OnInit {
         }       
       },
       error: ((err: any) => {
-        console.log(err);
+        this.error = 'Something went wrong trying to get data.';
       })
     })
   }
@@ -149,6 +149,7 @@ export class NewEventComponent implements OnInit {
               }       
             },            
             error: ((err: any) => {
+              this.error = 'Something went wrong trying to create the event.';
               console.log(err);
             })
           })
@@ -185,7 +186,7 @@ export class NewEventComponent implements OnInit {
   get province() { return this.eventForm.controls.province }
 }
 
-export const locationValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+const locationValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const mode = control.get('mode');
   const link = control.get('link');
   const province = control.get('province');
@@ -199,6 +200,5 @@ export const locationValidator: ValidatorFn = (control: AbstractControl): Valida
     return null
   }
   return { passDoesntMatch: true } 
-
 };
 

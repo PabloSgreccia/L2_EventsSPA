@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { UserServiceService } from '@etp/shared/services';
 
 @Component({
@@ -6,57 +7,56 @@ import { UserServiceService } from '@etp/shared/services';
   templateUrl: './modal-to-change-photo.component.html',
   styleUrls: ['./modal-to-change-photo.component.scss']
 })
+
 export class ModalToChangePhotoComponent implements OnInit {
   
-  fileToUpload!: File | null;
-  fileName = '';
   file!: File
-
-  photo = ''
-  
   error: string = ''
 
-  constructor(private userService: UserServiceService,) {}
+  constructor(
+    private userService: UserServiceService,
+    private dialogRef: MatDialogRef<ModalToChangePhotoComponent>
+  ) {}
 
   ngOnInit(): void {
 
   }
 
   savePhoto(){
-    if (this.file && (this.file.type).includes("image")) {
-      const formData = new FormData();
-      formData.append("thumbnail", this.file);
-
+    // Validate if the user selected an image
+    if (!this.file) {
+      this.error = 'Select an image.' 
+    } else if (this.file && !(this.file.type).includes("image")) {
+      this.error = 'Select an image.' 
+    } else {
+      // BE API
       this.userService.editUserPhoto(this.file)
         .subscribe({
           next: (res: { status: number; msg: string; }) => {
-            if (res.status === 200) {
-              // dialogRef.close();
+            if (res.status === 200 || res.status === 201 ) {
+              this.dialogRef.close(true);
             } 
             else{
-              this.error = '';
-              this.error = res.msg 
+              this.error = 'Something went wrong trying to update your photo.';
             }       
-          },
+          },            
           error: ((err: any) => {
-            console.log(err);
+            this.error = 'Something went wrong trying to update your photo.';
+              console.log(err);
           })
         })
     }
-    
+   
   }
 
+  // File input manager
   handleFileInput(event: any) {
     const file:File = event.target.files[0];
-    console.log(event.target.files[0]);
-    console.log((event.target.files[0].type).includes("image"));
-
     this.file = file;
-
-    if (file) {
-        this.fileName = file.name;
+    if (this.file && !(this.file.type).includes("image")) {
+      this.error = 'Select an image.' 
+    } else{
+      this.error = '' 
     }
-  
   }
-
 }

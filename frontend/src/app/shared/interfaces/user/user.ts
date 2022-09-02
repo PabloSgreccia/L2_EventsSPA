@@ -6,6 +6,4 @@ export interface User {
     role:string,
     photo?:string,
     validated:number,
-    
-    cantEvents?:number
 }

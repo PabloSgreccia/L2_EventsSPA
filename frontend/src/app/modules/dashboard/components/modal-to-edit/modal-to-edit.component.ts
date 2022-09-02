@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { User } from '@etp/shared/interfaces';
 import { UserServiceService } from '@etp/shared/services';
 
@@ -12,18 +12,16 @@ import { UserServiceService } from '@etp/shared/services';
 export class ModalToEditComponent implements OnInit {
 
   dataForm = new FormGroup({
-    name: new FormControl('', {validators: [Validators.required]}),
+    name: new FormControl('', {validators: [Validators.required, Validators.pattern('[a-zA-Z ]*')]}),
   })
   
   user!: User
-
-  editResult = false;
-
   error: string = ''
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {name: string, email: string},
     private userService: UserServiceService,
+    private dialogRef: MatDialogRef<ModalToEditComponent>
   ) {
     this.dataForm.controls.name.setValue(data.name)
    }
@@ -31,35 +29,24 @@ export class ModalToEditComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  saveData(){
+  saveName(){
     if (this.dataForm.status === 'VALID') {
       this.userService.editUserData(this.dataForm.controls.name.value || '')
         .subscribe({
           next: (res: { status: number; msg: string; }) => {
             if (res.status === 200) {
-              this.userService.getUser().subscribe({
-                next: user => {
-                  this.user = user
-                },
-                error: (err) => {}
-              })
-              this.user.name = this.dataForm.controls.name.value || ''
-              this.userService.updateUser(this.user),
-              this.editResult = true
-              // dialogRef.close();
+              this.dialogRef.close(true);
             } 
             else{
-              this.error = '';
-              this.error = res.msg 
+              this.error = 'Something went wrong trying to update your name.';
             }       
-          }
-          ,
+          },
           error: ((err: any) => {
+            this.error = 'Something went wrong trying to update your name.';
             console.log(err);
           })
         })
     }
-
   }
 
 }

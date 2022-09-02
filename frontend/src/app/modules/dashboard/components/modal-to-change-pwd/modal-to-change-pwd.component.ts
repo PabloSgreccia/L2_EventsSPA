@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { UserServiceService } from '@etp/shared/services';
 
 @Component({
@@ -10,36 +11,38 @@ import { UserServiceService } from '@etp/shared/services';
 export class ModalToChangePwdComponent implements OnInit {
 
   passForm = new FormGroup({
-    oldPass: new FormControl('', {validators: [Validators.required]}),
-    newPass: new FormControl('', {validators: [Validators.required, Validators.pattern(''), Validators.minLength(8)]}),
-    repPass: new FormControl('', {validators: [Validators.required, Validators.pattern(''), Validators.minLength(8)]}),
+    oldPassword: new FormControl('', {validators: [Validators.required]}),
+    newPassword: new FormControl('', {validators: [Validators.required, Validators.pattern(''), Validators.minLength(8)]}),
+    repPassword: new FormControl('', {validators: [Validators.required, Validators.pattern(''), Validators.minLength(8)]}),
   }, {validators: passwordsValidator})
   
   error: string = ''
 
-  constructor(private userService: UserServiceService,) {}
+  constructor(
+    private userService: UserServiceService,
+    private dialogRef: MatDialogRef<ModalToChangePwdComponent>
+  ) {}
 
   ngOnInit(): void {}
 
   savePass(){
-    if (this.passForm.status === 'VALID') {
-      this.userService.editUserPwd(this.passForm.controls.newPass.value || '', this.passForm.controls.oldPass.value  || '', )
+    if (this.passForm.status === 'VALID' && this.passForm.controls.newPassword.value && this.passForm.controls.oldPassword.value) {
+      this.userService.editUserPwd(this.passForm.controls.newPassword.value, this.passForm.controls.oldPassword.value, )
         .subscribe({
           next: (res: { status: number; msg: string; }) => {
             if (res.status === 200) {
-              // dialogRef.close();
+              this.dialogRef.close();
             } 
-            else{
-              this.error = '';
-              this.error = res.msg 
+            else{              
+              this.error = 'Something went wrong trying to update your password.';
             }       
           },
           error: ((err: any) => {
+            this.error = 'Something went wrong trying to update your password.';
             console.log(err);
           })
         })
     }
-
   }
 
 }

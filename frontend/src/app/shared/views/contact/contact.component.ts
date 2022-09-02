@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalMsgComponent } from 'src/app/modules/dashboard/components/modal-msg/modal-msg.component';
 // Interfaces
 import { Contact, User } from '@etp/shared/interfaces';
 // Services
 import { AuthService } from '@etp/auth/services';
 import { UserServiceService } from '@etp/shared/services';
-import { ModalMsgComponent } from 'src/app/modules/dashboard/components/modal-msg/modal-msg.component';
-import { MatDialog } from '@angular/material/dialog';
 import { ContactServiceService } from '../../services/contactService/contact-service.service';
 
 @Component({
@@ -28,26 +28,19 @@ export class ContactComponent implements OnInit {
   constructor(
     private userService: UserServiceService,
     public dialog: MatDialog,
-    private contactService: ContactServiceService
+    private contactService: ContactServiceService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
-    
-     // this.authService.getLoggedUser().subscribe({
-        //       next: (user:User) => {
-        //         this.userService.updateUser(user);
-        //       }
-        //      })
-        const user: User = {
-          id: 3, 
-          name: 'Pablo Sgreccia', 
-          email: 'pablosgreccia@gmail.com', 
-          role: 'admin', 
-          validated: 1, 
-          photo: 'https://thumbs.dreamstime.com/b/icono-del-var%C3%B3n-del-usuario-ninguna-cara-43652345.jpg',
-        }
+    // Save logged user data (anti refresh)
+     this.authService.getLoggedUser().subscribe({
+      next: (user:User) => {
         this.userService.updateUser(user);
+      }
+    })
         
+    // Get logged user data byu observable
     this.userService.getUser().subscribe({
       next: (user: User) => {
         this.contactForm.controls.name.setValue(`${user.name}`)
@@ -55,10 +48,10 @@ export class ContactComponent implements OnInit {
     }, error: () => {}})
   }
 
+  // After user confirms form
   sendForm(){
-    
     if (this.contactForm.status === 'VALID') {
-
+      // Create contact with form values and a date
       let newContact: Contact = {
         name: this.contactForm.controls.subject.value || '',
         email: this.contactForm.controls.subject.value || '',
@@ -67,13 +60,14 @@ export class ContactComponent implements OnInit {
         date: (new Date()).toString(),
       }
 
+      // BE API
       this.contactService.createContact(newContact)      
 
+      // Reset contact form
       this.contactForm.controls.subject.setValue('')
       this.contactForm.controls.description.setValue('')
       this.contactForm.controls.subject.markAsUntouched;
       this.contactForm.controls.description.markAsUntouched;
-      
       this.openDialog('Your email was sent. we will contact you shortly.')
 
     } else {
@@ -81,6 +75,7 @@ export class ContactComponent implements OnInit {
     }
   }
   
+  // Show dialog
   openDialog(msg: string) {
     this.dialog.open(ModalMsgComponent, {
       data: { msg },
