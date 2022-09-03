@@ -8,16 +8,20 @@ const jwt = require('jsonwebtoken')
 const {
     validationMail
 } = require('../contrtoller/mail.controller');
+const { Sequelize } = require('../database/models/');
 
 
 const showAll = async (req, res) => {
     let events = await Event.findAll({
         attributes: {
-            exclude: ['createdAt', 'updatedAt']
+            exclude: ['createdAt', 'updatedAt'],
+            include:[
+                [Sequelize.literal("SELECT COUNT(userId) FROM eventos.users_events where eventId = 1")]
+            ]
         },
         include: [{
             model: User,
-            attributes: ['name'],
+            attributes: ['name','id','foto'],
         }, {
             model: Type,
             attributes: ['type']

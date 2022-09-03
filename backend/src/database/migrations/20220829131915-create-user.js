@@ -20,7 +20,7 @@ module.exports = {
       role: {
         type: Sequelize.STRING
       },
-      foto: {
+      photo: {
         type: Sequelize.STRING
       },
       validated: {

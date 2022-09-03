@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull:false,
       defaultValue:'user'
     },
-    foto: {
+    photo: {
       type:DataTypes.STRING,
     },
     validated: {

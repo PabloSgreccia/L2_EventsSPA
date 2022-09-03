@@ -9,7 +9,7 @@ const app = express();
 const routerEvent = require('./routes/event.routes');
 const routerUser = require('./routes/user.routes');
 const routerType = require('./routes/type.routes');
-const routerContac = require('./routes/contac.routes');
+const routerContact = require('./routes/contact.routes');
 
 //Settings
 app.use(cors());
@@ -21,7 +21,7 @@ app.use(json());
 app.use('/api/type',routerType);
 app.use('/api/event',routerEvent);
 app.use('/api/user',routerUser);
-app.use('/api/contac',routerContac);
+app.use('/api/contact',routerContact);
 
 
 app.use((req, res, next) => {

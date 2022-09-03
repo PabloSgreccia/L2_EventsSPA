@@ -7,6 +7,8 @@ const {
 } = require('../helpers/validateHelper');
 const Sequelize = require('sequelize');
 const User = require('../database/models/').user;
+const Event = require('../database/models/').event;
+const Users_events = require('../database/models/').users_events;
 const bcrypt = require('bcryptjs');
 
 const validateRegister = [
@@ -77,7 +79,7 @@ const passValidation = async (req, res, next) => {
 
 };
 
-const validateContac = [
+const validateContact = [
 
   check('name')
   .exists()
@@ -92,15 +94,60 @@ const validateContac = [
   check('description')
   .exists()
   .withMessage('Debe escribir algún mensaje'),
+  check('date')
+  .exists()
+  .withMessage('Por favor ingrese la fecha'),
 
   (req, res, next) => {
     validateResult(req, res, next)
   }
 ]
 
+const validationJoinEvent = async (req, res, next) => {
+  const userId = req.userId;
+  const eventId = req.body.idEvent
+  const users_events = await Users_events.findOne({
+    attributes: ['userId', 'eventId'],
+    where: {
+      userId: userId,
+      eventId: eventId
+    }
+  })
+  if (users_events) {
+    return res.status(404).json({msg:'Ya estas anotado a este evento'})
+  }
+  const user = await User.findOne({
+    where: {
+      id: userId
+    }
+  })
+  if (!user) {
+    return res.status(404).json({
+      msg: "no se encontro el usuario"
+    })
+  }
+  const event = await Event.findOne({
+    where: {
+      id: eventId
+    }
+  })
+  if (!event) {
+    return res.status(404).json({
+      msg: "no se encontro el evento"
+    })
+  }
+  if (event.idUser_admin === userId) {
+    return res.status(404).json({
+      msg: "Eres el usuario que creo el evento, no puedes anotarte"
+    })
+  }
+  next()
+}
+
 module.exports = {
   validateRegister,
   EmailIsUnique,
   passValidation,
-  validateContac
+  validateContact,
+  validationJoinEvent
 }

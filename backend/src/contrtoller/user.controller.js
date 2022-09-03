@@ -17,7 +17,7 @@ const {
 const showAll = async (req, res) => {
     let users = await User.findAll({
         attributes: {
-            exclude: ['password','createdAt', 'updatedAt']
+            exclude: ['password', 'createdAt', 'updatedAt']
         },
         where: {
             active: true
@@ -46,14 +46,11 @@ const show = async (req, res) => {
     const id = req.params.id
     let user = await User.findOne({
         attributes: {
-            exclude: ['password','createdAt', 'updatedAt']
+            exclude: ['password', 'createdAt', 'updatedAt']
         },
         where: {
             id: id
-        },
-        include: [{
-            model: Event
-        }]
+        }
     });
     if (user) {
         return res.status(200).json({
@@ -172,26 +169,7 @@ const login = async (req, res) => {
 const userjoinevent = async (req, res) => {
     const userId = req.userId;
     const eventId = req.body.idEvent
-    const user = await User.findOne({
-        where: {
-            id: userId
-        }
-    })
-    if (!user) {
-        return res.status(404).json({
-            msg: "no se encontro el usuario"
-        })
-    }
-    const event = await Event.findOne({
-        where: {
-            id: eventId
-        }
-    })
-    if (!event) {
-        return res.status(404).json({
-            msg: "no se encontro el evento"
-        })
-    }
+
     const join = await Users_events.create({
         userId,
         eventId
@@ -339,6 +317,60 @@ const logOut = async (req, res, next) => {
     })
 };
 
+const favouriteUser = async (req, res) => {
+    const idEvent = req.body.idEvent
+    const idUser = req.body.idUser
+    const idUser_admin = req.userId
+    const favourite=req.body.favourite
+    const event=await Event.findOne({
+        where:{
+            id:idEvent
+        }
+    })
+    if (!event) {
+        return res.status(404).json({msg:'Evento no encontrado'})
+    }
+    if(event.idUser_admin!=idUser_admin){
+        return res.status(404).json({msg:'Solo el creador del evento puede realizar esta acción'})
+    }
+    
+    const users_events = await Users_events.findOne({
+        attributes: ['userId', 'eventId'],
+        where: {
+            userId: idUser,
+            eventId: idEvent
+        }
+    })
+    if (!users_events) {
+        return res.status(404).json({msg:'No se encontraron datos'})
+    }
+    await users_events.update({
+        favourite
+    })
+    return res.status(200).json({'msg':'Añadido a favoritos'})
+}
+
+const showLogged = async (req, res) => {
+    const id = req.userId
+    let user = await User.findOne({
+        attributes: {
+            exclude: ['password','createdAt', 'updatedAt']
+        },
+        where: {
+            id: id
+        },
+    });
+    if (user) {
+        return res.status(200).json({
+            user
+        })
+    } else {
+        return res.status(404).json({
+            'msg': 'usuario no encontrado'
+        })
+    }
+};
+
 
 module.exports = {
     showAll,
@@ -353,5 +385,7 @@ module.exports = {
     updateUser,
     downUser,
     destroy,
-    logOut
+    logOut,
+    favouriteUser,
+    showLogged
 };
