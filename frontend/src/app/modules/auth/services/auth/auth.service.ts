@@ -3,7 +3,6 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
 // Interfaces
-import { User } from '@etp/shared/interfaces';
 import { UserServiceService } from '@etp/shared/services';
 
 @Injectable({
@@ -18,6 +17,7 @@ export class AuthService {
     private userService: UserServiceService,
     ) { }
 
+  // New User
   signUp(name: string, email: string, password: string){
     const body = {
       name, 
@@ -27,6 +27,7 @@ export class AuthService {
     return this.http.post<any>(`${this.URL_API_USER}/register`, body)
   }
   
+  // user log in
   logIn(email: string, password: string){
     const body = {
       email,
@@ -35,25 +36,27 @@ export class AuthService {
     return this.http.post<any>(`${this.URL_API_USER}/login`, body)
   }
   
+  // check if token exists in localsorage
   loggedIn(): boolean {
     return localStorage.getItem('token') ? true : false;
   }
 
+  // returns token
   getToken() {
     return localStorage.getItem('token');
   }
   
-  // Obtiene la informacion del usuario logeado
+  // Ajustar para que mande ID
+  // Get information about logged user
   getLoggedUser(){
     return this.http.get<any>(`${this.URL_API_USER}/`)
   }
 
+  // Return true if logged user is admin
   isAdmin(): boolean {
     let token = localStorage.getItem('token') 
     if (token) {
-      let decoded: {_id: string, role: string, iat:number } = jwt_decode(token);
-      console.log(decoded.role);
-      
+      let decoded: {id: string, role: string, iat:number } = jwt_decode(token);
       //TODO: cambiar cuando se oficialice
       return decoded.role === 'user' ? true : false;
     } else {
@@ -62,6 +65,7 @@ export class AuthService {
 
   }
 
+  // logout
   logOut(){
     this.userService.resetUser();
     localStorage.removeItem('token');

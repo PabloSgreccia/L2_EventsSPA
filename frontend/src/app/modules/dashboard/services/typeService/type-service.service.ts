@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Type } from '../../interfaces/type/type';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +12,12 @@ export class TypeServiceService {
     private http: HttpClient,
   ) { }
   
+  // TODO: add photo 
   createType(type: string){
     return this.http.post<any>(`${this.URL_API_TYPE}/create`, type)
   }
   
+  // TODO: add photo 
   updateType(id: number, type: string){
     return this.http.patch<any>(`${this.URL_API_TYPE}/update/${id}`, type)
   }

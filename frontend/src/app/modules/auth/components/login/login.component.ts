@@ -50,7 +50,10 @@ export class LoginComponent implements OnInit {
       this.authService.logIn(this.email.value, this.password.value)
       .subscribe({
         next: (res) => {
-          if (res.status === 200) {
+          console.log(res);
+          
+          // if (res.status === 200) {
+            console.log('AAAAAAAA');
             // Set Token
             localStorage.setItem('token', res.token);
             // Get user data --> BE
@@ -60,14 +63,19 @@ export class LoginComponent implements OnInit {
               }
              })            
             this.router.navigate(['/dashboard']);
-          } else {
-            this.logInForm.controls.password.reset();
-            this.error = res.msg 
-          }
+          // } else {
+          //   console.log('BBBBB');
+          //   console.log(res);
+          //   this.logInForm.controls.password.reset();
+          //   this.error = res.msg 
+          // }
         },
         error: ((err) => {
-            this.logInForm.controls.password.reset();
-            this.error = 'Something went wrong. Try Again' 
+          this.logInForm.controls.password.reset();
+            // this.error = 'Something went wrong. Try Again' 
+            this.error = err.error.msg
+            console.log(this.error);
+            
           })
         })
     }

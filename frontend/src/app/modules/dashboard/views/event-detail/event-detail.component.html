@@ -52,8 +52,8 @@
   </div>
   <ng-template  #notowner>
     <div *ngIf="!event.cancelled">
-      <button  *ngIf="userParticipateEvent" mat-stroked-button color="warn" (click)="quitEvent()">QUIT EVENT</button>
-      <button *ngIf="!userParticipateEvent" mat-stroked-button color="primary" (click)="joinEvent()">PARTICIPATE</button>
+      <button  *ngIf="userParticipateEvent && event.end_date > today" mat-stroked-button color="warn" (click)="quitEvent()">QUIT EVENT</button>
+      <button *ngIf="!userParticipateEvent && event.end_date > today" mat-stroked-button color="primary" (click)="joinEvent()" >PARTICIPATE</button>
     </div>
   </ng-template>
 

@@ -49,9 +49,9 @@ export class UserServiceService {
     return this.http.get<any>(`${this.URL_API_USER}/view/${id}`)
   }
 
-  // TODO: definir
+  // Admin ve todas las verificaciones de usuario pendiente
   getVerificationPendingsUsers(){
-    return this.http.get<any>(`${this.URL_API_USER}/view/`)
+    return this.http.get<any>(`${this.URL_API_USER}/validations`)
   }
 
   // un usuario quiere eliminar su cuenta
@@ -124,10 +124,9 @@ export class UserServiceService {
     return this.http.patch<any>(`${this.URL_API_USER}/favourite`, body)
   }
 
-  // TODO: ver ruta y tipo de endpoint
   // Usuario olvido contraseña
   forgotPassword(email: string){
-    return this.http.patch<any>(`${this.URL_API_USER}/`, email)
+    return this.http.post<any>(`${this.URL_API_USER}/forgot`, email)
   }
 
 }
