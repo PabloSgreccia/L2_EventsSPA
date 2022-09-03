@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Event.belongsTo(models.user, {
-        foreignKey: 'id',
-        target_Key: 'idUser_admin'
+        foreignKey: 'idUser_admin',
+        target_Key: 'id'
       })
       Event.belongsTo(models.type, {
-        foreignKey: 'id',
-        target_Key: 'idType'
+        foreignKey: 'idType',
+        target_Key: 'id'
       })
       Event.belongsToMany(models.user, {
         through: 'users_events'

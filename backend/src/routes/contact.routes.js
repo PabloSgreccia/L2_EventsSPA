@@ -2,15 +2,16 @@ const Router = require('express');
 const router = Router();
 
 const {
-    createContac,
+    createContact,
     viewAll,
     view,
     notRead,
-    deleteContac
+    deleteContact,
+    showLogged
 } = require('../contrtoller/contact.controller')
 
 const {
-    validateContac
+    validateContact
 } = require('../validators/validations')
 
 const {
@@ -20,8 +21,8 @@ const {
 
 router.get("/views",verifyToken,adminRole,viewAll)
 router.get("/view/:id",verifyToken,adminRole,view)
-router.post("/create",validateContac,verifyToken,adminRole,createContac)
+router.post("/create",validateContact,createContact)
 router.patch("/notread/:id",verifyToken,adminRole,notRead)
-router.delete("/delete/:id",verifyToken,adminRole,deleteContac)
+router.delete("/delete/:id",verifyToken,adminRole,deleteContact)
 
 module.exports=router

@@ -17,7 +17,7 @@ const showAll = async (req, res) => {
         },
         include: [{
             model: User,
-            attributes: ['name'],
+            attributes: ['name','id','foto'],
         }, {
             model: Type,
             attributes: ['type']
