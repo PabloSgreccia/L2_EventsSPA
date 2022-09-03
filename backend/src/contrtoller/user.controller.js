@@ -128,7 +128,6 @@ const login = async (req, res) => {
         email,
         password
     } = req.body
-
     //Comprobar email en DB
     User.findOne({
             where: {

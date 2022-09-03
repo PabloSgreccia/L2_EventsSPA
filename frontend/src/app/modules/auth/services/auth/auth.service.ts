@@ -33,6 +33,7 @@ export class AuthService {
       email,
       password
     }
+    
     return this.http.post<any>(`${this.URL_API_USER}/login`, body)
   }
   
@@ -46,7 +47,6 @@ export class AuthService {
     return localStorage.getItem('token');
   }
   
-  // TODO: avisar a adelmar que cree un metodo en el BE
   // Get information about logged user
   getLoggedUser(){
     return this.http.get<any>(`${this.URL_API_USER}/logged`)

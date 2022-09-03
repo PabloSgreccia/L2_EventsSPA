@@ -103,6 +103,10 @@ export class EventServiceService {
   getManyEvent(){
     return this.http.get<any>(`${this.URL_API_EVENT}/views`)
   }
+  // obtener listado de eventos (acotado para el admin)
+  getManyEventAdmin(){
+    return this.http.get<any>(`${this.URL_API_EVENT}/views/admin`)
+  }
 
   // obtener listado de usuarios deun evento
   getUsersByEvent(idEvent: number){

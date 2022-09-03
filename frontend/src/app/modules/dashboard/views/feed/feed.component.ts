@@ -23,7 +23,6 @@ export class FeedComponent implements OnInit {
   ]
   
   cities: string[] = []
-  
   eventTypes!: Type[]
   
   filtersForm = new FormGroup({
@@ -202,7 +201,6 @@ export class FeedComponent implements OnInit {
       }
     })
 
-
     // Get types of events
     this.typeService.getTypes()
     .subscribe({
@@ -217,6 +215,28 @@ export class FeedComponent implements OnInit {
         }
       }
     })
+
+    // Get types of events
+    this.eventService.getManyEvent()
+    .subscribe({
+      next: res => {        
+        console.log(res);
+        
+        // if (res.types[0].type) {
+        //   this.eventTypes = res.types
+        //   this.eventTypes.sort(
+        //     function(a, b) {                 
+        //       return b.id < a.id? 1 : -1;
+        //     });
+        // } else {
+        // }
+      }, error: (err) => {
+        console.log(err);
+        
+      }
+    })
+
+
   }
   
   filterEvents(){
