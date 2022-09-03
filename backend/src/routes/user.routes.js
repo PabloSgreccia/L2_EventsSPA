@@ -16,7 +16,8 @@ const {
     destroy,
     logOut,
     favouriteUser,
-    showLogged
+    showLogged,
+    forgot
 } = require('../contrtoller/user.controller');
 const {
     validateRegister,
@@ -39,8 +40,7 @@ router.post("/image", upload.single('User'))
 router.post("/userjoinevent", verifyToken,validationJoinEvent, userjoinevent)
 router.post("/validation/:code", validationUser)
 router.post("/logout", logOut)
-//olvide la contraseña
-router.post("/forgot")
+router.post("/forgot",forgot)
 router.patch("/updatepass", verifyToken, passValidation, updatePass)
 router.patch("/updateuser", verifyToken, updateUser)
 router.patch("/down", verifyToken, downUser)

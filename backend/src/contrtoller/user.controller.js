@@ -6,7 +6,8 @@ const sequelize = require('sequelize');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const {
-    validationMail
+    validationMail,
+    passRecovery
 } = require('../contrtoller/mail.controller');
 const {
     Op,
@@ -370,6 +371,32 @@ const showLogged = async (req, res) => {
     }
 };
 
+const forgot = async(req,res)=>{
+    const email=req.body.email
+    const user=await User.findOne({
+        where:{
+            email:email
+        }
+    })
+    if (!user) {
+        return res.status(404).json({msg:'NO hay ningún usuario registrado con ese mail'})
+    }
+    const newPass =user.name.toUpperCase()+(Math.random() + 1).toString(36)
+    const password = await bcrypt.hash(newPass, 10);
+    await user.update({
+        password
+    })
+    try {
+        await passRecovery(user,newPass)
+    } catch (error) {
+        console.log(error)
+    }
+   
+    return res.status(200).json({msg:'Correo enviado'})
+
+
+}
+
 
 module.exports = {
     showAll,
@@ -386,5 +413,6 @@ module.exports = {
     destroy,
     logOut,
     favouriteUser,
-    showLogged
+    showLogged,
+    forgot
 };

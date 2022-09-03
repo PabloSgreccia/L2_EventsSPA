@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const MailConfig = require('../config/mail.config')
 
-const url=process.env.URL
+const url = process.env.URL
 
 //configuracion cuenta de correo
 const transporter = nodemailer.createTransport({
@@ -11,9 +11,9 @@ const transporter = nodemailer.createTransport({
         user: MailConfig.user,
         pass: MailConfig.pass
     }
-  });
+});
 
-  //manda el mail para dar de alta al usuario
+//manda el mail para dar de alta al usuario
 async function validationMail(user) {
     await transporter.sendMail({
         from: '"La Segunda" <asha.kuphal50@ethereal.email>', // sender address
@@ -24,11 +24,30 @@ async function validationMail(user) {
         Equipo la segunda`
 
     });
+
+
+}
+
+async function passRecovery(user,newPassword) {
+    await transporter.sendMail({
+        from: '"La Segunda" <asha.kuphal50@ethereal.email>', // sender address
+        to: user.email, // list of receivers
+        subject: "Recuperación de contraseña", // Subject line
+        html: `${user.name},<br> Le asignamos una nueva contraseña para ingresar al sistema<br>
+        Podrá cambiarla desde Settins una vez logueado<br>
+        Nueva contraseña: ${newPassword}<br>
+        Muchas gracias,<br>
+        Equipo la segunda`
+
+    });
+
+
 }
 
 
 
 module.exports = {
     validationMail,
-    transporter
+    transporter,
+    passRecovery
 }
