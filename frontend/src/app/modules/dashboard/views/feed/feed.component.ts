@@ -1,16 +1,12 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 // Interfaces
-import { Event } from '@etp/dashboard/interfaces'
+import { Event, Type } from '@etp/dashboard/interfaces'
 // Services
 import { EventServiceService, LocationServiceService, TypeServiceService } from '@etp/dashboard/services';
 
 interface FilterInput {
   value: string;
-  viewValue: string;
-}
-interface TypeInput {
-  value: number;
   viewValue: string;
 }
 
@@ -28,12 +24,7 @@ export class FeedComponent implements OnInit {
   
   cities: string[] = []
   
-  eventTypes:TypeInput[] = [
-    {value: 1, viewValue: "Deportes"},
-    {value: 2, viewValue: "Fiesta"},
-    {value: 3, viewValue: "Charla"},
-    {value: 4, viewValue: "Entretenimiento"},
-  ]
+  eventTypes!: Type[]
   
   filtersForm = new FormGroup({
     province: new FormControl(''),
@@ -213,25 +204,19 @@ export class FeedComponent implements OnInit {
 
 
     // Get types of events
-    this.typeService.getTypes().subscribe({
-      next: type => {
-        this.eventTypes = type
-      },
-      error: (err) => {}
+    this.typeService.getTypes()
+    .subscribe({
+      next: res => {        
+        if (res.types[0].type) {
+          this.eventTypes = res.types
+          this.eventTypes.sort(
+            function(a, b) {                 
+              return b.id < a.id? 1 : -1;
+            });
+        } else {
+        }
+      }
     })
-    
-    // Get list of events
-    this.eventService.getManyEvent().subscribe({
-      next: events => {
-        this.initialEvents = events
-          // Sort events by date
-          this.orderby({value: "date"})
-        this.events = this.initialEvents
-      },
-      error: (err) => {}
-    })
-
-
   }
   
   filterEvents(){

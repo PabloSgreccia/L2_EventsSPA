@@ -6,4 +6,9 @@ export interface User {
     role:string,
     photo?:string,
     validated:number,
+
+    active?: boolean,
+    foto?:string | null,
+    privacy?:string | boolean | null,
+    validationCode?: null
 }

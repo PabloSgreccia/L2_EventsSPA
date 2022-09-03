@@ -1,6 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 // Interfaces
 import { User } from '@etp/shared/interfaces';
 // Services
@@ -31,41 +30,43 @@ export class SettingsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Get and save logged user data (anti refresh)
     //  this.authService.getLoggedUser().subscribe({
-    //   next: (user:User) => {        
-    //     this.userService.updateUser(user);
-    //     this.user = user
-    //   }
+    //   next: (response) => {
+    //     this.userService.updateUser(response.user);
+    //   },
+    //   error: ((err) => {
+    //     this.router.navigate(['/signmenu'])
+    //   }) 
     // })
 
-    // console.log(this.user);
-
+    // Get user from observable
     this.userService.getUser().subscribe({
       next: (user: User) => {
         this.user = user
     }, error: () => {}})
 
-    this.user.validated = 1
-
     console.log(this.user);
     
   }
 
+  // Open modal to change photo
   changePhotoDialog(){
     const dialogRef = this.dialog.open(ModalToChangePhotoComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.userService.getOneUser(this.user.id).subscribe({
-          next: (user: User) => {
-            this.user = user
-        }, error: () => {
-          this.router.navigate(['/error']);
-        }})
+        this.authService.getLoggedUser().subscribe({
+         next: (response) => {            
+           this.userService.updateUser(response.user);
+         },
+         error: ((err) => {
+           this.router.navigate(['/signmenu'])
+         }) 
+       })
       }
     });
   }
 
+  // Open modal to change name
   changeDataDialog(){
     const dialogRef = this.dialog.open(ModalToEditComponent, {
       data: { 
@@ -75,20 +76,24 @@ export class SettingsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.userService.getOneUser(this.user.id).subscribe({
-          next: (user: User) => {
-            this.user = user
-        }, error: () => {
-          this.router.navigate(['/error']);
-        }})
+         this.authService.getLoggedUser().subscribe({
+          next: (response) => {            
+            this.userService.updateUser(response.user);
+          },
+          error: ((err) => {
+            this.router.navigate(['/signmenu'])
+          }) 
+        })
       }
     });
   }
 
+  // Open modal to change password
   changePassDialog(){
     this.dialog.open(ModalToChangePwdComponent);
   }
 
+  // Sends request to admin to validate his account
   askForValidation(){    
     this.userService.updateVerifyStatus(this.user.id, 2).subscribe({
       next: (res) => {
@@ -98,6 +103,7 @@ export class SettingsComponent implements OnInit {
     }})
   }
 
+  // This functions WON'T delete an user, only the admin can delete users. the user will be marked as unactive
   deleteUser(){
     this.userService.desactivateUser(true).subscribe({
       next: (res) => {

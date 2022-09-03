@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { AuthService } from '@etp/auth/services';
 import { UserServiceService } from '@etp/shared/services';
 // Components
 import { ModalMsgComponent } from '@etp/dashboard/components';
+import jwt_decode from 'jwt-decode';
 
 @Component({
   selector: 'etp-login',
@@ -50,24 +51,23 @@ export class LoginComponent implements OnInit {
       this.authService.logIn(this.email.value, this.password.value)
       .subscribe({
         next: (res) => {
-          if (res.status === 200) {
-            // Set Token
-            localStorage.setItem('token', res.token);
-            // Get user data --> BE
-             this.authService.getLoggedUser().subscribe({
-              next: (res) => {
-                this.userService.updateUser(res.user);
-              }
-             })            
-            this.router.navigate(['/dashboard']);
-          } else {
-            this.logInForm.controls.password.reset();
-            this.error = res.msg 
-          }
+          // Set Token
+          localStorage.setItem('token', res.token);
+          // Get user data --> BE
+          this.authService.getLoggedUser().subscribe({
+            next: (response) => {
+              this.userService.updateUser(response.user);
+            },
+            error: ((err) => {
+              this.router.navigate(['/dashboard'])
+            }) 
+          })            
+          this.router.navigate(['/dashboard']);
         },
         error: ((err) => {
-            this.logInForm.controls.password.reset();
-            this.error = 'Something went wrong. Try Again' 
+          this.logInForm.controls.password.reset();
+            this.error = err.error.msg
+            console.log(this.error);
           })
         })
     }

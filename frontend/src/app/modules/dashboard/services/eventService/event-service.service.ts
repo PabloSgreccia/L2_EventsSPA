@@ -61,7 +61,11 @@ export class EventServiceService {
       formdata.append('photo', photo)
     }
     formdata.append('payload', JSON.stringify(event))
+
+    // let headers = new Headers();
+    // headers.append('Content-Type','application/json');
     // JSON.parse(payload) --> BE
+    
     return this.http.post<any>(`${this.URL_API_EVENT}/create`, formdata)
   }
 

@@ -28,10 +28,10 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Topic</mat-label>
+      <mat-label>Event Type</mat-label>
       <mat-select formControlName="type">
-        <mat-option *ngFor="let type of eventTypes" [value]="type.value">
-          {{type.viewValue}}
+        <mat-option *ngFor="let type of eventTypes" [value]="type.id">
+          {{type.type}}
         </mat-option>
       </mat-select>
     </mat-form-field>

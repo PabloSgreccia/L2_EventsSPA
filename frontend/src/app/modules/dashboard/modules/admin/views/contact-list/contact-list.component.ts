@@ -9,7 +9,6 @@ import { ContactServiceService } from 'src/app/shared/services/contactService/co
 })
 export class ContactListComponent implements OnInit {
 
-  // contactList!: Contact[]
   contactList!: Contact[]
 
   constructor(
@@ -20,11 +19,12 @@ export class ContactListComponent implements OnInit {
     this.getContactList()
   }
 
+  // Get list of contact forms from BE
   getContactList(){
     this.contactService.listContacts()
     .subscribe({
-      next: contact => {
-        this.contactList = contact
+      next: res => {        
+        this.contactList = res.contact
       },
       error: (err) => {}
     })

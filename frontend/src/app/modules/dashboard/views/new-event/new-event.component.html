@@ -30,17 +30,17 @@
           <mat-form-field appearance="fill">
             <mat-label>Province</mat-label>
             <mat-select formControlName="province" (selectionChange)="changeProvince()">
-              <mat-option *ngFor="let province of provinces" [value]="province.value">
-                {{province.viewValue}}
+              <mat-option *ngFor="let province of provinces" [value]="province">
+                {{province}}
               </mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="fill">
             <mat-label>City/Town</mat-label>
-            <mat-select [disabled]="province.value === ''" #cityFilter>
-              <mat-option *ngFor="let city of cities" [value]="city.value">
-                {{city.viewValue}}
+            <mat-select formControlName="city">
+              <mat-option *ngFor="let city of cities" [value]="city">
+                {{city}}
               </mat-option>
             </mat-select>
           </mat-form-field>

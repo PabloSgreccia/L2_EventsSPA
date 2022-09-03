@@ -6,11 +6,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalMsgComponent } from '../../components/modal-msg/modal-msg.component';
 import { Type } from '../../interfaces/type/type';
 
-interface FilterInput {
-  value: string;
-  viewValue: string;
-}
-
 @Component({
   selector: 'etp-new-event',
   templateUrl: './new-event.component.html',
@@ -18,7 +13,13 @@ interface FilterInput {
 })
 
 export class NewEventComponent implements OnInit { 
+  types!: Type[]
+  file!: File
+  error: String = '';
+  provinces!:string[]
+  cities!:string[]
 
+  // Form
   eventForm = new FormGroup({
     title: new FormControl('', {validators: [Validators.required]}),
     description: new FormControl(''),
@@ -32,22 +33,13 @@ export class NewEventComponent implements OnInit {
     end_date: new FormControl('', {validators: [Validators.required]}),
     init_hour: new FormControl(0, {validators: [Validators.required]}),
     end_hour: new FormControl(0, {validators: [Validators.required]}),
-    idType: new FormControl(0, {validators: [Validators.required]}),
+    idType: new FormControl('', {validators: [Validators.required]}),
   }, {validators: [locationValidator]})
-
-  types!: Type[]
-
-  file!: File
-
-  error: String = '';
-  
-  provinces:FilterInput[] = [
-    {value: "", viewValue: ""},
-  ]
-  
-  cities:FilterInput[] = [
-    {value: "", viewValue: ""},
-  ]
+  get f() { return this.eventForm }
+  get mode() { return this.eventForm.controls.mode }
+  get title() { return this.eventForm.controls.title }
+  get province() { return this.eventForm.controls.province }
+ 
   
   constructor(
     private locationService: LocationServiceService,
@@ -61,27 +53,22 @@ export class NewEventComponent implements OnInit {
     this.locationService.getProvinces()
     .subscribe({
       next: res => {
-        this.provinces = (res.provincias).map(
-          function(province:any) { 
-            let mapProvince:FilterInput = {
-              value: province.nombre,
-              viewValue:province.nombre 
-            };
-            return mapProvince
-          }
-        )
-        this.provinces.sort((a, b) => (a.value > b.value) ? 1 : -1)
+        this.provinces = (res.provincias).map(function(province:any) { return province.nombre })
+        this.provinces.sort()//(a, b) => (a.value > b.value) ? 1 : -1)
       }
     })
 
     // Get types of events from BE
-    this.typeService.getTypes()
-    .subscribe({
-      next: (res) => {
-        if (res.status === 200) {
-          this.types = res.type
-        } 
-        else{
+  this.typeService.getTypes()
+  .subscribe({
+    next: res => {        
+      if (res.types[0].type) {
+        this.types = res.types
+        this.types.sort(
+          function(a, b) {                 
+            return b.id < a.id? 1 : -1;
+          });
+      } else {
           this.error = res.msg 
         }       
       },
@@ -91,29 +78,23 @@ export class NewEventComponent implements OnInit {
     })
   }
 
+
   // When a user select a province, we search the cities of that province
   changeProvince(){
     this.locationService.getProvincesCities(this.eventForm.controls.province.value || '')
     .subscribe({
       next: res => {
-        this.cities = (res.localidades).map(
-          function(city:any) { 
-            let mapCity:FilterInput = {
-              value: city.nombre,
-              viewValue:city.nombre 
-            };
-            return mapCity
-          }
-        )
-        this.cities.sort((a, b) => (a.value > b.value) ? 1 : -1)
+        this.cities = (res.localidades).map( function(city:any) { return city.nombre})
+        this.cities.sort()
       }
     })
   }
 
   // Craete an event
   createEvent(){
+    
     if (this.eventForm.status === 'VALID') {
-      // Formatting dates
+    // Formatting dates
       const startevent = new Date(`${this.eventForm.controls.init_date.value}`);
       startevent.setHours(this.eventForm.controls.init_hour.value || 0);
       const endevent = new Date(`${this.eventForm.controls.end_date.value}`);
@@ -140,17 +121,10 @@ export class NewEventComponent implements OnInit {
         // BE API
         this.eventService.createEvent(newEvent, this.file)
           .subscribe({
-            next: (res: { status: number; msg: String; }) => {
-              if (res.status === 200 || res.status === 201 ) {
-                this.openDialog('Event successfully created')
-              } 
-              else{
-                this.error = res.msg 
-              }       
-            },            
+            next: (res) => {this.openDialog('Event successfully created')},            
             error: ((err: any) => {
               this.error = 'Something went wrong trying to create the event.';
-              console.log(err);
+              console.log(err.error);
             })
           })
       }
@@ -178,12 +152,6 @@ export class NewEventComponent implements OnInit {
     this.eventForm.controls.number.reset();
     this.eventForm.controls.link.reset();
   }
-
-
-  get f() { return this.eventForm }
-  get mode() { return this.eventForm.controls.mode }
-  get title() { return this.eventForm.controls.title }
-  get province() { return this.eventForm.controls.province }
 }
 
 const locationValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -191,12 +159,14 @@ const locationValidator: ValidatorFn = (control: AbstractControl): ValidationErr
   const link = control.get('link');
   const province = control.get('province');
   const city = control.get('city');
+  const street = control.get('street');
+  const number = control.get('number');
 
   if (mode && link && (mode.value === 'virtual') && (link.value)) {
     return null
-  } else if (mode && province && city && (mode.value === 'site') && (province.value) && (city.value)){
+  } else if (mode && province && city && street && number && (mode.value === 'site') && (province.value) && (city.value) && (street.value) && (number.value)){
     return null
-  } else if (mode && province && city && link && (mode.value === 'mixed') && (province.value) && (city.value) && (link.value)){
+  } else if (mode && province && city && street && number && link && (mode.value === 'mixed') && (province.value) && (city.value) && (street.value) && (number.value) && (link.value)){
     return null
   }
   return { passDoesntMatch: true } 

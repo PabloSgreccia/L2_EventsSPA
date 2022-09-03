@@ -8,6 +8,7 @@ import { Contact, User } from '@etp/shared/interfaces';
 import { AuthService } from '@etp/auth/services';
 import { UserServiceService } from '@etp/shared/services';
 import { ContactServiceService } from '../../services/contactService/contact-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'etp-contact',
@@ -29,15 +30,19 @@ export class ContactComponent implements OnInit {
     private userService: UserServiceService,
     public dialog: MatDialog,
     private contactService: ContactServiceService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     // Save logged user data (anti refresh)
      this.authService.getLoggedUser().subscribe({
-      next: (user:User) => {
-        this.userService.updateUser(user);
-      }
+      next: (response) => {
+        this.userService.updateUser(response.user);
+      },
+      error: ((err) => {
+        this.router.navigate(['/signmenu'])
+      }) 
     })
         
     // Get logged user data byu observable
@@ -61,7 +66,7 @@ export class ContactComponent implements OnInit {
       }
 
       // BE API
-      this.contactService.createContact(newContact)      
+      this.contactService.createContact(newContact).subscribe()
 
       // Reset contact form
       this.contactForm.controls.subject.setValue('')

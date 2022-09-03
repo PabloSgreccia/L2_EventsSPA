@@ -15,17 +15,21 @@ export class ContactServiceService {
     private http: HttpClient,
   ){}
 
-
+  // User sends contact form
   createContact(contact: Contact) {
     return this.http.post<any>(`${this.URL_API_CONTACT}/create`, contact)
   }
 
+  // Admin deletes a contact form
   deteleContact(id:number) {
+    console.log(id);
+    
     return this.http.delete<any>(`${this.URL_API_CONTACT}/delete/${id}`)
   }
 
+  // Admin wantts to see all the contacts forms
   listContacts() {
-    return this.http.get<any>(`${this.URL_API_CONTACT}`)
+    return this.http.get<any>(`${this.URL_API_CONTACT}/views`)
   }
 
 

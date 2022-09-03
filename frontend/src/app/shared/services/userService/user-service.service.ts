@@ -16,7 +16,7 @@ export class UserServiceService {
       id: 0, 
       name: '', 
       email: '', 
-      role: '', 
+      role: 'user', 
       validated: 1, 
       photo: '',
     }
@@ -48,10 +48,14 @@ export class UserServiceService {
   getOneUser(id: number){
     return this.http.get<any>(`${this.URL_API_USER}/view/${id}`)
   }
+  // traer datos de todos los usuarios (acotados para el admin)
+  getManyUsers(){
+    return this.http.get<any>(`${this.URL_API_USER}/views`)
+  }
 
-  // TODO: definir
+  // Admin ve todas las verificaciones de usuario pendiente
   getVerificationPendingsUsers(){
-    return this.http.get<any>(`${this.URL_API_USER}/view/`)
+    return this.http.get<any>(`${this.URL_API_USER}/validations`)
   }
 
   // un usuario quiere eliminar su cuenta
@@ -66,7 +70,7 @@ export class UserServiceService {
 
   // editar datos de usuario
   editUserData(name: string){
-    return this.http.patch<any>(`${this.URL_API_USER}/updateuser`, name)
+    return this.http.patch<any>(`${this.URL_API_USER}/updateuser`, {name})
   }
 
   // usuario solicita verificacion de usuario
@@ -124,10 +128,9 @@ export class UserServiceService {
     return this.http.patch<any>(`${this.URL_API_USER}/favourite`, body)
   }
 
-  // TODO: ver ruta y tipo de endpoint
   // Usuario olvido contraseña
   forgotPassword(email: string){
-    return this.http.patch<any>(`${this.URL_API_USER}/`, email)
+    return this.http.post<any>(`${this.URL_API_USER}/forgot`, email)
   }
 
 }

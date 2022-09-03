@@ -9,14 +9,20 @@ import { UserServiceService } from '@etp/shared/services';
   styleUrls: ['./modal-to-change-pwd.component.scss']
 })
 export class ModalToChangePwdComponent implements OnInit {
+  
+  // Vars
+  inputTypeValue: string = "password"
+  error: string = '';
 
+  // Form
   passForm = new FormGroup({
     oldPassword: new FormControl('', {validators: [Validators.required]}),
-    newPassword: new FormControl('', {validators: [Validators.required, Validators.pattern(''), Validators.minLength(8)]}),
-    repPassword: new FormControl('', {validators: [Validators.required, Validators.pattern(''), Validators.minLength(8)]}),
+    newPassword: new FormControl('', {validators: [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}')]}),
+    repeatPassword: new FormControl('', {validators: [Validators.required]}),
   }, {validators: passwordsValidator})
-  
-  error: string = ''
+  get f() { return this.passForm }
+  get newPassword() { return this.passForm.controls.newPassword }
+  get repPassword() { return this.passForm.controls.repeatPassword }
 
   constructor(
     private userService: UserServiceService,
@@ -25,33 +31,36 @@ export class ModalToChangePwdComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  // Save new password --> BE
   savePass(){
     if (this.passForm.status === 'VALID' && this.passForm.controls.newPassword.value && this.passForm.controls.oldPassword.value) {
-      this.userService.editUserPwd(this.passForm.controls.newPassword.value, this.passForm.controls.oldPassword.value, )
+      this.userService.editUserPwd(this.passForm.controls.oldPassword.value, this.passForm.controls.newPassword.value, )
         .subscribe({
-          next: (res: { status: number; msg: string; }) => {
-            if (res.status === 200) {
-              this.dialogRef.close();
-            } 
-            else{              
-              this.error = 'Something went wrong trying to update your password.';
-            }       
+          next: (res) => { 
+            this.dialogRef.close() 
           },
           error: ((err: any) => {
-            this.error = 'Something went wrong trying to update your password.';
-            console.log(err);
+            this.error = err.error.msg 
           })
         })
     }
   }
 
+  // Show or hide password functionality
+  showPassword(){
+    if (this.inputTypeValue === 'password') {
+      this.inputTypeValue = 'text'
+    } else {
+      this.inputTypeValue = 'password'
+    }
+  }
 }
 
 export const passwordsValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-  const password = control.get('password');
-  const repeatPassword = control.get('repeatpassword');
+  const newPassword = control.get('newPassword');
+  const repeatPassword = control.get('repeatPassword');
 
-  return password && repeatPassword && password.value !== repeatPassword.value 
+  return newPassword && repeatPassword && newPassword.value !== repeatPassword.value 
     ? { passDoesntMatch: true } 
     : null;
 };
