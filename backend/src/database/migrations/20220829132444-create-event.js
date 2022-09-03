@@ -48,7 +48,7 @@ module.exports = {
           key:'id'
         }
       },
-      foto: {
+      photo: {
         type: Sequelize.STRING
       },
       idUser_admin: {

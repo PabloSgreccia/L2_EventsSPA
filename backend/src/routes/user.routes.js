@@ -40,7 +40,7 @@ router.post("/validation/:code", validationUser)
 router.post("/logout", logOut)
 //olvide la contraseña
 router.post("/forgot")
-router.patch("/upadatepass", verifyToken, passValidation, updatePass)
+router.patch("/updatepass", verifyToken, passValidation, updatePass)
 router.patch("/updateuser", verifyToken, updateUser)
 router.patch("/down", verifyToken, downUser)
 router.patch("/favourite", verifyToken, favouriteUser)

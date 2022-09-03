@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false
     },
     idType: DataTypes.INTEGER,
-    foto: DataTypes.STRING,
+    photo: DataTypes.STRING,
     idUser_admin: DataTypes.INTEGER,
     finished: {
       type: DataTypes.BOOLEAN,
