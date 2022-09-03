@@ -1,18 +1,29 @@
 <p mat-dialog-title>Change Password:</p>
 <form [formGroup]="passForm" (ngSubmit)="savePass()" class="modify-sections">
-  <mat-form-field appearance="fill">
-    <mat-label>Old Password</mat-label>
-    <input type="password" matInput formControlName="oldPassword">
+
+  <mat-form-field appearance="outline">
+      <mat-label>Old Password</mat-label>
+      <input [type]="inputTypeValue" matInput formControlName="oldPassword">
+      <mat-icon matSuffix class="pointer" (click)="showPassword()">remove_red_eye</mat-icon>
   </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>New Password</mat-label>
-    <input type="password" matInput formControlName="newPassword">
+
+  <mat-form-field appearance="outline">
+      <mat-label>New Password</mat-label>
+      <input [type]="inputTypeValue" matInput formControlName="newPassword">
+      <mat-icon matSuffix class="pointer" (click)="showPassword()">remove_red_eye</mat-icon>
+      <mat-hint class="hint" *ngIf="newPassword.errors?.['pattern']">At least eight characters, one number, one uppercase and one lowercase.</mat-hint>
   </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>Repeat New Password</mat-label>
-    <input type="password" matInput formControlName="repPassword">
+  <span *ngIf="newPassword.errors?.['pattern']" class="separator"></span>
+
+  <mat-form-field appearance="outline">
+      <mat-label>Repeat Password</mat-label>
+      <input [type]="inputTypeValue" matInput formControlName="repeatPassword">
+      <mat-icon matSuffix class="pointer" (click)="showPassword()">remove_red_eye</mat-icon>
+      <mat-hint class="hint" *ngIf="f.errors?.['passDoesntMatch']">Passwords doesn't match.</mat-hint>
   </mat-form-field>
+
   <span *ngIf="error">{{error}}</span>
+
   <div mat-dialog-actions>
     <button mat-stroked-button color="warn" type="button" mat-dialog-close>Cancel</button>
     <button mat-stroked-button color="primary" type="submit">Save</button>

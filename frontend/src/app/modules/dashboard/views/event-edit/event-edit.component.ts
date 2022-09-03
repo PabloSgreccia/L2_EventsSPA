@@ -77,18 +77,21 @@ export class EventEditComponent implements OnInit {
     // Get types of events from BE
     this.typeService.getTypes()
     .subscribe({
-      next: (res) => {
-        if (res.status === 200) {
-          this.types = res.type
-        } 
-        else{
-          this.error = res.msg 
-        }       
-      },
-      error: ((err: any) => {
-        console.log(err);
+      next: res => {        
+        if (res.types[0].type) {
+          this.types = res.types
+          this.types.sort(
+            function(a, b) {                 
+              return b.id < a.id? 1 : -1;
+            });
+        } else {
+            this.error = res.msg 
+          }       
+        },
+        error: ((err: any) => {
+          this.error = 'Something went wrong trying to get data.';
+        })
       })
-    })
       
     // get event info by observable
     this.eventService.getEvent().subscribe({

@@ -21,7 +21,7 @@ export class SignupComponent implements OnInit {
     password: ''
   };
   inputTypeValue: string = "password"
-  error: String = '';
+  error: string = '';
   
   // Form
   signUpForm = new FormGroup({
@@ -63,16 +63,12 @@ export class SignupComponent implements OnInit {
       this.authService.signUp(this.newUser.name, this.newUser.email, this.newUser.password, )
         .subscribe({
           next: res => {
-            if (res.status === 200) {
               this.openDialog('We sent you a verification email, please check it. This will allows you to login.')
-            } else{
-              this.error = res.msg
-            }
           },
           error: ((err) => {
             this.signUpForm.controls.password.reset();
             this.signUpForm.controls.repeatpassword.reset();
-            this.error = 'Something went wrong. Try Again' 
+            this.error = err.error.msg  
           })
         })
     }

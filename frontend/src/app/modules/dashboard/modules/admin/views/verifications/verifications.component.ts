@@ -23,8 +23,8 @@ export class VerificationsComponent implements OnInit {
   getUsersList(){
     this.userService.getVerificationPendingsUsers()
     .subscribe({
-      next: user => {
-        this.initUsersList = user
+      next: res => {
+        this.initUsersList = res.users
       },
       error: (err) => {}
     })

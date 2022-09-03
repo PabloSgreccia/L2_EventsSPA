@@ -14,12 +14,12 @@ export class TypeServiceService {
   
   // TODO: add photo 
   createType(type: string){
-    return this.http.post<any>(`${this.URL_API_TYPE}/create`, type)
+    return this.http.post<any>(`${this.URL_API_TYPE}/create`, {type})
   }
   
   // TODO: add photo 
-  updateType(id: number, type: string){
-    return this.http.patch<any>(`${this.URL_API_TYPE}/update/${id}`, type)
+  updateType(id: number, type: string){    
+    return this.http.patch<any>(`${this.URL_API_TYPE}/update/${id}`, {type})
   }
 
   deleteType(id: number){

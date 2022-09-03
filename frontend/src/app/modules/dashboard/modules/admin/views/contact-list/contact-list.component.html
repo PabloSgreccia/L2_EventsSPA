@@ -9,7 +9,7 @@
     <mat-card-subtitle>{{contact.name}} - {{contact.email}}</mat-card-subtitle>
     <mat-card-content>{{contact.description}}</mat-card-content>
     <mat-card-actions>
-      <button mat-stroked-button color="warn">DELETE</button>
+      <button mat-stroked-button color="warn" (click)="deleteContact(contact.id || 0)">DELETE</button>
     </mat-card-actions>
 </mat-card>
 <br>

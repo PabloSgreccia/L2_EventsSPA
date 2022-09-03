@@ -30,7 +30,7 @@
       <th>Title</th>
       <th>Actions</th>
     </thead>
-    <tbody *ngIf="initTypesList">
+    <tbody *ngIf="initTypesList[0].type !== ''">
       <tr *ngFor="let type of initTypesList">
         <td>{{type.id}}</td>
         <td>{{type.type}}</td>
@@ -39,7 +39,7 @@
           <mat-icon (click)="editType(type)">edit</mat-icon>
         </td>
       </tr>
-    <tbody *ngIf="!initTypesList">
+    <tbody *ngIf="initTypesList[0].type === ''">
       <tr class="no-data">
         <td colspan="3">No Types!</td>
       </tr>

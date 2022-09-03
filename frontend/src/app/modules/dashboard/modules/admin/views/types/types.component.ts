@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+// Interfaces
 import { Type } from '@etp/dashboard/interfaces';
+// Services
 import { TypeServiceService } from '@etp/dashboard/services';
 
 @Component({
@@ -10,8 +12,10 @@ import { TypeServiceService } from '@etp/dashboard/services';
 })
 export class TypesComponent implements OnInit {
 
-  // initTypesList!: Type[]
-  initTypesList!: Type[]
+  initTypesList: Type[] = [{
+    id: 0,
+    type: '',
+  }]
   selectedType!: Type
 
   typeForm = new FormGroup({
@@ -28,39 +32,47 @@ export class TypesComponent implements OnInit {
     this.typeForm.controls['id'].disable();
   }
 
+  // Get types from BE
   getTypes(){
     this.typeService.getTypes()
     .subscribe({
-      next: type => {
-        this.initTypesList = type
-        this.initTypesList.sort(
-          function(a, b) {                 
-            return b.id > a.id? 1 : -1;
-          });
-      },
-      error: (err) => {}
+      next: res => {        
+        if (res.types[0].type) {
+          this.initTypesList = res.types
+          this.initTypesList.sort(
+            function(a, b) {                 
+              return b.id < a.id? 1 : -1;
+            });
+        } else {
+        }
+      }
     })
   }
 
+  // Add or edit type functionality
   addOdrEditType(): void{
     if (this.typeForm.status === 'VALID') {
-      if(this.typeForm.controls.id.value){
-        // Edit Type
-        this.typeService.updateType(parseInt(this.typeForm.controls.id.value, 10), this.typeForm.controls.type.value || '')
+      if(this.typeForm.controls.id.value && this.typeForm.controls.type.value){
+        // Edit Type        
+          this.typeService.updateType(parseInt(this.typeForm.controls.id.value, 10), this.typeForm.controls.type.value)
           .subscribe(_ => {this.getTypes();})
-      } else {
-        // Add employee
-        this.typeService.createType(this.typeForm.controls.type.value || '')
-          .subscribe(_ => {this.getTypes();})
+        } else if (this.typeForm.controls.type.value) {
+          // Add Type          
+          this.typeService.createType(this.typeForm.controls.type.value)
+          .subscribe(_ => { this.getTypes();})
       }
     }
 
   }
 
+  // Delete type functionality
   deleteType(id:number){
-    this.typeService.deleteType(id).subscribe()
+    this.typeService.deleteType(id)
+    .subscribe(_ => { this.getTypes();})
+
   }
 
+  // Fill form with data
   editType(type: Type){
     this.selectedType = type;
     this.typeForm.controls.id.setValue((type.id).toString()) 

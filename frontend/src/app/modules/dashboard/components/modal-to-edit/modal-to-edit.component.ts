@@ -11,13 +11,15 @@ import { UserServiceService } from '@etp/shared/services';
 })
 export class ModalToEditComponent implements OnInit {
 
+  // Vars
+  user!: User
+  error: string = ''
+
+  // Form
   dataForm = new FormGroup({
     name: new FormControl('', {validators: [Validators.required, Validators.pattern('[a-zA-Z ]*')]}),
   })
   
-  user!: User
-  error: string = ''
-
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {name: string, email: string},
     private userService: UserServiceService,
@@ -29,18 +31,12 @@ export class ModalToEditComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // Change Name
   saveName(){
-    if (this.dataForm.status === 'VALID') {
-      this.userService.editUserData(this.dataForm.controls.name.value || '')
+    if (this.dataForm.status === 'VALID' && this.dataForm.controls.name.value) {
+      this.userService.editUserData(this.dataForm.controls.name.value)
         .subscribe({
-          next: (res: { status: number; msg: string; }) => {
-            if (res.status === 200) {
-              this.dialogRef.close(true);
-            } 
-            else{
-              this.error = 'Something went wrong trying to update your name.';
-            }       
-          },
+          next: (res) => { this.dialogRef.close(true) },
           error: ((err: any) => {
             this.error = 'Something went wrong trying to update your name.';
             console.log(err);

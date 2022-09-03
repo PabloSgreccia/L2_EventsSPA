@@ -46,10 +46,10 @@ export class AuthService {
     return localStorage.getItem('token');
   }
   
-  // Ajustar para que mande ID
+  // TODO: avisar a adelmar que cree un metodo en el BE
   // Get information about logged user
   getLoggedUser(){
-    return this.http.get<any>(`${this.URL_API_USER}/`)
+    return this.http.get<any>(`${this.URL_API_USER}/logged`)
   }
 
   // Return true if logged user is admin
@@ -57,8 +57,7 @@ export class AuthService {
     let token = localStorage.getItem('token') 
     if (token) {
       let decoded: {id: string, role: string, iat:number } = jwt_decode(token);
-      //TODO: cambiar cuando se oficialice
-      return decoded.role === 'user' ? true : false;
+      return decoded.role === 'admin' ? true : false;
     } else {
       return false
     }

@@ -21,21 +21,26 @@ export class UsersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.typesService.getTypes()
+    this.getUsersList()
+  }
+
+  getUsersList(){
+    this.userService.getManyUsers()
     .subscribe({
-      next: user => {
-        this.initUsersList = user
-        this.editedUsersList = user
+      next: res => {        
+        this.initUsersList = res.users
+        this.editedUsersList = res.users
       },
       error: (err) => {}
     })
   }
 
+  // Delete user functionality
   deleteUser(id:number){
-    this.userService.deleteUser(id)
+    this.userService.deleteUser(id).subscribe(_ => {this.getUsersList()})
   }
 
-  // Filter by user
+  // Filter by user name or email
   async onKeyUp(){
     if (this.filterByUser?.nativeElement.value.length >=1) {
       this.editedUsersList = this.initUsersList
