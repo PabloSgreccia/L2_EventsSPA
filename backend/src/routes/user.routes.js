@@ -1,11 +1,12 @@
 const Router = require('express');
 const router = Router();
-const upload = require('../contrtoller/image.controller')
+const upload = require('../config/images.config')
 const {
     showAll,
     pendingValidationUser,
     show,
     register,
+    uploadPhoto,
     login,
     userjoinevent,
     userleftevent,
@@ -34,9 +35,9 @@ router.get("/views", showAll)
 router.get("/validations", verifyToken, adminRole, pendingValidationUser)
 router.get("/view/:id", show)
 router.get("/logged", verifyToken, showLogged)
-router.post("/register", validateRegister, EmailIsUnique,upload.single('User'), register)
+router.post("/register", validateRegister, EmailIsUnique,upload(), register)
 router.post("/login", login)
-router.post("/image", upload.single('User'))
+router.post("/uploadphoto", verifyToken,upload(),uploadPhoto)
 router.post("/userjoinevent", verifyToken,validationJoinEvent, userjoinevent)
 router.post("/validation/:code", validationUser)
 router.post("/logout", logOut)

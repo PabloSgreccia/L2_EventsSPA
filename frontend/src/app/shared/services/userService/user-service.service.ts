@@ -95,7 +95,7 @@ export class UserServiceService {
   editUserPhoto(photo: File){
     const formdata = new FormData()
     formdata.append('photo', photo)
-    return this.http.patch<any>(`${this.URL_API_USER}/updateuser`, formdata)
+    return this.http.post<any>(`${this.URL_API_USER}/uploadphoto`, formdata)
   }
 
   // cuando entras al perfil de un usuario, devolver los eventos que creó

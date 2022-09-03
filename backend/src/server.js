@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require("path");
 const {json} = require('body-parser');
 const app = express();
+const myCron = require('./cron')
 
 //Requerir router
 const routerEvent = require('./routes/event.routes');
@@ -16,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extend:false}));
 app.use(json());
-
+app.use(express.static(process.env.STATIC))
 //Rutas
 app.use('/api/type',routerType);
 app.use('/api/event',routerEvent);
