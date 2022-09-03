@@ -9,19 +9,27 @@ const {
     validationMail
 } = require('../contrtoller/mail.controller');
 const { Sequelize } = require('../database/models/');
-
+const formidable = require('formidable');
 
 const showAll = async (req, res) => {
     let events = await Event.findAll({
         attributes: {
             exclude: ['createdAt', 'updatedAt'],
             include:[
-                [Sequelize.literal("SELECT COUNT(userId) FROM eventos.users_events where eventId = 1")]
+                // [Sequelize.literal("SELECT COUNT(userId) FROM eventos.users_events where eventId = 1")]
+                [Sequelize.literal(`(
+                        SELECT COUNT(*)
+                        FROM eventos.users_events AS uev
+                        WHERE
+                            uev.eventid = 1
+                        )`),
+                        'cantPeople'
+                    ]
             ]
         },
         include: [{
             model: User,
-            attributes: ['name','id','foto'],
+            attributes: ['name','id','photo'],
         }, {
             model: Type,
             attributes: ['type']
@@ -31,6 +39,16 @@ const showAll = async (req, res) => {
         events
     })
 };
+
+ const showAllAdmin = async(req, res) => {
+    let events = await Event.findAll({
+        attributes: ['id', 'title']
+    })
+    return res.status(200).json({
+        events
+    })
+
+ }
 
 const show = async (req, res) => {
     // const id = req.params.id
@@ -49,43 +67,29 @@ const show = async (req, res) => {
 };
 
 const createEvent = async (req, res) => {
-    const {
-        title,
-        description,
-        mode,
-        province,
-        city,
-        street,
-        number,
-        init_date,
-        end_date,
-        idType
-    } = req.body
     const idUser_admin = req.userId
-    let event = await Event.create({
-        title,
-        description,
-        mode,
-        province,
-        city,
-        street,
-        number,
-        init_date,
-        end_date,
-        idUser_admin,
-        idType
-    })
-    if (event) {
+
+    const form = formidable({ multiples: true });
+    console.log(form._events.field);
+    let result = form.parse(req, async (err, payload, photo) => {
+        const {title,description, mode, province, city, street, link, number, init_date, end_date, idType } = JSON.parse(payload.payload)
+        console.log(photo);
+        
+        let event = await Event.create({title,description,mode,province,city,street,number,link,init_date,end_date,idUser_admin,idType})
+        if (event) {
+            return event
+        } else {
+            return false
+    }});
+    if (result) {
         return res.status(200).json({
-            event,
             'mgs': 'Evento creado correctamente'
         })
     } else {
         return res.status(404).json({
             msg: 'Error al crear el evento'
         })
-    }
-
+    }    
 }
 
 const updateEvent = async (req, res) => {
@@ -179,5 +183,6 @@ module.exports = {
     show,
     createEvent,
     updateEvent,
-    destroyEvent
+    destroyEvent,
+    showAllAdmin
 }

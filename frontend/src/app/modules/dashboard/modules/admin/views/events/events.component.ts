@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Event } from '@etp/dashboard/interfaces';
-import { EventServiceService, TypeServiceService } from '@etp/dashboard/services';
+// Services
+import { EventServiceService } from '@etp/dashboard/services';
 
 
 interface EventInterface {
@@ -21,35 +21,47 @@ export class EventsComponent implements OnInit {
   @ViewChild("filterByEvent") filterByEvent: ElementRef | undefined;
   
   constructor(
-    private typesService: TypeServiceService,
     private eventService: EventServiceService
   ) { }
 
   ngOnInit(): void {
-    this.typesService.getTypes()
+    this.getEvents()
+  }
+  
+  // Get events --> BE
+  getEvents() {
+    this.eventService.getManyEventAdmin()
     .subscribe({
-      next: event => {
-        this.initEventsList = event
+      next: res => {
+        this.initEventsList = res.events
         this.initEventsList.sort(
           function(a, b) {                 
-            return b.id > a.id? 1 : -1;
+            return b.id < a.id? 1 : -1;
           });
-        this.filteredEventsList = event
+        this.filteredEventsList = this.initEventsList
       },
       error: (err) => {}
     })
   }
 
+  // delete event
   deleteEvent(id:number){
-    this.eventService.deleteEvent(id)
+    this.eventService.deleteEvent(id).subscribe(_ => this.getEvents())
   }
 
-  // Filter by user
+  // Filter by Event name
   async onKeyUp(){
     if (this.filterByEvent?.nativeElement.value.length >=1) {
       this.filteredEventsList = this.initEventsList
         .filter(event => {
-          (event.title.toLowerCase()).includes((this.filterByEvent?.nativeElement.value).toLowerCase())
+          let input = (this.filterByEvent?.nativeElement.value).toLowerCase()
+          let targetText = event.title.toLowerCase()
+          
+          if (targetText.includes(input)) {
+            return true
+          } else{
+            return false
+          }
         })
     } else{
       this.filteredEventsList = this.initEventsList
