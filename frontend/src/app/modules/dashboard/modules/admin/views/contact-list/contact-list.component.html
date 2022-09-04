@@ -4,14 +4,21 @@
     <h2>Contacts List</h2>
   </div>
   <br>
-  <mat-card *ngFor="let contact of contactList">
-    <mat-card-title>{{contact.subject}}</mat-card-title>
-    <mat-card-subtitle>{{contact.name}} - {{contact.email}}</mat-card-subtitle>
-    <mat-card-content>{{contact.description}}</mat-card-content>
-    <mat-card-actions>
-      <button mat-stroked-button color="warn" (click)="deleteContact(contact.id || 0)">DELETE</button>
-    </mat-card-actions>
-</mat-card>
+  <div *ngFor="let contact of contactList">
+    <mat-card>
+      <mat-card-title>{{contact.subject}}</mat-card-title>
+      <mat-card-subtitle>{{contact.name}} - {{contact.email}}</mat-card-subtitle>
+      <mat-card-content>{{contact.description}}</mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button color="warn" (click)="deleteContact(contact.id || 0)">DELETE</button>
+      </mat-card-actions>
+    </mat-card>
+    <br>
+
+  </div>
 <br>
 <hr>
-End
+<br>
+<div class="flex-col-center">
+  End
+</div>

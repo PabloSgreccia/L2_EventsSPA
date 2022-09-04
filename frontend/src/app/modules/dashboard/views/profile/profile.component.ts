@@ -7,7 +7,7 @@ import { User } from '@etp/shared/interfaces'
 import { EventServiceService } from '@etp/dashboard/services';
 import { UserServiceService } from '@etp/shared/services';
 import { MatDialog } from '@angular/material/dialog';
-import { ModalErrorComponent } from '../../components/modal-error/modal-error.component';
+import { ModalErrorComponent } from '../../../../shared/components/modal-error/modal-error.component';
 
 @Component({
   selector: 'etp-profile',

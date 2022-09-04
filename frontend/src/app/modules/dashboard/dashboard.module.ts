@@ -16,12 +16,12 @@ import { SettingsComponent } from './views/settings/settings.component';
 import { ModalToEditComponent } from './components/modal-to-edit/modal-to-edit.component';
 import { ModalToChangePwdComponent } from './components/modal-to-change-pwd/modal-to-change-pwd.component';
 import { ModalToChangePhotoComponent } from './components/modal-to-change-photo/modal-to-change-photo.component';
-import { ModalMsgComponent } from './components/modal-msg/modal-msg.component';
+import { ModalMsgComponent } from '../../shared/components/modal-msg/modal-msg.component';
 import { EventEditComponent } from './views';
-import { ModalErrorComponent } from './components/modal-error/modal-error.component';
+import { ModalErrorComponent } from '../../shared/components/modal-error/modal-error.component';
 import { ModalToChangePhotoEventComponent } from './components/modal-to-change-photo-event/modal-to-change-photo-event.component';
 import { ModalToChangePhotoTypeComponent } from './components/modal-to-change-photo-type/modal-to-change-photo-type.component';
-import { ModalNoticeComponent } from './components/modal-notice/modal-notice.component';
+import { ModalNoticeComponent } from '../../shared/components/modal-notice/modal-notice.component';
 
 
 @NgModule({

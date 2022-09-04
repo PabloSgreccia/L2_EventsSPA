@@ -8,7 +8,7 @@ import { UserServiceService } from '@etp/shared/services';
 import { ModalToChangePhotoComponent, ModalToChangePwdComponent, ModalToEditComponent } from "@etp/dashboard/components";
 import { AuthService } from '@etp/auth/services';
 import { Router } from '@angular/router';
-import { ModalErrorComponent } from '../../components/modal-error/modal-error.component';
+import { ModalErrorComponent } from '../../../../shared/components/modal-error/modal-error.component';
 
 
 @Component({

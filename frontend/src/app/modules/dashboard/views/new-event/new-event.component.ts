@@ -3,10 +3,10 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
 // Services
 import { EventServiceService, LocationServiceService, TypeServiceService } from '@etp/dashboard/services';
 import { MatDialog } from '@angular/material/dialog';
-import { ModalMsgComponent } from '../../components/modal-msg/modal-msg.component';
+import { ModalMsgComponent } from '../../../../shared/components/modal-msg/modal-msg.component';
 import { Type } from '../../interfaces/type/type';
 import { Router } from '@angular/router';
-import { ModalErrorComponent } from '../../components/modal-error/modal-error.component';
+import { ModalErrorComponent } from '../../../../shared/components/modal-error/modal-error.component';
 
 @Component({
   selector: 'etp-new-event',
