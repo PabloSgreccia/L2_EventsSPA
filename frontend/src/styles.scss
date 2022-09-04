@@ -105,6 +105,29 @@
     cursor: pointer;
 }
 
+.floating-message{
+    color: black;
+    background-color: #64c47c;
+    max-width: 350px;
+    padding: 1rem;
+    border-radius: 10px;
+    z-index: 999;
+    position: fixed;
+    top: var(--padding-for-header);
+    right: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    opacity: 75%;
+}
+
+.floating-message:hover{
+    opacity: 100%;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
 
 // a{
 //     text-decoration: none;

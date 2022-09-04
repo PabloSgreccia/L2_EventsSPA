@@ -120,7 +120,7 @@ export class UserServiceService {
 
   // Usuario olvido contraseña
   forgotPassword(email: string){
-    return this.http.post<any>(`${this.URL_API_USER}/forgot`, email)
+    return this.http.post<any>(`${this.URL_API_USER}/forgot`, {email})
   }
 
 }
