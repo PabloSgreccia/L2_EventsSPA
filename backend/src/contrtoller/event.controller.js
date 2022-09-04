@@ -297,41 +297,52 @@ const updateEvent = async (req, res) => {
     const { id, title, description, mode, province, city, street, number, init_date, end_date, idType, cancelled } = req.body;
     const idUser_admin = req.userId;
 
-    let event = await Event.findOne({ where: { id: id } });
-    
-    console.log(event);
-
-    if (!event) {
-        return res.status(404).json({ msg: "Evento no encontrado"})
-    } else {
-        if (event.idUser_admin === idUser_admin) {
-            event.update({id, title, description, mode, province, city, street, number, init_date, end_date, idType, cancelled })
-            .then(updatedEvent => {res.status(200).json({updatedEvent, 'msg': 'Se actualizó correctamente'})})
+    try {
+        let event = await Event.findOne({ where: { id: id } });
+        if (!event) {
+            return res.status(404).json({ msg: "Evento no encontrado"})
         } else {
-            return res.status(404).json({ 'msg': 'No tiene permisos para editar este evento'})
+            if (event.idUser_admin === idUser_admin) {
+                event.update({id, title, description, mode, province, city, street, number, init_date, end_date, idType, cancelled })
+                .then(updatedEvent => {res.status(200).json({updatedEvent, 'msg': 'Se actualizó correctamente'})})
+            } else {
+                return res.status(404).json({ 'msg': 'No tiene permisos para editar este evento'})
+            }
         }
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ msg: 'Something went wrong at backend.'})
     }
+
+    
 }
 
 // Delete event
 const destroyEvent = async (req, res) => {
     const userId = req.userId
     const id = req.params.id
-    const user = await User.findOne({ where: userId})
-    let event = await Event.findOne({ where: { id: id } });
-    // Validate that the event exists
-    if (!event) { return res.status(404).json({ msg: "Evento no encontrado" })
-    } else {
-        // Validate that the user is the admin or the event creator
-        if (event.idUser_admin === user.id || user.role === 'admin') {
-            // First delete user_event records and then delete event
-            Users_events.destroy({ where: {eventId: event.id} }).then(
-                event.destroy().then(user => { res.status(200).json({'msg': 'El evento ha sido eliminado'})})
-            )
+
+    try {
+        const user = await User.findOne({ where: userId})
+        let event = await Event.findOne({ where: { id: id } });
+        // Validate that the event exists
+        if (!event) { return res.status(404).json({ msg: "Evento no encontrado" })
         } else {
-            return res.status(404).json({ 'msg': 'No tiene permisos para eliminar este evento' })
+            // Validate that the user is the admin or the event creator
+            if (event.idUser_admin === user.id || user.role === 'admin') {
+                // First delete user_event records and then delete event
+                Users_events.destroy({ where: {eventId: event.id} }).then(
+                    event.destroy().then(user => { res.status(200).json({'msg': 'El evento ha sido eliminado'})})
+                )
+            } else {
+                return res.status(404).json({ 'msg': 'No tiene permisos para eliminar este evento' })
+            }
         }
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ msg: 'Something went wrong at backend.'})
     }
+
 };
 
 module.exports = {
