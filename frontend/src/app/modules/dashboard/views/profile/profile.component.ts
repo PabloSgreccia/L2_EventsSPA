@@ -1,13 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 // Interfaces
 import { Event } from '@etp/dashboard/interfaces'
 import { User } from '@etp/shared/interfaces'
 // Services
 import { EventServiceService } from '@etp/dashboard/services';
 import { UserServiceService } from '@etp/shared/services';
-import { MatDialog } from '@angular/material/dialog';
-import { ModalErrorComponent } from '../../../../shared/components/modal-error/modal-error.component';
+// Components
+import { ModalErrorComponent } from '@etp/shared/components';
 
 @Component({
   selector: 'etp-profile',
@@ -61,8 +62,8 @@ export class ProfileComponent implements OnInit {
               this.cantEvents = this.createdEvents.length 
           },
           error: ((err: any) => {
-            console.log(err);
-            // this.router.navigate(['/notfound']);
+            const dialogRef = this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong' } });
+            dialogRef.afterClosed().subscribe(_ => { this.router.navigate(['/dashboard/feed']) });
           })
         })
         
@@ -76,8 +77,8 @@ export class ProfileComponent implements OnInit {
                 function(a, b) { return b.init_date > a.init_date? 1 : -1; });   
           },
           error: ((err: any) => {
-            console.log(err);
-            // this.router.navigate(['/notfound']);
+            const dialogRef = this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong' } });
+            dialogRef.afterClosed().subscribe(_ => { this.router.navigate(['/dashboard/feed']) });
           })
         })
       }
