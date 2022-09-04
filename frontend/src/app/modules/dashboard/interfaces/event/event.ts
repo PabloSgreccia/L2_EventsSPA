@@ -8,19 +8,24 @@ export interface Event {
     street?:string,
     number?:number,
     link?:string,
-    init_date:Date,
-    end_date:Date,
+    init_date:Date | string,
+    end_date:Date | string,
     cancelled:boolean,
     idType:number,
     photo?:string,
-    idUser:number,
     finished:boolean,
 
-    adminUser:string,
-    type?:string,
-    people?: number,
-    valor?: number,
-    adminPhoto?:string,
-    verifiedadmin?:boolean,
-    participateDisabled?: boolean,
+    cantPeople:number,
+
+    type: {
+        type:string,
+        photo:string,
+    }
+
+    user: {
+        id:number,
+        name:string,
+        photo:string
+        validated:number
+    },
 }
