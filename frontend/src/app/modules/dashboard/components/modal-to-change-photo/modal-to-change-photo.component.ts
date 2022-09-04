@@ -37,11 +37,9 @@ export class ModalToChangePhotoComponent implements OnInit {
           },
           error: ((err: any) => {
             this.error = 'Something went wrong trying to update your photo.';
-            console.log(err);
           })
         })
     }
-
   }
 
   // File input manager

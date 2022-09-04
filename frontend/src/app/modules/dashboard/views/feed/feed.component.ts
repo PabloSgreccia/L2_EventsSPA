@@ -1,4 +1,4 @@
-import { StickyStyler } from '@angular/cdk/table';
+
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,8 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Event, Type } from '@etp/dashboard/interfaces'
 // Services
 import { EventServiceService, LocationServiceService, TypeServiceService } from '@etp/dashboard/services';
-import { environment } from 'src/environments/environment';
-import { ModalErrorComponent } from '../../../../shared/components/modal-error/modal-error.component';
+// Components
+import { ModalErrorComponent } from '@etp/shared/components';
 
 interface FilterInput {
   value: string;
@@ -106,6 +106,7 @@ export class FeedComponent implements OnInit {
     this.dialog.open(ModalErrorComponent, { data: { msg } });
   }
 
+  // Reser form filters
   resetFilters(){
     this.filteredEvents = this.initialEvents
     this.filtersForm.reset()

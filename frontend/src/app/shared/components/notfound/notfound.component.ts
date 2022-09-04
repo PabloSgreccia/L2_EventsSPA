@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+// Services
 import { AuthService } from '@etp/auth/services';
-import { User } from '@etp/shared/interfaces';
-import { UserServiceService } from '../../services/userService/user-service.service';
+import { UserServiceService } from '@etp/shared/services';
 
 @Component({
   selector: 'etp-notfound',

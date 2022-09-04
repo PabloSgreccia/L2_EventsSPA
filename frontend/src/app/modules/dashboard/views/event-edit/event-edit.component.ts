@@ -84,10 +84,10 @@ export class EventEditComponent implements OnInit {
     this.typeService.getTypes()
     .subscribe({
       next: res => {        
-        if (res.types[0].type) {
-          this.types = res.types
-          this.types.sort(function(a, b) { return b.id < a.id? 1 : -1; });
-        } else {
+          if (res.types[0].type) {
+            this.types = res.types
+            this.types.sort(function(a, b) { return b.id < a.id? 1 : -1; });
+          } else { 
             this.error = res.msg 
           }       
         },
@@ -119,7 +119,6 @@ export class EventEditComponent implements OnInit {
         this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong trying to get preloaded data' } });
       }
     })
-    
   }
 
   // When a user select a province, we search the cities of that province

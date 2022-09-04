@@ -34,11 +34,9 @@ export class ModalToChangePhotoTypeComponent implements OnInit {
           next: () => {this.dialogRef.close(true)},            
           error: ((err: any) => {
             this.error = 'Something went wrong trying to update your photo.';
-              console.log(err);
           })
         })
     }
-   
   }
 
   // File input manager

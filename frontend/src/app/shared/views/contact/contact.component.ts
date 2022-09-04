@@ -73,22 +73,15 @@ export class ContactComponent implements OnInit {
       this.contactService.createContact(newContact)
       .subscribe({
         next: res => { 
-          // Show dialog
           this.dialog.open(ModalMsgComponent, { data: { msg: 'Your email was sent. we will contact you shortly.' } })
           .afterClosed().subscribe(_ => {
             this.router.navigate(['/dashboard/feed'])
           })
         },
-        error: ((err) => { this.openErrorDialog("Something went wrong, try again.") })
+        error: ((err) => {  this.dialog.open(ModalErrorComponent, { data: { msg: "Something went wrong, try again" } })  })
       })
     } else {
       this.contactForm.markAllAsTouched;
     }
   }
-  
-  // Open error dialog
-  openErrorDialog(msg: string) {
-  this.dialog.open(ModalErrorComponent, { data: { msg } });
-  }
-
 }

@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 // Interfaces
 import { User } from '@etp/shared/interfaces';
 // Services
 import { UserServiceService } from '@etp/shared/services';
+import { AuthService } from '@etp/auth/services';
 // Components
 import { ModalToChangePhotoComponent, ModalToChangePwdComponent, ModalToEditComponent } from "@etp/dashboard/components";
-import { AuthService } from '@etp/auth/services';
-import { Router } from '@angular/router';
-import { ModalErrorComponent } from '../../../../shared/components/modal-error/modal-error.component';
+import { ModalErrorComponent } from '@etp/shared/components';
 
 
 @Component({
@@ -31,15 +31,6 @@ export class SettingsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    //  this.authService.getLoggedUser().subscribe({
-    //   next: (response) => {
-    //     this.userService.updateUser(response.user);
-    //   },
-    //   error: ((err) => {
-    //     this.router.navigate(['/signmenu'])
-    //   }) 
-    // })
-
     // Get user from observable
     this.userService.getUser().subscribe({
       next: (user: User) => {
