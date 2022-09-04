@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Event, Type } from '@etp/dashboard/interfaces'
 // Services
 import { EventServiceService, LocationServiceService, TypeServiceService } from '@etp/dashboard/services';
+import { environment } from 'src/environments/environment';
 import { ModalErrorComponent } from '../../../../shared/components/modal-error/modal-error.component';
 
 interface FilterInput {

@@ -3,13 +3,15 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 // Interfaces
 import { Contact, User } from '@etp/shared/interfaces';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContactServiceService {
  
-  URL_API_CONTACT = "http://localhost:3000/api/contact"
+  // URL_API_CONTACT = "http://localhost:3000/api/contact"
+  URL_API_CONTACT = `${environment.HOST}/api/contact`
 
   constructor(
     private http: HttpClient,

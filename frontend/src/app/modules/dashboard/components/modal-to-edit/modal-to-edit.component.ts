@@ -17,8 +17,10 @@ export class ModalToEditComponent implements OnInit {
 
   // Form
   dataForm = new FormGroup({
-    name: new FormControl('', {validators: [Validators.required, Validators.pattern('[a-zA-Z ]*')]}),
+    name: new FormControl('', {validators: [Validators.required, Validators.pattern('[a-zA-Z ]*'), Validators.maxLength(50)]}),
   })
+  get name() { return this.dataForm.controls.name }
+
   
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {name: string, email: string},

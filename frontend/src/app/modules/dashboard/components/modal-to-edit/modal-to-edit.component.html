@@ -3,6 +3,8 @@
   <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
       <input matInput formControlName="name">
+      <mat-hint class="hint" *ngIf="name.errors?.['pattern']">At least eight characters, one number, one uppercase and one lowercase.</mat-hint>
+      <mat-hint class="hint" *ngIf="name.errors?.['maxlength']">At least eight characters, one number, one uppercase and one lowercase.</mat-hint>
   </mat-form-field>
   <span *ngIf="error">{{error}}</span>
   <div mat-dialog-actions>

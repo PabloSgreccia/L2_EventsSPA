@@ -294,7 +294,7 @@ const createEvent = async (req, res) => {
 
 // Update event
 const updateEvent = async (req, res) => {
-    const { id, title, description, mode, province, city, street, number, init_date, end_date, idType, cancelled } = req.body;
+    const { id, title, description, mode, province, city, street, number, link, init_date, end_date, idType, cancelled } = req.body;
     const idUser_admin = req.userId;
 
     try {
@@ -303,7 +303,7 @@ const updateEvent = async (req, res) => {
             return res.status(404).json({ msg: "Evento no encontrado"})
         } else {
             if (event.idUser_admin === idUser_admin) {
-                event.update({id, title, description, mode, province, city, street, number, init_date, end_date, idType, cancelled })
+                event.update({id, title, description, mode, province, city, street, number, link, init_date, end_date, idType, cancelled })
                 .then(updatedEvent => {res.status(200).json({updatedEvent, 'msg': 'Se actualizó correctamente'})})
             } else {
                 return res.status(404).json({ 'msg': 'No tiene permisos para editar este evento'})

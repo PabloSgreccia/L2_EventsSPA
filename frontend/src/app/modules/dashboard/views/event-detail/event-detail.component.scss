@@ -29,6 +29,7 @@
     justify-content: space-evenly;
     align-items: center;
     cursor: pointer;
+    background-color: rgb(243, 243, 243);
 }
 
 .event-data-card{
@@ -39,13 +40,14 @@
     justify-content: space-evenly;
     align-items: flex-start;
     gap: 10px;
+    background-color: rgb(243, 243, 243);
 }
 
 .aligned-elements{
     display: flex;
     flex-direction: row;
     align-items: center;
-
+    gap: 10px
 }
 
 .verify-icon{
@@ -56,6 +58,8 @@
 .actions{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
 }
 
@@ -87,9 +91,17 @@ tr{
 }
 
 mat-card-title, .link-text{
-    display: inline;
+    // display: inline;
     width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
+    // overflow: hidden;
+    // white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.link-text{
+    // display: inline;
+    width:100%;
+    overflow: hidden;
+    // white-space: nowrap;
+    // text-overflow:initial;
 }

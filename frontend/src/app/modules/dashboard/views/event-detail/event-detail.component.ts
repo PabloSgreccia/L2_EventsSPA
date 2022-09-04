@@ -65,6 +65,17 @@ export class EventDetailComponent implements OnInit {
           // Search if the user already participates in this event
           const resultado = this.userEvents.find( user => user.id === this.idUser );
           resultado? this.userParticipateEvent = true : this.userParticipateEvent = false
+
+          // Sort users to show the best ones first
+          if (this.userEvents) { 
+            this.userEvents.sort( function(a, b) {          
+              if (a.favourite === b.favourite) {
+                return ((a.name || 0) < (b.name || 0)) ? 1 : -1;
+              } else {
+                return a.favourite < b.favourite ? 1 : -1;
+              }
+            });
+          }
         },
         error: ((err: any) => {  
           const dialogRef = this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong' }})
@@ -80,15 +91,6 @@ export class EventDetailComponent implements OnInit {
       });
     }
     
-    // Sort users to show the best ones first
-    if (this.userEvents) { 
-      this.userEvents.sort( function(a, b) {          
-        if (a.favourite === b.favourite) {
-          return ((a.name || 0) < (b.name || 0)) ? 1 : -1;
-        }
-        return a.favourite < b.favourite ? 1 : -1;
-      });
-    }
   }
 
   // User joins the event
