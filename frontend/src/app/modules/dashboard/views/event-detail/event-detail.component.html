@@ -33,9 +33,9 @@
       {{event.street}},
       {{event.number}}
     </div>
-    <div class="aligned-elements" *ngIf="event.link">
+    <div class="aligned-elements link-text" *ngIf="event.link">
       <mat-icon>link</mat-icon>
-      <p class="link-text">{{event.link}}</p>
+        {{event.link}}
     </div>
     <div class="aligned-elements user">
       {{event.description}}
