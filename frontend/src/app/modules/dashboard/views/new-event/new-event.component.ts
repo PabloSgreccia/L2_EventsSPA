@@ -74,10 +74,7 @@ export class NewEventComponent implements OnInit {
     next: res => {        
       if (res.types[0].type) {
         this.types = res.types
-        this.types.sort(
-          function(a, b) {                 
-            return b.id < a.id? 1 : -1;
-          });
+        this.types.sort(function(a, b) { return b.id < a.id? 1 : -1; });
       } else {
           this.error = res.msg 
         }       

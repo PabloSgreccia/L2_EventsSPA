@@ -8,11 +8,13 @@
       <mat-form-field appearance="fill">
         <mat-label>Title</mat-label>
         <input matInput formControlName="title">
+        <mat-hint class="hint" *ngIf="title.errors?.['maxlength']">Less than 50 chars.</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
         <mat-label>Description</mat-label>
         <textarea matInput formControlName="description"></textarea>
+        <mat-hint class="hint" *ngIf="description.errors?.['maxlength']">Less than 255 chars.</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
@@ -30,17 +32,17 @@
           <mat-form-field appearance="fill">
             <mat-label>Province</mat-label>
             <mat-select formControlName="province" (selectionChange)="changeProvince()">
-              <mat-option *ngFor="let province of provinces" [value]="province.value">
-                {{province.viewValue}}
+              <mat-option *ngFor="let province of provinces" [value]="province">
+                {{province}}
               </mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="fill">
             <mat-label>City/Town</mat-label>
-            <mat-select [disabled]="province.value === ''" #cityFilter>
-              <mat-option *ngFor="let city of cities" [value]="city.value">
-                {{city.viewValue}}
+            <mat-select formControlName="city">
+              <mat-option *ngFor="let city of cities" [value]="city">
+                {{city}}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -50,19 +52,22 @@
           <mat-form-field appearance="fill">
             <mat-label>Street</mat-label>
             <input matInput placeholder="Placeholder" formControlName="street">
-          </mat-form-field>
+          <mat-hint class="hint" *ngIf="street.errors?.['maxlength']">Less than 20 chars.</mat-hint>
+        </mat-form-field>
 
           <mat-form-field appearance="fill">
             <mat-label>Number</mat-label>
             <input type="number" matInput placeholder="Placeholder" formControlName="number">
-          </mat-form-field>
+          <mat-hint class="hint" *ngIf="number.errors?.['max']">Less 9999.</mat-hint>
+        </mat-form-field>
         </div>
       </div>
 
       <mat-form-field appearance="fill" *ngIf="(mode.value === 'virtual') || (mode.value === 'mixed')">
         <mat-label>Link</mat-label>
         <input matInput placeholder="Placeholder" formControlName="link">
-      </mat-form-field>
+          <mat-hint class="hint" *ngIf="link.errors?.['maxlength']">Less than 50 chars.</mat-hint>
+        </mat-form-field>
 
       <mat-form-field appearance="fill">
         <mat-label>Enter a date range</mat-label>
@@ -76,14 +81,19 @@
         <mat-error *ngIf="eventForm.controls.init_date.hasError('matStartDateInvalid')">Invalid start date</mat-error>
         <mat-error *ngIf="eventForm.controls.end_date.hasError('matEndDateInvalid')">Invalid end date</mat-error>
       </mat-form-field>
+
       <div class="same-row-inputs">
         <mat-form-field appearance="fill">
           <mat-label>Start Hour</mat-label>
           <input matInput type="number" min="00" max="23" formControlName="init_hour">
+          <mat-hint class="hint" *ngIf="init_hour.errors?.['min']">from 0 to 23.</mat-hint>
+          <mat-hint class="hint" *ngIf="init_hour.errors?.['max']">from 0 to 23.</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>End Hour</mat-label>
           <input matInput type="number" min="00" max="23" formControlName="end_hour">
+          <mat-hint class="hint" *ngIf="end_hour.errors?.['min']">from 0 to 23.</mat-hint>
+          <mat-hint class="hint" *ngIf="end_hour.errors?.['max']">from 0 to 23.</mat-hint>
         </mat-form-field>
       </div>
 
@@ -94,8 +104,6 @@
         </mat-select>
       </mat-form-field>
 
-      <!-- <input type="file" accept=".jpg,.png" (change)="handleFileInput($event)"> -->
-
       <span class="separator">
         <div *ngIf="error" class="errormsg">{{error}}</div>
       </span>
@@ -103,8 +111,11 @@
       <button mat-flat-button type="button" (click)="changePhoto()">Change Photo</button>
       <br>
       <button mat-flat-button type="submit" [disabled]="!eventForm.valid">Continue</button>
-      <!-- <button mat-flat-button type="submit">Continue</button> -->
     </form>
   </div>
 
+</div>
+
+<div class="spinner" *ngIf="spinner">
+  <mat-spinner></mat-spinner>
 </div>
