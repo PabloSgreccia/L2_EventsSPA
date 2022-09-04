@@ -4,6 +4,7 @@
         <mat-label>Name</mat-label>
         <input matInput placeholder="Placeholder" formControlName="name">
         <mat-icon matSuffix>person</mat-icon>
+        <mat-hint class="hint" *ngIf="name.errors?.['maxlength']">Less than 50 chars.</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -11,6 +12,7 @@
         <input matInput placeholder="Placeholder" formControlName="email">
         <mat-icon matSuffix>alternate_email</mat-icon>
         <mat-hint class="hint" *ngIf="email.errors?.['email']">Should be a valid email.</mat-hint>
+        <mat-hint class="hint" *ngIf="email.errors?.['maxlength']">Less than 100 chars.</mat-hint>
     </mat-form-field>
     
     <mat-form-field appearance="outline">
@@ -18,6 +20,7 @@
         <input [type]="inputTypeValue" matInput placeholder="Placeholder" #passwordInput formControlName="password">
         <mat-icon matSuffix class="pointer" (click)="showPassword()">remove_red_eye</mat-icon>
         <mat-hint class="hint" *ngIf="password.errors?.['pattern']">At least eight characters, one number, one uppercase and one lowercase.</mat-hint>
+        <mat-hint class="hint" *ngIf="password.errors?.['maxlength']">Less than 255 chars.</mat-hint>
     </mat-form-field>
     <span *ngIf="password.errors?.['pattern']" class="separator"></span>
 
@@ -31,5 +34,8 @@
         <div *ngIf="error" class="form-error-msg">{{error}}</div >
 
     <button mat-flat-button type="submit" class="btn-primary" [disabled]="!signUpForm.valid">Sign Up</button>    
+    
+    <div class="spinner" *ngIf="spinner">
+        <mat-spinner></mat-spinner>
+    </div>
 </form>
-

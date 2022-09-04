@@ -11,15 +11,14 @@
     <mat-form-field appearance="fill">
       <mat-label>Province</mat-label>
       <mat-select formControlName="province" (selectionChange)="changeProvince()">
-        <mat-option *ngFor="let province of provinces" [value]="province.value">
-          {{province.viewValue}}
+        <mat-option *ngFor="let province of provinces" [value]="province">
+          {{province}}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>City/Town</mat-label>
-      <!-- <mat-select [disabled]="province.value === ''" #cityFilter formControlName="city"> -->
         <mat-select formControlName="city">
         <mat-option *ngFor="let city of cities" [value]="city">
           {{city}}
@@ -37,13 +36,22 @@
     </mat-form-field>
     
     <mat-form-field appearance="fill">
-      <mat-label>User</mat-label>
-      <input matInput (keyup)="onKeyUp()" #filterByUser>
+      <mat-label>Event Mode</mat-label>
+      <mat-select formControlName="mode">
+        <mat-option *ngFor="let mode of modes" [value]="mode">
+          {{mode}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
-</div>
     
-
-  <button mat-raised-button class="filter-apply-btn btn-primary" (click)="filterEvents()">Apply</button>
+    <mat-form-field appearance="fill">
+      <mat-label>User</mat-label>
+      <input matInput (keyup)="onKeyUp()" #filterByUser formControlName="user">
+    </mat-form-field>
+  </div>
+  
+  <button mat-raised-button class="filter-apply-btn btn-primary" (click)="filterEvents()">Filter</button>
+  <button mat-raised-button class="filter-apply-btn btn-primary" (click)="resetFilters()">Clear Filters</button>
 
 </mat-expansion-panel>
 
@@ -67,9 +75,11 @@
 
 <br>
 <div class="lista-eventos">
-  <div class="evento" *ngFor="let event of events">
+  <div class="evento" *ngFor="let event of filteredEvents">
 
     <etp-event [event]="event"></etp-event>
 
   </div>
 </div>
+
+<p *ngIf="error">{{error}}</p>

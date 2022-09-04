@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -22,13 +22,14 @@ export class SignupComponent implements OnInit {
   };
   inputTypeValue: string = "password"
   error: string = '';
+  spinner: boolean = false
   
   // Form
   signUpForm = new FormGroup({
-    name: new FormControl('', {validators: [Validators.required]}),
-    email: new FormControl('', {validators: [Validators.required, Validators.email]}),
-    password: new FormControl('', {validators: [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}')]}),
-    repeatpassword: new FormControl('', {validators: [Validators.required]}),
+    name: new FormControl('', {validators: [Validators.required, Validators.maxLength(50)]}),
+    email: new FormControl('', {validators: [Validators.required, Validators.email, Validators.maxLength(100)]}),
+    password: new FormControl('', {validators: [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}'), Validators.maxLength(255)]}),
+    repeatpassword: new FormControl('', {validators: [Validators.required, Validators.maxLength(255)]}),
   }, {validators: passwordsValidator})
   get f() { return this.signUpForm }
   get name() { return this.signUpForm.controls.name }
@@ -60,12 +61,15 @@ export class SignupComponent implements OnInit {
         password: this.password.value
       }
       // Sign up --> BE
-      this.authService.signUp(this.newUser.name, this.newUser.email, this.newUser.password, )
+      this.spinner = true;
+      this.authService.signUp(this.newUser.name, this.newUser.email, this.newUser.password)
         .subscribe({
           next: res => {
-              this.openDialog('We sent you a verification email, please check it. This will allows you to login.')
+            this.spinner = false;
+            this.openDialog('We sent you a verification email, please check it. This will allows you to login.')
           },
           error: ((err) => {
+            this.spinner = false;
             this.signUpForm.controls.password.reset();
             this.signUpForm.controls.repeatpassword.reset();
             this.error = err.error.msg  
@@ -78,13 +82,7 @@ export class SignupComponent implements OnInit {
   openDialog(msg: string) {
     this.dialog.open(ModalMsgComponent, {data: { msg }})
     .afterClosed()
-      .subscribe({
-        next: next => {
-          window.location.reload();
-        },
-        error: (err) => {
-          window.location.reload();}
-      });
+      .subscribe(_ => { window.location.reload()})
   }
 
   // Show or hide password functionality

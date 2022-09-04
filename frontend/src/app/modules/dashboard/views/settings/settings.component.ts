@@ -8,6 +8,7 @@ import { UserServiceService } from '@etp/shared/services';
 import { ModalToChangePhotoComponent, ModalToChangePwdComponent, ModalToEditComponent } from "@etp/dashboard/components";
 import { AuthService } from '@etp/auth/services';
 import { Router } from '@angular/router';
+import { ModalErrorComponent } from '../../components/modal-error/modal-error.component';
 
 
 @Component({
@@ -45,8 +46,6 @@ export class SettingsComponent implements OnInit {
         this.user = user
     }, error: () => {}})
 
-    console.log(this.user);
-    
   }
 
   // Open modal to change photo
@@ -96,21 +95,19 @@ export class SettingsComponent implements OnInit {
   // Sends request to admin to validate his account
   askForValidation(){    
     this.userService.updateVerifyStatus(this.user.id, 2).subscribe({
-      next: (res) => {
-        this.askDisabled = true
-    }, error: () => {
-      this.error = 'Something went wrong trying to process your request.'
-    }})
+      next: (res) => { this.askDisabled = true }, 
+    error: () => { this.openErrorDialog("Something went wrong, try again.") }})
   }
 
   // This functions WON'T delete an user, only the admin can delete users. the user will be marked as unactive
   deleteUser(){
-    this.userService.desactivateUser(true).subscribe({
-      next: (res) => {
-        this.askDisabled = true
-    }, error: () => {
-      this.authService.logOut()
-    }})
+    this.userService.desactivateUser(false).subscribe({
+      next: (res) => { this.authService.logOut() }, 
+      error: () => { this.openErrorDialog("Something went wrong, try again.") }})
   }
 
+  // Open error dialog
+  openErrorDialog(msg: string) {
+    this.dialog.open(ModalErrorComponent, { data: { msg } });
+  }
 }

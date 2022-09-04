@@ -5,16 +5,9 @@ const Users_events = require('../database/models/').users_events
 const sequelize = require('sequelize');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-const {
-    validationMail,
-    passRecovery
-} = require('../contrtoller/mail.controller');
-const {
-    Op,
-    and
-} = require('sequelize');
+const { validationMail, passRecovery } = require('../contrtoller/mail.controller');
+const { Op, and } = require('sequelize');
 const formidable = require('formidable');
-//API
 
 const showAll = async (req, res) => {
     let users = await User.findAll({
@@ -69,42 +62,32 @@ const show = async (req, res) => {
 };
 
 const register = async (req, res) => {
-    const form = formidable({
-        multiples: true
-    });
-    let result = form.parse(req, async (err, payload, photo) => {
-        const {
-            name,
-            email,
-            password,
-        } = JSON.parse(payload.payload)
-        console.log(photo);
-        let validationCode = (Math.random() + 1).toString(36)
-        password = await bcrypt.hash(req.body.password, 10);
-        let user = await User.create({
-            name,
-            email,
-            password,
-            validationCode
-        })
-        if (user) {
-            try {
-                await validationMail(user)
-            } catch (error) {
-                console.log(error)
-            }
-            return user
-        } else {
-            return false
-        }
+    let params = req.body;
+    let validationCode = (Math.random() + 1).toString(36)
+    params.password = await bcrypt.hash(req.body.password, 10);
+    let user = await User.create({
+        name: params.name,
+        email: params.email,
+        password: params.password,
+        validationCode: validationCode
     })
-    if (result) {
+    if (user) {
+        try {
+            await validationMail(user)
+        } catch (error) {
+            console.log(error)
+        }
         return res.status(200).json({
-            'mgs': 'Usuario creado correctamente'
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            validated: user.validated,
+            'msg': 'Se creó correctamente'
         })
     } else {
         return res.status(404).json({
-            msg: 'Error al crear el usuraio'
+            'msg': 'No se recibieron los datos'
         })
     }
 };
@@ -269,32 +252,26 @@ const updatePass = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    const {
-        name,
-        active,
-        validated
-    } = req.body;
+    const { name, active, validated } = req.body;
     const id = req.userId;
-    let user = await User.findOne({
-        where: {
-            id: id
-        }
-    });
+    let user = await User.findOne( {where: { id: id }});
     if (!user) {
-        return res.status(404).json({
-            msg: "Usuario no encontrado"
-        })
+        return res.status(404).json({ msg: "Usuario no encontrado" })
     } else {
+        user.update({ name, active, validated }).then(user => {
+            res.status(200).json({ user, 'msg': 'Se actualizó correctamente'})
+        })
+    }
+}
 
-        user.update({
-            name,
-            active,
-            validated
-        }).then(user => {
-            res.status(200).json({
-                user,
-                'msg': 'Se actualizó correctamente'
-            })
+const updateUserVerify = async (req, res) => {
+    const { idUser, validated } = req.body;
+    let user = await User.findOne( {where: { id: idUser }});
+    if (!user) {
+        return res.status(404).json({ msg: "Usuario no encontrado" })
+    } else {
+        user.update({ idUser, validated }).then(user => {
+            res.status(200).json({ user, 'msg': 'Se actualizó correctamente'})
         })
     }
 }
@@ -302,23 +279,13 @@ const updateUser = async (req, res) => {
 const downUser = async (req, res) => {
     const id = req.userId;
     const active = req.body.active;
-    let user = await User.findOne({
-        where: {
-            id: id
-        }
-    });
+    let user = await User.findOne({ where: { id: id } });
     if (!user) {
-        return res.status(404).json({
-            msg: "Usuario no encontrado"
-        })
+        return res.status(404).json({ msg: "Usuario no encontrado" })
     } else {
-        user.update({
-            active
-        }).then(user => {
-            res.status(200).json({
-                user,
-                'msg': 'Se actualizó correctamente'
-            })
+        user.update({ active })
+        .then(user => {
+            res.status(200).json({ 'msg': 'Se actualizó correctamente' })
         })
     }
 }
@@ -414,34 +381,32 @@ const showLogged = async (req, res) => {
     }
 };
 
+// Send email when a user forgot his password
 const forgot = async (req, res) => {
     const email = req.body.email
-    const user = await User.findOne({
-        where: {
-            email: email
+    try {
+        const user = await User.findOne({ where: { email: email } })
+        if (!user) { 
+            return res.status(404).json({ msg: 'Incorrect email address' }) 
         }
-    })
-    if (!user) {
-        return res.status(404).json({
-            msg: 'NO hay ningún usuario registrado con ese mail'
+        // Generate new random password
+        const newPass = user.name.toUpperCase() + (Math.random() + 1).toString(36)
+        const password = await bcrypt.hash(newPass, 10);
+        await user.update({ password })
+        try { 
+            await passRecovery(user, newPass)
+        } catch (error) {
+            console.log(error)
+        }
+        return res.status(200).json({
+            msg: 'Email sent'
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            msg: error
         })
     }
-    const newPass = user.name.toUpperCase() + (Math.random() + 1).toString(36)
-    const password = await bcrypt.hash(newPass, 10);
-    await user.update({
-        password
-    })
-    try {
-        await passRecovery(user, newPass)
-    } catch (error) {
-        console.log(error)
-    }
-
-    return res.status(200).json({
-        msg: 'Correo enviado'
-    })
-
-
 }
 
 
@@ -457,6 +422,7 @@ module.exports = {
     validationUser,
     updatePass,
     updateUser,
+    updateUserVerify,
     downUser,
     destroy,
     logOut,
