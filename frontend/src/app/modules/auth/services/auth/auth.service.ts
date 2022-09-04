@@ -4,12 +4,15 @@ import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
 // Interfaces
 import { UserServiceService } from '@etp/shared/services';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  URL_API_USER = "http://localhost:3000/api/user"
+  
+  // URL_API_USER = "http://localhost:3000/api/user"
+  URL_API_USER = `${environment.HOST}/api/user`
 
   constructor(
     private http: HttpClient,
@@ -19,6 +22,7 @@ export class AuthService {
 
   // New User
   signUp(name: string, email: string, password: string){
+    email = email.toLowerCase()
     const body = {
       name, 
       email, 
@@ -29,6 +33,7 @@ export class AuthService {
   
   // user log in
   logIn(email: string, password: string){
+    email = email.toLowerCase()
     const body = {
       email,
       password

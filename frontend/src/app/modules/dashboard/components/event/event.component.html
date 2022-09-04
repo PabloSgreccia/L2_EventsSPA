@@ -2,19 +2,21 @@
 
     <div class="event-card-header event-linker">
       <img [src]="event.user.photo" class="user-img" [routerLink]="['/dashboard/profile', event.user.id]">
-      <div class="event-card-header-info">
+      <div class="event-card-header-info" [routerLink]="['/dashboard/event', event.id]">
 
-        <div class="card-title" [routerLink]="['/dashboard/event', event.id]">
+        <div class="card-title">
           <mat-card-title>{{event.title}}</mat-card-title>
-          <mat-icon *ngIf="event.user.validated" class="verify-icon">verified_user</mat-icon>
+          <div>
+            <mat-icon *ngIf="event.user.validated" class="verify-icon">verified_user</mat-icon>
+          </div>
         </div>
 
-        <div class="aligned-elements" [routerLink]="['/dashboard/event', event.id]">
+        <div class="aligned-elements">
           <mat-icon>date_range</mat-icon>
           {{event.init_date | date:'short'}}
         </div>
 
-        <div class="aligned-elements" *ngIf="event.province" [routerLink]="['/dashboard/event', event.id]">
+        <div class="aligned-elements" *ngIf="event.province">
           <mat-icon> place</mat-icon>
           {{event.province}},
           {{event.city}},
@@ -22,12 +24,12 @@
           {{event.number}}
         </div>
 
-        <div class="aligned-elements link-text" *ngIf="event.link">
+        <div class="aligned-elements" *ngIf="event.link">
           <mat-icon>link</mat-icon>
-          {{event.link}}
+          <p class="link-url">{{event.link}}</p>
         </div>
 
-        <div class="aligned-elements user" [routerLink]="['/dashboard/profile', event.user.id]">
+        <div class="aligned-elements user">
           <mat-icon>face</mat-icon>
           {{event.user.name}}
         </div>

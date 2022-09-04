@@ -3,13 +3,15 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 // Interfaces
 import { User } from '@etp/shared/interfaces';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserServiceService {
 
-  URL_API_USER = "http://localhost:3000/api/user"
+  // URL_API_USER = "http://localhost:3000/api/user"
+  URL_API_USER = `${environment.HOST}/api/user`
 
   private initialState: User = 
     {

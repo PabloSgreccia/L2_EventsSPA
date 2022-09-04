@@ -18,8 +18,10 @@
     <mat-card-title>{{event.title}}</mat-card-title>
     <div class="aligned-elements">
       <mat-icon>date_range</mat-icon>
-      From: {{event.init_date | date:'short'}} - 
-      To: {{event.end_date | date:'short'}}
+      <div class="column-dates">
+        <p>From: {{event.init_date | date:'short'}}</p>
+        <p>To: {{event.end_date | date:'short'}}</p>
+      </div>
     </div>
     <!-- <div class="aligned-elements">
       <mat-icon>date_range</mat-icon>
@@ -33,9 +35,9 @@
     </div>
     <div class="aligned-elements" *ngIf="event.link">
       <mat-icon>link</mat-icon>
-      {{event.link}}
+      <p class="link-text">{{event.link}}</p>
     </div>
-    <div class="aligned-elements user link-text">
+    <div class="aligned-elements user">
       {{event.description}}
     </div>
     <div *ngIf="event.cancelled" class="cancelled">

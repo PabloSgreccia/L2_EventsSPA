@@ -1,19 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {Location} from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 // Services
 import { EventServiceService, LocationServiceService, TypeServiceService } from '@etp/dashboard/services';
-import { MatDialog } from '@angular/material/dialog';
-import { ModalMsgComponent } from '../../../../shared/components/modal-msg/modal-msg.component';
+//Interfaces
 import { Type } from '@etp/dashboard/interfaces';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ModalToChangePhotoEventComponent } from '../../components/modal-to-change-photo-event/modal-to-change-photo-event.component';
-import { ModalErrorComponent } from '@etp/shared/components';
+// Components
+import { ModalErrorComponent, ModalMsgComponent } from '@etp/shared/components';
+import { ModalToChangePhotoEventComponent } from '@etp/dashboard/components';
 
-interface FilterInput {
-  value: string;
-  viewValue: string;
-}
 
 @Component({
   selector: 'etp-event-edit',
@@ -29,16 +26,17 @@ export class EventEditComponent implements OnInit {
   cities!:string[]
   spinner: boolean = false
 
+  // Form
   eventForm = new FormGroup({
     id: new FormControl('', {validators: [Validators.required]}),
-    title: new FormControl('', {validators: [Validators.required, Validators.maxLength(50)]}),
+    title: new FormControl('', {validators: [Validators.required, Validators.maxLength(40)]}),
     description: new FormControl('', [Validators.required, Validators.maxLength(255)]),
     mode: new FormControl('', {validators: [Validators.required]}),
     province: new FormControl(''),
     city: new FormControl(''),
     street: new FormControl('', [Validators.maxLength(20)]),
     number: new FormControl(0, [Validators.max(9999)]),
-    link: new FormControl('', [Validators.maxLength(50)]),
+    link: new FormControl('', [Validators.maxLength(30)]),
     init_date: new FormControl('', {validators: [Validators.required]}),
     end_date: new FormControl('', {validators: [Validators.required]}),
     init_hour: new FormControl(0, {validators: [Validators.required, Validators.min(0), Validators.max(23)]}),
@@ -131,7 +129,10 @@ export class EventEditComponent implements OnInit {
       next: res => {
         this.cities = (res.localidades).map( function(city:any) { return city.nombre})
         this.cities.sort()
-      }
+      },
+      error: ((err: any) => {
+        this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong trying to get cities' } });
+      })
     })
   }
 

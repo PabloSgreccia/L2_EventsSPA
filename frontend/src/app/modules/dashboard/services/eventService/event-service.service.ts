@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Event } from "@etp/dashboard/interfaces";
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventServiceService {
 
-  URL_API_EVENT = "http://localhost:3000/api/event"
+  URL_API_EVENT = `${environment.HOST}/api/event`
   
   private initialState: Event = 
   {
