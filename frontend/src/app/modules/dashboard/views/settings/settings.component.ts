@@ -85,7 +85,7 @@ export class SettingsComponent implements OnInit {
 
   // Sends request to admin to validate his account
   askForValidation(){    
-    this.userService.updateVerifyStatus(this.user.id, 2).subscribe({
+    this.userService.updateVerifyStatusUser(2).subscribe({
       next: (res) => { this.askDisabled = true }, 
     error: () => { this.openErrorDialog("Something went wrong, try again.") }})
   }

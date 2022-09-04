@@ -76,6 +76,11 @@ export class UserServiceService {
   }
 
   // usuario solicita verificacion de usuario
+  updateVerifyStatusUser(validated: number){
+    return this.http.patch<any>(`${this.URL_API_USER}/updateuser`, {validated})
+  }
+  
+  // Admin cambia verificacion de usuario
   updateVerifyStatus(idUser:number, validated: number){
     const body = {
       idUser,
