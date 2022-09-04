@@ -5,6 +5,8 @@ import { EventServiceService, LocationServiceService, TypeServiceService } from 
 import { MatDialog } from '@angular/material/dialog';
 import { ModalMsgComponent } from '../../components/modal-msg/modal-msg.component';
 import { Type } from '@etp/dashboard/interfaces';
+import { ActivatedRoute } from '@angular/router';
+import { ModalToChangePhotoEventComponent } from '../../components/modal-to-change-photo-event/modal-to-change-photo-event.component';
 
 interface FilterInput {
   value: string;
@@ -20,6 +22,7 @@ interface FilterInput {
 export class EventEditComponent implements OnInit {
 
   eventForm = new FormGroup({
+    id: new FormControl('', {validators: [Validators.required]}),
     title: new FormControl('', {validators: [Validators.required]}),
     description: new FormControl(''),
     mode: new FormControl('', {validators: [Validators.required]}),
@@ -41,6 +44,8 @@ export class EventEditComponent implements OnInit {
 
   error: String = '';
   
+  descType!: string
+
   provinces:FilterInput[] = [
     {value: "", viewValue: ""},
   ]
@@ -53,7 +58,8 @@ export class EventEditComponent implements OnInit {
     private locationService: LocationServiceService,
     private eventService: EventServiceService,
     private typeService: TypeServiceService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private activatedRoute: ActivatedRoute
     ) { }
 
   ngOnInit(): void {
@@ -94,8 +100,11 @@ export class EventEditComponent implements OnInit {
       })
       
     // get event info by observable
+    
     this.eventService.getEvent().subscribe({
       next: event => {
+        const eventId = this.activatedRoute.snapshot.paramMap.get("id");
+        this.eventForm.controls.id.setValue(eventId)
         this.eventForm.controls.title.setValue(event.title || '')
         this.eventForm.controls.description.setValue(event.description || '')
         this.eventForm.controls.mode.setValue(event.mode || '')
@@ -107,9 +116,11 @@ export class EventEditComponent implements OnInit {
         this.eventForm.controls.init_date.setValue((event.init_date).toString())
         this.eventForm.controls.end_date.setValue((event.end_date).toString())
         this.eventForm.controls.idType.setValue(event.idType)
+        this.descType = event.type.type
       },
       error: (err) => {}
     })
+    
   }
 
   // When a user select a province, we search the cities of that province
@@ -179,12 +190,12 @@ export class EventEditComponent implements OnInit {
     });
   }
 
-  // handleFileInput(event: any) {
-  //   const file:File = event.target.files[0];
-  //   console.log(event.target.files[0]);
-  //   console.log((event.target.files[0].type).includes("image"));
-  //   this.file = file;
-  // }
+  changePhoto(){
+    const dialogRef = this.dialog.open(ModalToChangePhotoEventComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {this.openDialog('Event Photo Updated')}
+    });
+  }
 
   // Reset form data when user changes the event mode (virtual/on-site/mixed)
   modeChange(){

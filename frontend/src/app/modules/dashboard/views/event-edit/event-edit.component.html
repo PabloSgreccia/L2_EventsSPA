@@ -100,6 +100,8 @@
         <div *ngIf="error" class="errormsg">{{error}}</div>
       </span>
 
+      <button mat-flat-button type="button" (click)="changePhoto()">Change Photo</button>
+      <br>
       <button mat-flat-button type="submit" [disabled]="!eventForm.valid">Continue</button>
       <!-- <button mat-flat-button type="submit">Continue</button> -->
     </form>

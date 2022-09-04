@@ -29,7 +29,7 @@ export class AdminGroupGuard implements CanActivate {
     // get event byu observable
     this.eventService.getEvent().subscribe({
       next: event => {
-        userEventid = event.idUser
+        userEventid = event.user.id
       },
       error: (err) => {}
     })

@@ -6,11 +6,15 @@ const {json} = require('body-parser');
 const app = express();
 const myCron = require('./cron')
 
+const myCron = require('./config/cron'); //importa el cron
+
 //Requerir router
 const routerEvent = require('./routes/event.routes');
 const routerUser = require('./routes/user.routes');
 const routerType = require('./routes/type.routes');
 const routerContact = require('./routes/contact.routes');
+
+app.use(express.static(path.join(__dirname, './public')))
 
 //Settings
 app.use(cors());
@@ -23,6 +27,7 @@ app.use('/api/type',routerType);
 app.use('/api/event',routerEvent);
 app.use('/api/user',routerUser);
 app.use('/api/contact',routerContact);
+
 
 
 app.use((req, res, next) => {

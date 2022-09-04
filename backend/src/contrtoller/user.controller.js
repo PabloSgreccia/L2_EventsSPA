@@ -54,6 +54,9 @@ const show = async (req, res) => {
             id: id
         }
     });
+    if(!user.photo){
+        user.photo = 'http://localhost:3000/images/defUser.png'
+    }
     if (user) {
         return res.status(200).json({
             user
