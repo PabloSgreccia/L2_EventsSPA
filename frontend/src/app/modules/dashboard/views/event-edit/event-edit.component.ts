@@ -1,9 +1,9 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 // Services
 import { EventServiceService, LocationServiceService, TypeServiceService } from '@etp/dashboard/services';
 import { MatDialog } from '@angular/material/dialog';
-import { ModalMsgComponent } from '../../components/modal-msg/modal-msg.component';
+import { ModalMsgComponent } from '../../../../shared/components/modal-msg/modal-msg.component';
 import { Type } from '@etp/dashboard/interfaces';
 import { ActivatedRoute } from '@angular/router';
 import { ModalToChangePhotoEventComponent } from '../../components/modal-to-change-photo-event/modal-to-change-photo-event.component';

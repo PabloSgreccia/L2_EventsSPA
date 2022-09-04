@@ -5,17 +5,20 @@
       <mat-form-field appearance="fill">
         <mat-label>Name</mat-label>
         <input matInput formControlName="name">
+        <mat-hint *ngIf="name.errors?.['maxlength']">Max 50 characters.</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
         <mat-label>Email</mat-label>
         <input matInput formControlName="email">
-        <mat-hint *ngIf="email.errors?.['email']">Shoul be a valid email.</mat-hint>
+        <mat-hint *ngIf="email.errors?.['email']">Should be a valid email.</mat-hint>
+        <mat-hint *ngIf="email.errors?.['maxlength']">Max 100 characters.</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
         <mat-label>Subject</mat-label>
         <input matInput formControlName="subject">
+        <mat-hint *ngIf="subject.errors?.['maxlength']">Max 30 characters.</mat-hint>
       </mat-form-field>
 
 

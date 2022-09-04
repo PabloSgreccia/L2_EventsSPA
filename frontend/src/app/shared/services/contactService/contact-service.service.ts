@@ -32,6 +32,5 @@ export class ContactServiceService {
     return this.http.get<any>(`${this.URL_API_CONTACT}/views`)
   }
 
-
 }
 

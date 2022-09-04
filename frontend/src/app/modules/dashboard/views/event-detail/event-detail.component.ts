@@ -6,7 +6,7 @@ import { Event } from '@etp/dashboard/interfaces'
 // Services
 import { EventServiceService } from '@etp/dashboard/services';
 import { UserServiceService } from '@etp/shared/services';
-import { ModalErrorComponent } from '../../components/modal-error/modal-error.component';
+import { ModalErrorComponent } from '../../../../shared/components/modal-error/modal-error.component';
 import { ActivatedRoute } from '@angular/router';
 
 interface UserEvents {

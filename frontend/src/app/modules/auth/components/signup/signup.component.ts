@@ -4,8 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 // Services
 import { AuthService } from '@etp/auth/services';
+import { ModalMsgComponent } from '@etp/shared/components';
 // Components
-import { ModalMsgComponent } from '@etp/dashboard/components';
 
 @Component({
   selector: 'etp-signup',

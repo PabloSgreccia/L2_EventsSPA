@@ -4,5 +4,6 @@ export interface Contact {
     email:string,
     subject:string,
     description:string,
-    date:string
+    date:string,
+    read?:boolean
 }
