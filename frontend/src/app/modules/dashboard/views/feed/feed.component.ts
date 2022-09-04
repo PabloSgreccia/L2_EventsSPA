@@ -24,6 +24,7 @@ export class FeedComponent implements OnInit {
   
   cities: string[] = []
   eventTypes!: Type[]
+  error: string = ''
   
   filtersForm = new FormGroup({
     province: new FormControl(''),
@@ -36,146 +37,8 @@ export class FeedComponent implements OnInit {
   @ViewChild("filterByUser") filterByUser: ElementRef | undefined;
 
   // Events vars
-  // TODO: descomentar esta linea
-  // initialEvents!: Event[]
-  
-  events: Event[] = [{
-    id: 1,
-    title: 'AWS - Webinar... Con show de fuegos artificios',
-    description: 'Aprende todo sobre amazon web services',
-    mode: 'virtual',
-    link: 'amazon.com',
-    init_date: new Date('Wed Sep 14 2022 12:00:00 GMT-0300 (hora estándar de Argentina)'),
-    end_date: new Date('Wed Sep 16 2022 04:00:00 GMT-0300 (hora estándar de Argentina)'),
-    cancelled:false,
-    idType: 2,
-    photo: 'https://www.albertosoler.es/wp-content/uploads/2021/12/charlas.png',
-    finished: false,
-    adminUser: 'Amazon USA',
-    people: 14502,
-    verifiedadmin: true, 
-    adminPhoto: 'https://s3-symbol-logo.tradingview.com/amazon--600.png',
-    valor: 4.5,
-    idUser: 1,
-    participateDisabled:false,
-  },
-  {
-    id: 2,
-    title: 'Las Pastillas del Abuelo',
-    description: 'Vení a ver las pastillas del abuelo al anfiteatro, costo entrada 1000$',
-    mode: 'Presencial',
-    province: 'Santa Fe',
-    city: 'Rosario',
-    street: 'Cochabamba',
-    number: 1333,
-    init_date: new Date(2022, 10, 10, 23, 0, 0),
-    end_date: new Date(2022, 10, 10, 7, 0, 0),
-    cancelled: true,
-    idType: 2,
-    photo: 'https://media.istockphoto.com/photos/dancing-friends-picture-id501387734?k=20&m=501387734&s=612x612&w=0&h=1mli5b7kpDg428fFZfsDPJ9dyVHsWsGK-EVYZUGWHpI=',
-    finished: false,
-    adminUser: 'Muni de Rosario',
-    people: 123,
-    verifiedadmin: false, 
-    adminPhoto: 'https://cdn-media.italiani.it/site-rosario/sites/48/2020/05/escudo.jpg',
-    valor: 2.2,
-    idUser: 1,
-    participateDisabled:false,
-  },
-  {
-    id: 3,
-    title: 'Chacarita vs Boca Jrs',
-    description: 'Recibimos a Boca Jrs por la 8va fecha del torneo nacional. Veni a alentar a Charcarita',
-    mode: 'Mixto',
-    province: 'Buenos Aires',
-    city: 'Retiro',
-    street: '3 de Febrero',
-    number: 2318,
-    link: 'pasionxchacarita.com',
-    init_date: new Date(2018, 5, 12, 17, 0, 0, 0),
-    end_date: new Date(2018, 5, 12, 19, 0, 0, 0),
-    cancelled:false,
-    idType: 2,
-    photo: 'https://img.freepik.com/vector-gratis/equipo-futbol-voleibol-beisbol-rugby_1441-4026.jpg',
-    finished: true,
-    adminUser: 'Chacarita Jrs',
-    people: 45000,
-    verifiedadmin: false,
-    adminPhoto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Escudo_del_Club_Atl%C3%A9tico_Chacarita_Juniors.svg/1200px-Escudo_del_Club_Atl%C3%A9tico_Chacarita_Juniors.svg.png',
-    valor: 1,
-    idUser: 1,
-    participateDisabled:false,
-  },
-  {
-    id: 3,
-    title: 'Chacarita vs NOB',
-    description: 'Recibimos a NOB por la 7ma fecha del torneo nacional. Veni a alentar a Charcarita',
-    mode: 'Mixto',
-    province: 'Buenos Aires',
-    city: 'Retiro',
-    street: '3 de Febrero',
-    number: 2318,
-    link: 'pasionxchacarita.com',
-    init_date: new Date(2018, 5, 5, 17, 0, 0, 0),
-    end_date: new Date(2018, 5, 5, 19, 0, 0, 0),
-    cancelled:false,
-    idType: 2,
-    photo: 'https://img.freepik.com/vector-gratis/equipo-futbol-voleibol-beisbol-rugby_1441-4026.jpg',
-    finished: true,
-    adminUser: 'Chacarita Jrs',
-    people: 38854,
-    verifiedadmin: false,
-    adminPhoto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Escudo_del_Club_Atl%C3%A9tico_Chacarita_Juniors.svg/1200px-Escudo_del_Club_Atl%C3%A9tico_Chacarita_Juniors.svg.png',
-    valor: 1,
-    idUser: 1,
-    participateDisabled:false,
-  },{
-    id: 1,
-    title: 'Mi Cumpleaños',
-    description: 'Traer su propia comida, yo pongo la bebida',
-    province: 'Santa Fe',
-    city: 'Rosario',
-    street: 'Cochabamba',
-    number: 1333,
-    init_date: new Date(2022, 23, 6, 11, 0, 0),
-    end_date: new Date(2022, 23, 6, 21, 0, 0),
-    cancelled:false,
-    idType: 2,
-    photo: 'https://cdn.computerhoy.com/sites/navi.axelspringer.es/public/media/image/2018/01/283709-crear-tarjetas-felicitar-cumpleanos.jpg',
-    finished: false,
-    adminUser: 'Pablo Sgreccia',    
-    mode: "virtual",
-    idUser: 24,
-    people: 12,
-    verifiedadmin: true, 
-    adminPhoto: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1WeNyqqvZ4xPqhmoF5Jcz3UYO_Gk2AUNgSKU59LJYLETM8tElgPD2931E8-7dauowdAQ&usqp=CAU',
-    valor: 0,
-    participateDisabled:false,
-  },
-  {
-    id: 2,
-    title: 'Partido vs Atalaya',
-    province: 'Santa Fe',
-    city: 'Rosario',
-    street: 'San Juan',
-    number: 3550,
-    init_date: new Date(2022, 9, 2, 23, 0, 0),
-    end_date: new Date(2022, 10, 10, 7, 0, 0),
-    cancelled: false,
-    idType: 2,
-    photo: 'https://www.competize.com/blog/wp-content/uploads/2019/12/crear-torneos-basquet-baloncesto-scaled.jpg',
-    finished: false,
-    adminUser: 'Pablo Sgreccia',
-    mode: "virtual",
-    idUser: 24,
-    people: 67,
-    verifiedadmin: true, 
-    adminPhoto: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1WeNyqqvZ4xPqhmoF5Jcz3UYO_Gk2AUNgSKU59LJYLETM8tElgPD2931E8-7dauowdAQ&usqp=CAU',
-    participateDisabled:false,
-  }]
-
-  // TODO: eliminar esta linea
-  initialEvents: Event[] = this.events
+  initialEvents!: Event[] 
+  events!: Event[]
 
   constructor(
     private locationService: LocationServiceService,
@@ -220,19 +83,17 @@ export class FeedComponent implements OnInit {
     this.eventService.getManyEvent()
     .subscribe({
       next: res => {        
-        console.log(res);
-        
-        // if (res.types[0].type) {
-        //   this.eventTypes = res.types
-        //   this.eventTypes.sort(
-        //     function(a, b) {                 
-        //       return b.id < a.id? 1 : -1;
-        //     });
-        // } else {
-        // }
+        if (res.events[0].id) {
+          this.events = res.events
+          this.events.sort(
+            function(a, b) {                 
+              return b.init_date > a.init_date? 1 : -1;
+            });
+        } else {
+          this.error = 'there is no event'
+        }
       }, error: (err) => {
         console.log(err);
-        
       }
     })
 
@@ -260,7 +121,7 @@ export class FeedComponent implements OnInit {
   // Filter by user
   async onKeyUp(){
     if (this.filterByUser?.nativeElement.value.length >=3) {
-      this.events = this.initialEvents.filter(event => (event.adminUser.toLowerCase()).includes((this.filterByUser?.nativeElement.value).toLowerCase()))
+      this.events = this.initialEvents.filter(event => (event.user.name.toLowerCase()).includes((this.filterByUser?.nativeElement.value).toLowerCase()))
     } else{
       this.events = this.initialEvents
     }
@@ -303,7 +164,7 @@ export class FeedComponent implements OnInit {
       this.events.sort(
         function(a, b) {          
            if (a.finished === b.finished) {
-              return ((a.people || 0) < (b.people || 0)) ? 1 : -1;
+              return ((a.cantPeople || 0) < (b.cantPeople || 0)) ? 1 : -1;
            }
            return a.finished > b.finished ? 1 : -1;
         });

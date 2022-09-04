@@ -6,10 +6,10 @@
   </div>
 
   <br>
-  <mat-card class="admin-event-card" [routerLink]="['/dashboard/profile', event.idUser]">
-    <img [src]="event.adminPhoto" class="user-img" [routerLink]="['/dashboard/profile', event.idUser]">
-    <b>{{event.adminUser}}</b> 
-    <mat-icon *ngIf="event.verifiedadmin" class="verify-icon">verified_user</mat-icon>
+  <mat-card class="admin-event-card" [routerLink]="['/dashboard/profile', event.user.id]">
+    <img [src]="event.user.photo" class="user-img" [routerLink]="['/dashboard/profile', event.user.id]">
+    <b>{{event.user.name}}</b> 
+    <mat-icon *ngIf="event.user.validated" class="verify-icon">verified_user</mat-icon>
 
   </mat-card>
   <br>
@@ -44,11 +44,11 @@
   </mat-card>
 <br>
 
-  <div class="actions" *ngIf="2 === 2; else notowner">
-  <!-- <div class="actions" *ngIf="event.idUser === idUser; else notowner"> -->
+  <!-- <div class="actions" *ngIf="2 === 2; else notowner"> -->
+  <div class="actions" *ngIf="event.user.id === idUser; else notowner">
     <button mat-stroked-button color="warn" (click)="cancelEvent()" *ngIf="event.end_date > today && !event.cancelled ">Cancel Event</button>
     <button mat-stroked-button color="warn" (click)="deleteEvent()">Delete Event</button>
-    <button mat-stroked-button color="primary" (click)="editEvent()" *ngIf="event.end_date > today && !event.cancelled">Edit Event</button>
+    <button mat-stroked-button color="primary" [routerLink]="['/dashboard/editevent', event.id]" *ngIf="event.end_date > today && !event.cancelled">Edit Event</button>
   </div>
   <ng-template  #notowner>
     <div *ngIf="!event.cancelled">
@@ -64,21 +64,21 @@
       <mat-panel-title class="panel-title">
         PEOPLE LIST
         <mat-icon>people</mat-icon>
-        {{event.people}}
+        {{event.cantPeople}}
       </mat-panel-title>
     </mat-expansion-panel-header>
     <table>
       <tr *ngFor="let user of userEvents">
         <td [routerLink]="['/dashboard/profile', user.id]">{{user.name}}</td>
-        <td *ngIf="user.star; else nostar" (click)="favuser(user.id, false)">
+        <td *ngIf="user.favourite; else nostar" (click)="favuser(user.id, false)">
           <mat-icon class="user-star">stars</mat-icon>
         </td>
         <ng-template #nostar>
           <td></td>
         </ng-template>
         
-        <td *ngIf="event.idUser === idUser">
-          <mat-icon *ngIf="!user.star" (click)="favuser(user.id, true)">star_border</mat-icon>
+        <td *ngIf="event.user.id === idUser">
+          <mat-icon *ngIf="!user.favourite" (click)="favuser(user.id, true)">star_border</mat-icon>
         </td>
 
       </tr>

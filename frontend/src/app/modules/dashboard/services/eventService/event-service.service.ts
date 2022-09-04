@@ -26,11 +26,18 @@ export class EventServiceService {
     idType: 0,
     photo: '',
     finished: false,
-    adminUser: '',
-    people: 0,
-    verifiedadmin: false, 
-    adminPhoto: '',
-    idUser: 1,
+    cantPeople: 0,
+    user: {
+      id:0,
+      name:'',
+      photo:'',
+      validated:1,
+    },
+
+    type: {
+        type:'',
+        photo:'',
+    }
   }
   private _event$ = new BehaviorSubject(this.initialState)
 
@@ -54,6 +61,10 @@ export class EventServiceService {
   // Observable
 
   
+  // Al entrar al detalle de un evento
+  getEventById(idEvent: number){
+    return this.http.get<any>(`${this.URL_API_EVENT}/view/${idEvent}`)
+  }
   // usuario crea un evneto
   createEvent(event:any, photo?: File){
     const formdata = new FormData()
@@ -70,14 +81,14 @@ export class EventServiceService {
   }
 
   // el admin de un evento, actualiza un evento
-  updateEvent(event: any, photo?: File){
-    const formdata = new FormData()
-    if (photo) {
+  updateEvent(event: any){
+    return this.http.patch<any>(`${this.URL_API_EVENT}/create`, event)
+  }
+
+  updateEventPhoto(photo: File){
+      const formdata = new FormData()
       formdata.append('photo', photo)
-    }
-    formdata.append('payload', JSON.stringify(event))
-    // JSON.parse(payload) --> BE
-    return this.http.patch<any>(`${this.URL_API_EVENT}/create`, formdata)
+      return this.http.post<any>(`${this.URL_API_EVENT}/uploadphoto`, formdata)
   }
 
   // el admin del evento, cancela un evento
@@ -103,14 +114,24 @@ export class EventServiceService {
   getManyEvent(){
     return this.http.get<any>(`${this.URL_API_EVENT}/views`)
   }
+
   // obtener listado de eventos (acotado para el admin)
   getManyEventAdmin(){
     return this.http.get<any>(`${this.URL_API_EVENT}/views/admin`)
   }
 
-  // obtener listado de usuarios deun evento
+  // obtener listado de usuarios de un evento
   getUsersByEvent(idEvent: number){
-    return this.http.get<any>(`${this.URL_API_EVENT}/${idEvent}`)
+    return this.http.get<any>(`${this.URL_API_EVENT}/userslist/${idEvent}`)
   }
 
+  // cuando entras al perfil de un usuario, devolver los eventos que creó
+  getEventsCreatedByUser(id: number){
+    return this.http.get<any>(`${this.URL_API_EVENT}/eventscreatedbyuser/${id}`)
+  }
+
+  // cuando entras al perfil de un usuario, devolver los eventos que se anotó
+  getEventsFollowedByUser(id: number){
+    return this.http.get<any>(`${this.URL_API_EVENT}/eventsfollowedbyuser/${id}`)
+  }
 }

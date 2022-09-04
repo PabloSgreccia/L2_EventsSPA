@@ -19,6 +19,7 @@
 
       <button mat-raised-button class="btn-primary" (click)="resetForm()">Clean</button>
       <button mat-raised-button type="submit" class="btn-primary" [disabled]="!typeForm.valid">Save</button>
+      <button mat-raised-button type="submit" class="btn-primary" (click)="changePhoto()" [disabled]="changeFotoEnabled">Edit Default Img</button>
     </form>
   </div>
 

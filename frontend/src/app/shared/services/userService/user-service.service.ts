@@ -95,22 +95,12 @@ export class UserServiceService {
   editUserPhoto(photo: File){
     const formdata = new FormData()
     formdata.append('photo', photo)
-    return this.http.patch<any>(`${this.URL_API_USER}/updateuser`, formdata)
-  }
-
-  // cuando entras al perfil de un usuario, devolver los eventos que creó
-  getEventsCreatedByUser(id: number){
-    return this.http.get<any>(`${this.URL_API_USER}/eventscreatedbyuser/${id}`)
-  }
-
-  // cuando entras al perfil de un usuario, devolver los eventos que se anotó
-  getEventsFollowedByUser(id: number){
-    return this.http.get<any>(`${this.URL_API_USER}/eventsfollowedbyuser/${id}`)
+    return this.http.post<any>(`${this.URL_API_USER}/uploadphoto`, formdata)
   }
 
   // usuario se anota a un evento
   userJoinsEvent(idEvent: number){
-    return this.http.post<any>(`${this.URL_API_USER}/userjoinevent`, idEvent)
+    return this.http.post<any>(`${this.URL_API_USER}/userjoinevent`, {idEvent})
   }
 
   // usuario se va a un evento
@@ -119,9 +109,9 @@ export class UserServiceService {
   }
 
   // Admin del evento favea a un usuario de su evento
-  userFavedForEvent(id: number, idEvent: number, favourite: boolean){
+  userFavedForEvent(idUser: number, idEvent: number, favourite: boolean){
     const body = {
-      id,
+      idUser,
       idEvent,
       favourite
     }

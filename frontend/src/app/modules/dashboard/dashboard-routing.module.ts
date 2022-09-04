@@ -42,7 +42,7 @@ const routes: Routes = [
         component: EventDetailComponent,
         canActivate:[AuthGuard],
       },{ 
-        path: 'editEvent', 
+        path: 'editevent/:id', 
         component: EventEditComponent,
         // TODO: descomentar cuando esté conectado el BE
         // canActivate:[AdminGroupGuard],

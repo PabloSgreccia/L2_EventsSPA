@@ -29,4 +29,11 @@ export class TypeServiceService {
   getTypes(){
     return this.http.get<any>(`${this.URL_API_TYPE}/views`)
   }
+
+  updateTypePhoto(photo: File){
+    const formdata = new FormData()
+    formdata.append('photo', photo)
+    return this.http.post<any>(`${this.URL_API_TYPE}/uploadphoto`, formdata)
+}
+
 }

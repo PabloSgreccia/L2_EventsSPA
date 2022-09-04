@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalMsgComponent } from '@etp/dashboard/components';
 // Interfaces
 import { Type } from '@etp/dashboard/interfaces';
 // Services
 import { TypeServiceService } from '@etp/dashboard/services';
+import { ModalToChangePhotoTypeComponent } from 'src/app/modules/dashboard/components/modal-to-change-photo-type/modal-to-change-photo-type.component';
 
 @Component({
   selector: 'etp-types',
@@ -17,6 +20,7 @@ export class TypesComponent implements OnInit {
     type: '',
   }]
   selectedType!: Type
+  changeFotoEnabled!: boolean
 
   typeForm = new FormGroup({
     type: new FormControl('', {validators: [Validators.required]}),
@@ -24,7 +28,8 @@ export class TypesComponent implements OnInit {
   })
 
   constructor(
-    private typeService: TypeServiceService
+    private typeService: TypeServiceService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -69,18 +74,36 @@ export class TypesComponent implements OnInit {
   deleteType(id:number){
     this.typeService.deleteType(id)
     .subscribe(_ => { this.getTypes();})
-
+    this.changeFotoEnabled = false
   }
 
   // Fill form with data
   editType(type: Type){
     this.selectedType = type;
+    this.changeFotoEnabled = true
     this.typeForm.controls.id.setValue((type.id).toString()) 
     this.typeForm.controls.type.setValue(type.type)     
   }
   
   resetForm(){
     this.typeForm.reset()
+    this.changeFotoEnabled = false
   }
   
+  openDialog(msg: string) {
+    this.dialog.open(ModalMsgComponent, {
+      data: { msg },
+    });
+    this.changeFotoEnabled = false
+  }
+
+  changePhoto(){
+    const dialogRef = this.dialog.open(ModalToChangePhotoTypeComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.openDialog('Event Photo Updated')
+    }
+    });
+  }
+
 }

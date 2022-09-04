@@ -1,15 +1,18 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 // Interfaces
 import { Event } from '@etp/dashboard/interfaces'
 // Services
 import { EventServiceService } from '@etp/dashboard/services';
 import { UserServiceService } from '@etp/shared/services';
+import { ModalErrorComponent } from '../../components/modal-error/modal-error.component';
+import { ActivatedRoute } from '@angular/router';
 
 interface UserEvents {
   id: number,
   name: string,
-  star: boolean
+  favourite: boolean
 }
 
 @Component({
@@ -24,28 +27,18 @@ export class EventDetailComponent implements OnInit {
   userName!:string
   today = new Date
   userParticipateEvent: boolean = false 
-  
-  @ViewChild("quiteventtag") quiteventtag!: ElementRef;
-  @ViewChild("joineventtag") joineventtag!: ElementRef;
-  
   userEvents!: UserEvents[]
-
+  
   constructor(
     private eventService: EventServiceService,
     private userService: UserServiceService,
     private router: Router,
+    public dialog: MatDialog,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void{
-    // Get event information from observable
-    this.eventService.getEvent().subscribe({
-      next: event => {
-        this.event = event
-      },
-      error: (err) => {
-        this.router.navigate(['/notfound']);
-      }
-    })
+    
     // Get logged user information from observable
     this.userService.getUser().subscribe({
       next: user => {
@@ -53,88 +46,104 @@ export class EventDetailComponent implements OnInit {
         this.userName = user.name
       },
       error: (err) => {
-        this.router.navigate(['/notfound']);
+        this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong trying to cancel the event. Try again' }})
       }
     })
 
-    // Get all the users subscribed in this event
-    this.eventService.getUsersByEvent(this.event.id)
-    .subscribe({
-      next: (res) => {
-        if (res.status === 200) {
-          this.userEvents = res.users
+    // Get event information
+    const eventId = this.activatedRoute.snapshot.paramMap.get("id");
+    if (eventId) {
+      this.eventService.getEventById(parseInt(eventId, 10))
+      .subscribe({
+        next: (res) => {
+          this.event = res.event
+          this.eventService.setEvent(this.event)
+
+          this.event.init_date = new Date(this.event.init_date)
+          this.event.end_date = new Date(this.event.end_date)
+          this.userEvents = res.people
+          // Search if the user already participates in this event
           const resultado = this.userEvents.find( user => user.id === this.idUser );
           resultado? this.userParticipateEvent = true : this.userParticipateEvent = false
-        } 
-        else{
-          this.userEvents = [
-            {
-              id: 0,
-              name: 'Sorry, something went wrong.',
-              star: false
-            }]
-        }       
-      },
-      error: ((err: any) => {
-        this.userEvents = [
-          {
-            id: 0,
-            name: 'Sorry, something went wrong.',
-            star: false
-          }]
+        },
+        error: ((err: any) => {  
+          const dialogRef = this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong' }})
+          dialogRef.afterClosed().subscribe(result => {
+            this.router.navigate(['/dashboard/feed']);
+          });
+        })
       })
-    })
+    } else {
+      const dialogRef = this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong' }})
+      dialogRef.afterClosed().subscribe(result => {
+        this.router.navigate(['/dashboard/feed']);
+      });
+    }
     
     // Sort users to show the best ones first
-    this.userEvents.sort(
-      function(a, b) {          
-         if (a.star === b.star) {
-            return ((a.name || 0) < (b.name || 0)) ? 1 : -1;
-         }
-         return a.star < b.star ? 1 : -1;
+    if (this.userEvents) { 
+      this.userEvents.sort( function(a, b) {          
+        if (a.favourite === b.favourite) {
+          return ((a.name || 0) < (b.name || 0)) ? 1 : -1;
+        }
+        return a.favourite < b.favourite ? 1 : -1;
       });
+    }
   }
 
   // User joins the event
   joinEvent(){
-    this.event.people = (this.event.people || 0) + 1  
+    this.event.cantPeople = (this.event.cantPeople || 0) + 1  
     this.userParticipateEvent = true
     this.userEvents.push({
       id: this.idUser,
       name: this.userName,
-      star: false
+      favourite: false
     })
     this.userService.userJoinsEvent(this.event.id).subscribe()
   }
   
   // User quits the event
   quitEvent(){
-    this.event.people = (this.event.people || 0) - 1  
+    this.event.cantPeople = (this.event.cantPeople || 0) - 1  
     this.userParticipateEvent = false
     this.userEvents = this.userEvents.filter(user => user.id !== this.idUser)
-    this.userService.userJoinsEvent(this.event.id).subscribe()
+    this.userService.userLeftEvent(this.event.id).subscribe()
   }
 
   // Event admin cancels the event
   cancelEvent(){
-    this.eventService.cancelEvent(this.event.id, true).subscribe()
+    this.eventService.cancelEvent(this.event.id, true)
+    .subscribe({
+      next: (res) => {
+        this.eventService.setEvent(res.updatedEvent)
+      },
+      error: ((err: any) => {  this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong trying to cancel the event. Try again' }})})
+    })
   }
 
   // Event admin deletes the event
   deleteEvent(){
-    this.eventService.deleteEvent(this.event.id).subscribe()
-  }
-
-  // Open the edit-event view
-  editEvent(){
-    this.router.navigate(['/dashboard/editEvent']);
+    this.eventService.deleteEvent(this.event.id)
+    .subscribe({
+      next: (res) => {
+        this.eventService.setEvent(res.updatedEvent)
+        this.router.navigate(['/dashboard/feed']);
+      },
+      error: ((err: any) => {  
+        const dialogRef = this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong trying to delete the event. Try again' }})
+        dialogRef.afterClosed().subscribe(result => {
+          this.router.navigate(['/dashboard/feed']);
+        });
+      })
+    })
   }
 
   // Event admin fav a user
   favuser(idUser: number, fav: boolean){
     this.userEvents = this.userEvents.map(function(user){
       if (user.id === idUser) {
-        user.star = fav
+        user.favourite = fav
       }
       return user})
     this.userService.userFavedForEvent(idUser, this.event.id, fav).subscribe()

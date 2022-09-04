@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { UserServiceService } from '@etp/shared/services';
+import { EventServiceService } from '../../services/eventService/event-service.service';
 
 @Component({
-  selector: 'etp-modal-to-change-photo',
-  templateUrl: './modal-to-change-photo.component.html',
-  styleUrls: ['./modal-to-change-photo.component.scss']
+  selector: 'etp-modal-to-change-photo-event',
+  templateUrl: './modal-to-change-photo-event.component.html',
+  styleUrls: ['./modal-to-change-photo-event.component.scss']
 })
-
-export class ModalToChangePhotoComponent implements OnInit {
+export class ModalToChangePhotoEventComponent implements OnInit {
   
   file!: File
   error: string = ''
 
   constructor(
-    private userService: UserServiceService,
-    private dialogRef: MatDialogRef<ModalToChangePhotoComponent>
+    private eventService: EventServiceService,
+    private dialogRef: MatDialogRef<ModalToChangePhotoEventComponent>
   ) {}
 
   ngOnInit(): void {
@@ -30,11 +29,9 @@ export class ModalToChangePhotoComponent implements OnInit {
       this.error = 'Select an image.' 
     } else {
       // BE API
-      this.userService.editUserPhoto(this.file)
+      this.eventService.updateEventPhoto(this.file)
         .subscribe({
-          next: (res: { status: number; msg: string; }) => {
-              this.dialogRef.close(true);
-          },            
+          next: () => {this.dialogRef.close(true)},            
           error: ((err: any) => {
             this.error = 'Something went wrong trying to update your photo.';
               console.log(err);
