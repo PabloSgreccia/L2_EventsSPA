@@ -21,6 +21,7 @@ import { EventEditComponent } from './views';
 import { ModalErrorComponent } from './components/modal-error/modal-error.component';
 import { ModalToChangePhotoEventComponent } from './components/modal-to-change-photo-event/modal-to-change-photo-event.component';
 import { ModalToChangePhotoTypeComponent } from './components/modal-to-change-photo-type/modal-to-change-photo-type.component';
+import { ModalNoticeComponent } from './components/modal-notice/modal-notice.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { ModalToChangePhotoTypeComponent } from './components/modal-to-change-ph
     ModalErrorComponent,
     ModalToChangePhotoEventComponent,
     ModalToChangePhotoTypeComponent,
+    ModalNoticeComponent,
   ],
   imports: [
     CommonModule,

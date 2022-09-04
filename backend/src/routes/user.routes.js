@@ -13,6 +13,7 @@ const {
     validationUser,
     updatePass,
     updateUser,
+    updateUserVerify,
     downUser,
     destroy,
     logOut,
@@ -41,9 +42,10 @@ router.post("/uploadphoto", verifyToken,upload(),uploadPhoto)
 router.post("/userjoinevent", verifyToken,validationJoinEvent, userjoinevent)
 router.post("/validation/:code", validationUser)
 router.post("/logout", logOut)
-router.post("/forgot",forgot)
+router.post("/forgot", forgot)
 router.patch("/updatepass", verifyToken, passValidation, updatePass)
 router.patch("/updateuser", verifyToken, updateUser)
+router.patch("/updateuserverify", verifyToken, adminRole, updateUserVerify)
 router.patch("/down", verifyToken, downUser)
 router.patch("/favourite", verifyToken, favouriteUser)
 router.delete("/delete/:id", verifyToken, adminRole, destroy)

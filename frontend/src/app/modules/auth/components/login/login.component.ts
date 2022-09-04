@@ -87,17 +87,8 @@ export class LoginComponent implements OnInit {
     if (this.email.value && this.email.valid) {
       this.userService.forgotPassword(this.email.value)
         .subscribe({
-          next: (res) => {
-            if (res.status === 200) {
-              this.openDialog(`We sent an email to ${this.email.value}, check it to reset your password`)
-            } 
-            else{
-              this.error = "Email doesn't exists"
-            }       
-          },
-          error: ((err: any) => {
-            this.error = 'Something went wrong. Try Again' 
-          })
+          next: (res) => { this.openDialog(`We sent an email to ${this.email.value}, check it to reset your password`)},
+          error: ((err) => { this.error = err.error.msg })
         })
     } else {
       this.error = 'Please, fill the email input before'

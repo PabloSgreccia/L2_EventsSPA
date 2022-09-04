@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { User } from '@etp/shared/interfaces';
 import { UserServiceService } from '@etp/shared/services';
+import { ModalErrorComponent } from 'src/app/modules/dashboard/components/modal-error/modal-error.component';
 
 @Component({
   selector: 'etp-verifications',
@@ -13,7 +15,8 @@ export class VerificationsComponent implements OnInit {
   selectedUser!: User
 
   constructor(
-    private userService: UserServiceService
+    private userService: UserServiceService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -31,11 +34,24 @@ export class VerificationsComponent implements OnInit {
   }
 
   declineVerification(id:number){
-    this.userService.updateVerifyStatus(id, 1).subscribe(_ => {this.getUsersList()})
+    this.userService.updateVerifyStatus(id, 1)
+    .subscribe({
+      next: (res) => { this.getUsersList() },
+      error: ((err) => { this.openErrorDialog("Something went wrong, try again.") }) 
+    })
   }
 
   acceptVerification(id:number){
-    this.userService.updateVerifyStatus(id, 3).subscribe(_ => {this.getUsersList()})
+    this.userService.updateVerifyStatus(id, 3)
+    .subscribe({
+      next: (res) => { this.getUsersList() },
+      error: ((err) => { this.openErrorDialog("Something went wrong, try again.") }) 
+    })
   }
-  
+
+  // Open error dialog
+  openErrorDialog(msg: string) {
+    this.dialog.open(ModalErrorComponent, { data: { msg } });
+  }
+
 }

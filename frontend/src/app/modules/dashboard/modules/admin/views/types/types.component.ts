@@ -6,6 +6,7 @@ import { ModalMsgComponent } from '@etp/dashboard/components';
 import { Type } from '@etp/dashboard/interfaces';
 // Services
 import { TypeServiceService } from '@etp/dashboard/services';
+import { ModalErrorComponent } from 'src/app/modules/dashboard/components/modal-error/modal-error.component';
 import { ModalToChangePhotoTypeComponent } from 'src/app/modules/dashboard/components/modal-to-change-photo-type/modal-to-change-photo-type.component';
 
 @Component({
@@ -20,7 +21,7 @@ export class TypesComponent implements OnInit {
     type: '',
   }]
   selectedType!: Type
-  changeFotoEnabled!: boolean
+  changeFotoDisabled: boolean = true
 
   typeForm = new FormGroup({
     type: new FormControl('', {validators: [Validators.required]}),
@@ -73,28 +74,36 @@ export class TypesComponent implements OnInit {
   // Delete type functionality
   deleteType(id:number){
     this.typeService.deleteType(id)
-    .subscribe(_ => { this.getTypes();})
-    this.changeFotoEnabled = false
+    .subscribe({
+      next: (res) => { this.getTypes() },
+      error: ((err) => { this.openErrorDialog(err.error.msg) }) 
+    })
   }
+
+  // Open error dialog
+  openErrorDialog(msg: string) {
+    this.dialog.open(ModalErrorComponent, { data: { msg } });
+  }
+
 
   // Fill form with data
   editType(type: Type){
     this.selectedType = type;
-    this.changeFotoEnabled = true
+    this.changeFotoDisabled = false
     this.typeForm.controls.id.setValue((type.id).toString()) 
     this.typeForm.controls.type.setValue(type.type)     
   }
   
   resetForm(){
     this.typeForm.reset()
-    this.changeFotoEnabled = false
+    this.changeFotoDisabled = true
   }
   
   openDialog(msg: string) {
     this.dialog.open(ModalMsgComponent, {
       data: { msg },
     });
-    this.changeFotoEnabled = false
+    this.changeFotoDisabled = true
   }
 
   changePhoto(){

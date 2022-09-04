@@ -28,6 +28,7 @@
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
+    cursor: pointer;
 }
 
 .event-data-card{
@@ -83,4 +84,12 @@ tr{
 .cancelled{
     color: red;
     font-weight: bold;
+}
+
+mat-card-title, .link-text{
+    display: inline;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

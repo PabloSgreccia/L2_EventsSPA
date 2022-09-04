@@ -40,6 +40,14 @@
     justify-content: space-between;
 }
 
+mat-card-title, .link-text{
+    display: inline;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .aligned-elements{
     display: flex;
     flex-direction: row;

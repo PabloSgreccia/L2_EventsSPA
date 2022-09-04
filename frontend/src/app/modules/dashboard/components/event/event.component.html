@@ -2,19 +2,19 @@
 
     <div class="event-card-header event-linker">
       <img [src]="event.user.photo" class="user-img" [routerLink]="['/dashboard/profile', event.user.id]">
-      <div class="event-card-header-info" [routerLink]="['/dashboard/event', event.id]">
+      <div class="event-card-header-info">
 
-        <div class="card-title">
+        <div class="card-title" [routerLink]="['/dashboard/event', event.id]">
           <mat-card-title>{{event.title}}</mat-card-title>
           <mat-icon *ngIf="event.user.validated" class="verify-icon">verified_user</mat-icon>
         </div>
 
-        <div class="aligned-elements">
+        <div class="aligned-elements" [routerLink]="['/dashboard/event', event.id]">
           <mat-icon>date_range</mat-icon>
           {{event.init_date | date:'short'}}
         </div>
 
-        <div class="aligned-elements" *ngIf="event.province">
+        <div class="aligned-elements" *ngIf="event.province" [routerLink]="['/dashboard/event', event.id]">
           <mat-icon> place</mat-icon>
           {{event.province}},
           {{event.city}},
@@ -22,7 +22,7 @@
           {{event.number}}
         </div>
 
-        <div class="aligned-elements" *ngIf="event.link">
+        <div class="aligned-elements link-text" *ngIf="event.link">
           <mat-icon>link</mat-icon>
           {{event.link}}
         </div>
@@ -37,19 +37,12 @@
 
     <img [src]="event.photo" class="event-img event-linker" [routerLink]="['/dashboard/event', event.id]">
 
-    <div class="event-card-footer">
+    <div class="event-card-footer" [routerLink]="['/dashboard/event', event.id]">
       <div>
         <div *ngIf="event.cancelled" class="canceled">
           Event Cancelled
         </div>
       </div>
-        <!-- <button mat-button *ngIf="event.idUser === idUser; else participate" disabled="true">OWNER</button>
-        <ng-template #participate>
-          <button mat-button (click)="joinEvent(event._id)" *ngIf="!event.participateDisabled; else participating">PARTICIPATE</button>
-        </ng-template>
-        <ng-template #participating>
-            <button mat-button disabled="true">PARTICIPATING</button>
-        </ng-template> -->
       <div class="event-card-footer-stats">
           <div class="event-card-footer-stats-ppl">
               <mat-icon>people</mat-icon>
