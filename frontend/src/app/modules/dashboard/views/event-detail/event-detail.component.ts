@@ -141,12 +141,14 @@ export class EventDetailComponent implements OnInit {
 
   // Event admin fav a user
   favuser(idUser: number, fav: boolean){
-    this.userEvents = this.userEvents.map(function(user){
-      if (user.id === idUser) {
-        user.favourite = fav
-      }
-      return user})
-    this.userService.userFavedForEvent(idUser, this.event.id, fav).subscribe()
+    if (this.event.user.id === this.idUser ) {
+      this.userEvents = this.userEvents.map(function(user){
+        if (user.id === idUser) {
+          user.favourite = fav
+        }
+        return user})
+      this.userService.userFavedForEvent(idUser, this.event.id, fav).subscribe()
+    }
   }
 
 }

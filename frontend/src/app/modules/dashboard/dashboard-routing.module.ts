@@ -44,8 +44,7 @@ const routes: Routes = [
       },{ 
         path: 'editevent/:id', 
         component: EventEditComponent,
-        // TODO: descomentar cuando esté conectado el BE
-        // canActivate:[AdminGroupGuard],
+        canActivate:[AdminGroupGuard],
       }
     ]
   },

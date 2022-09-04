@@ -60,7 +60,7 @@ export class UserServiceService {
 
   // un usuario quiere eliminar su cuenta
   desactivateUser(active: boolean){
-    return this.http.patch<any>(`${this.URL_API_USER}/updateuser`, active)
+    return this.http.patch<any>(`${this.URL_API_USER}/down`, {active})
   }
   
   // el adimin elimina un usuario
@@ -74,12 +74,12 @@ export class UserServiceService {
   }
 
   // usuario solicita verificacion de usuario
-  updateVerifyStatus(id:number, validated: number){
+  updateVerifyStatus(idUser:number, validated: number){
     const body = {
-      id,
+      idUser,
       validated
     }
-    return this.http.patch<any>(`${this.URL_API_USER}/updateuser`, body)
+    return this.http.patch<any>(`${this.URL_API_USER}/updateuserverify`, body)
   }
 
   // usuario cambia su contraseña

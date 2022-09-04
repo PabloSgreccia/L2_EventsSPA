@@ -21,6 +21,7 @@ export class ProfileComponent implements OnInit {
   cantEvents!: number
   createdEvents!: Event[]
   followedEvents!: Event[]
+  routeParam!: string | null
 
   constructor(
     private eventService: EventServiceService,
@@ -31,56 +32,55 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.routeParam = params.get("id");
+      const id = this.activatedRoute.snapshot.paramMap.get('id');
     
-    // get user info --> BE
-    if (id) {  
-      this.userService.getOneUser(parseInt(id, 10))
-      .subscribe({
-        next: (res) => { 
-          this.user = res.user 
-        },
-        error: ((err: any) => {
-          const dialogRef = this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong' }})
-          dialogRef.afterClosed().subscribe(result => {
-            this.router.navigate(['/dashboard/feed']);
-          });
+      // get user info --> BE
+      if (id) {  
+        this.userService.getOneUser(parseInt(id, 10))
+        .subscribe({
+          next: (res) => { 
+            this.user = res.user 
+          },
+          error: ((err: any) => {
+            const dialogRef = this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong' }})
+            dialogRef.afterClosed().subscribe(result => {
+              this.router.navigate(['/dashboard/feed']);
+            });
+          })
         })
-      })
 
-      // get created events ny this user  --> BE
-      this.eventService.getEventsCreatedByUser(parseInt(id, 10))
-      .subscribe({
-        next: (res) => {
-            console.log(res);
-            
-            this.createdEvents = res.events
-            // Sort created events by init date
-            this.createdEvents.sort( function(a, b) { return b.init_date > a.init_date ? 1 : -1; });
-            this.cantEvents = this.createdEvents.length 
-        },
-        error: ((err: any) => {
-          console.log(err);
-          // this.router.navigate(['/notfound']);
+        // get created events ny this user  --> BE
+        this.eventService.getEventsCreatedByUser(parseInt(id, 10))
+        .subscribe({
+          next: (res) => {
+              this.createdEvents = res.events
+              // Sort created events by init date
+              this.createdEvents.sort( function(a, b) { return b.init_date > a.init_date ? 1 : -1; });
+              this.cantEvents = this.createdEvents.length 
+          },
+          error: ((err: any) => {
+            console.log(err);
+            // this.router.navigate(['/notfound']);
+          })
         })
-      })
-      
-      // // get followed events --> BE
-      this.eventService.getEventsFollowedByUser(parseInt(id, 10))
-      .subscribe({
-        next: (res) => {
-            console.log(res);
-          
-            this.followedEvents = res.events
-            // Sort followed events by init date
-            this.followedEvents.sort(
-              function(a, b) { return b.init_date > a.init_date? 1 : -1; });   
-        },
-        error: ((err: any) => {
-          console.log(err);
-          // this.router.navigate(['/notfound']);
+        
+        // // get followed events --> BE
+        this.eventService.getEventsFollowedByUser(parseInt(id, 10))
+        .subscribe({
+          next: (res) => {
+              this.followedEvents = res.events
+              // Sort followed events by init date
+              this.followedEvents.sort(
+                function(a, b) { return b.init_date > a.init_date? 1 : -1; });   
+          },
+          error: ((err: any) => {
+            console.log(err);
+            // this.router.navigate(['/notfound']);
+          })
         })
-      })
-    }
+      }
+    })
   }
 }
