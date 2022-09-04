@@ -54,10 +54,11 @@ const show = async (req, res) => {
             id: id
         }
     });
-    if(!user.photo){
-        user.photo = 'http://localhost:3000/images/defUser.png'
-    }
+    
     if (user) {
+        if(!user.photo){
+            user.photo = 'http://localhost:3000/images/defUser.png'
+        }
         return res.status(200).json({
             user
         })
@@ -66,6 +67,7 @@ const show = async (req, res) => {
             'msg': 'usuario no encontrado'
         })
     }
+   
 };
 
 const register = async (req, res) => {
@@ -110,7 +112,7 @@ const register = async (req, res) => {
 };
 
 const uploadPhoto = async (req, res) => {
-    let photo= process.env.PHOTO+req.file.path.substr(req.file.path.lastIndexOf('imgs'))
+    let photo= process.env.PHOTO+req.file.path.substr(req.file.path.lastIndexOf('images'))
     console.log(photo);
     const id = req.userId
     const user = await User.findOne({

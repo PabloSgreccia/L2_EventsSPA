@@ -4,8 +4,6 @@ const cors = require('cors');
 const path = require("path");
 const {json} = require('body-parser');
 const app = express();
-const myCron = require('./cron')
-
 const myCron = require('./config/cron'); //importa el cron
 
 //Requerir router
@@ -13,8 +11,6 @@ const routerEvent = require('./routes/event.routes');
 const routerUser = require('./routes/user.routes');
 const routerType = require('./routes/type.routes');
 const routerContact = require('./routes/contact.routes');
-
-app.use(express.static(path.join(__dirname, './public')))
 
 //Settings
 app.use(cors());
