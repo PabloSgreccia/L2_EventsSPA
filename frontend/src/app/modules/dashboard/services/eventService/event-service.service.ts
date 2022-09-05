@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class EventServiceService {
 
+  // URL_API_EVENT = "https://eventoslasegunda.herokuapp.com/api/event"
   URL_API_EVENT = `${environment.HOST}/api/event`
   
   private initialState: Event = 

@@ -1,4 +1,5 @@
 const multer = require('multer')
+const path = require('path')
 
 function uploadImage(model) {
     const storage = multer.diskStorage({

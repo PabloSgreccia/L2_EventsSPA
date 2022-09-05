@@ -91,7 +91,7 @@ export class FeedComponent implements OnInit {
         if (res.events[0].id) {
           this.initialEvents = res.events
           this.filteredEvents = this.initialEvents
-          this.filteredEvents.sort( function(a, b) { return b.init_date > a.init_date? 1 : -1; });
+          this.filteredEvents.sort( function(a, b) { return new Date(b.init_date) > new Date(a.init_date)? 1 : -1; });
         } else {
           this.error = "There aren't any active event"
         }
@@ -174,8 +174,7 @@ export class FeedComponent implements OnInit {
   orderby(event: any){
     if (event.value === 'date') {
       //Order by date (desc)
-      this.filteredEvents.sort(
-        function(a, b) { return b.init_date > a.init_date? 1 : -1; });
+      this.filteredEvents.sort( function(a, b) { return new Date(b.init_date) > new Date(a.init_date)? 1 : -1; });
     }else if (event.value === 'people') {
       //Order by people (desc)
       this.filteredEvents.sort(
