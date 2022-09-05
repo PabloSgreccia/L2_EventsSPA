@@ -32,9 +32,9 @@ const {
     verifyToken
 } = require('../validators/auth');
 
-router.get("/views", showAll)
+router.get("/views", verifyToken, adminRole, showAll)
 router.get("/validations", verifyToken, adminRole, pendingValidationUser)
-router.get("/view/:id", show)
+router.get("/view/:id", verifyToken, show)
 router.get("/logged", verifyToken, showLogged)
 router.post("/register", validateRegister, EmailIsUnique,upload(), register)
 router.post("/login", login)
@@ -51,6 +51,4 @@ router.patch("/favourite", verifyToken, favouriteUser)
 router.delete("/delete/:id", verifyToken, adminRole, destroy)
 router.delete("/userleftevent/:idEvent", verifyToken, userleftevent)
 
-// listar los eventos que creo el usuario eventscreatedbyuser
-// listar los eventos anotados eventsfollowedbyuser
 module.exports = router;

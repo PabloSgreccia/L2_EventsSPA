@@ -3,7 +3,7 @@ const cron = require('node-cron');
 const Event = require('../database/models/').event
 
 // Cron logic every hour al minute 0
-cron.schedule('* * * * *', async () => {
+cron.schedule('0 * * * *', async () => {
     const today = new Date()
     
     let events = await Event.findAll({

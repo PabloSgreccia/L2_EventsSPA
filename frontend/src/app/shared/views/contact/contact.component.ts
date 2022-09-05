@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ModalMsgComponent } from 'src/app/modules/dashboard/components/modal-msg/modal-msg.component';
 // Interfaces
 import { Contact, User } from '@etp/shared/interfaces';
 // Services
 import { AuthService } from '@etp/auth/services';
-import { UserServiceService } from '@etp/shared/services';
-import { ContactServiceService } from '../../services/contactService/contact-service.service';
+// Components
+import { ContactServiceService, UserServiceService } from '@etp/shared/services';
+import { ModalErrorComponent, ModalMsgComponent } from '@etp/shared/components';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,11 +18,15 @@ import { Router } from '@angular/router';
 export class ContactComponent implements OnInit {
 
   contactForm = new FormGroup({
-    name: new FormControl('', {validators: [Validators.required]}),
-    email: new FormControl('', {validators: [Validators.required, Validators.email]}),
-    subject: new FormControl('', {validators: [Validators.required]}),
+    name: new FormControl('', {validators: [Validators.required, Validators.maxLength(50)]}),
+    email: new FormControl('', {validators: [Validators.required, Validators.email, Validators.maxLength(100)]}),
+    subject: new FormControl('', {validators: [Validators.required, Validators.maxLength(30)]}),
     description: new FormControl('', {validators: [Validators.required, Validators.minLength(10), Validators.maxLength(255)]}),
   })
+  get name() { return this.contactForm.controls.name }
+  get email() { return this.contactForm.controls.email }
+  get subject() { return this.contactForm.controls.subject }
+  get description() { return this.contactForm.controls.description }
 
   error: String = '';
   
@@ -31,7 +35,7 @@ export class ContactComponent implements OnInit {
     public dialog: MatDialog,
     private contactService: ContactServiceService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -40,17 +44,16 @@ export class ContactComponent implements OnInit {
       next: (response) => {
         this.userService.updateUser(response.user);
       },
-      error: ((err) => {
-        this.router.navigate(['/signmenu'])
-      }) 
+      error: (_ => {}) 
     })
         
-    // Get logged user data byu observable
+    // Get logged user data by observable
     this.userService.getUser().subscribe({
       next: (user: User) => {
         this.contactForm.controls.name.setValue(`${user.name}`)
         this.contactForm.controls.email.setValue(`${user.email}`)
-    }, error: () => {}})
+      }, error: () => {}
+    })
   }
 
   // After user confirms form
@@ -63,30 +66,29 @@ export class ContactComponent implements OnInit {
         subject: this.contactForm.controls.subject.value || '',
         description: this.contactForm.controls.subject.value || '',
         date: (new Date()).toString(),
+        read: false
       }
 
       // BE API
-      this.contactService.createContact(newContact).subscribe()
-
-      // Reset contact form
-      this.contactForm.controls.subject.setValue('')
-      this.contactForm.controls.description.setValue('')
-      this.contactForm.controls.subject.markAsUntouched;
-      this.contactForm.controls.description.markAsUntouched;
-      this.openDialog('Your email was sent. we will contact you shortly.')
-
+      this.contactService.createContact(newContact)
+      .subscribe({
+        next: res => { 
+          // Show dialog
+          this.dialog.open(ModalMsgComponent, { data: { msg: 'Your email was sent. we will contact you shortly.' } })
+          .afterClosed().subscribe(_ => {
+            this.router.navigate(['/dashboard/feed'])
+          })
+        },
+        error: ((err) => { this.openErrorDialog("Something went wrong, try again.") })
+      })
     } else {
       this.contactForm.markAllAsTouched;
     }
   }
   
-  // Show dialog
-  openDialog(msg: string) {
-    this.dialog.open(ModalMsgComponent, {
-      data: { msg },
-    });
+  // Open error dialog
+  openErrorDialog(msg: string) {
+  this.dialog.open(ModalErrorComponent, { data: { msg } });
   }
 
-  get email() { return this.contactForm.controls.email }
-  get description() { return this.contactForm.controls.description }
 }

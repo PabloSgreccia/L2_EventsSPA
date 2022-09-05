@@ -1,6 +1,6 @@
 // Event card styles
 .user-img{
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-image: url('./defUser.png');
     background-size: cover;
     width: 50px;
     height: 50px;
@@ -8,7 +8,6 @@
 }
 
 .event-card{
-    width: calc(400px + 2em);
     height: 100%;
     background-color: rgb(240, 240, 240);
     border-radius: 10px;
@@ -16,6 +15,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    max-width: 400px;
     
 }
 
@@ -30,7 +30,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    width: 100%;
+    width: calc(100% - 50px);
 }
 
 .card-title{
@@ -38,14 +38,22 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
+    // flex-wrap: wrap;
+    width: 100%;
 }
 
-mat-card-title, .link-text{
-    display: inline;
-    width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
+mat-card-title{
+    // display: inline;
+    max-width: calc(400px - 50px - 10px - 2em);
+    // overflow: hidden;
+    // white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.link-url{
+    max-width: calc(400px - 50px - 10px - 30px - 2em);
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .aligned-elements{
@@ -56,9 +64,10 @@ mat-card-title, .link-text{
 }
 
 .event-img{
-    // background-image: url('http://localhost:3000/images/1.png');
+    background-image: url('./defEvent.png');
     max-height: 200px;
-    width: calc(400px + 2em);
+    // width: calc(400px + 2em);
+    width: 400px;
     position: relative;
     left: -1em;
     margin-top: 5px;
@@ -68,6 +77,12 @@ mat-card-title, .link-text{
 @media screen and (max-width: calc(400px + 2em)) {
     .event-img {
         width: calc(100% + 2em);
+    }
+    
+    .link-url{
+        max-width: calc(100% - 50px - 10px - 30px - 2em);
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
   }
 
@@ -109,6 +124,7 @@ button{
 .verify-icon{
     color: rgb(1, 164, 239);
     overflow: visible;
+    max-width: 30px;
 }
 
 .finished-event{

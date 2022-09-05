@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ModalMsgComponent } from '@etp/dashboard/components';
 // Interfaces
 import { Type } from '@etp/dashboard/interfaces';
 // Services
 import { TypeServiceService } from '@etp/dashboard/services';
-import { ModalErrorComponent } from 'src/app/modules/dashboard/components/modal-error/modal-error.component';
+import { ModalErrorComponent } from 'src/app/shared/components/modal-error/modal-error.component';
 import { ModalToChangePhotoTypeComponent } from 'src/app/modules/dashboard/components/modal-to-change-photo-type/modal-to-change-photo-type.component';
+import { ModalMsgComponent } from '@etp/shared/components';
 
 @Component({
   selector: 'etp-types',

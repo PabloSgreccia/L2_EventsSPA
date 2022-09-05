@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Event } from "@etp/dashboard/interfaces";
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventServiceService {
 
-  URL_API_EVENT = "http://localhost:3000/api/event"
+  URL_API_EVENT = `${environment.HOST}/api/event`
   
   private initialState: Event = 
   {
@@ -67,6 +68,8 @@ export class EventServiceService {
   }
   // usuario crea un evneto
   createEvent(event:any, photo?: File){
+    event.init_date = event.init_date.toString()
+    event.end_date = event.end_date.toString()
     const formdata = new FormData()
     if (photo) {
       formdata.append('photo', photo)
@@ -82,7 +85,9 @@ export class EventServiceService {
 
   // el admin de un evento, actualiza un evento
   updateEvent(event: any){
-    return this.http.patch<any>(`${this.URL_API_EVENT}/create`, event)
+    event.init_date = event.init_date.toString()
+    event.end_date = event.end_date.toString()
+    return this.http.patch<any>(`${this.URL_API_EVENT}/update`, event)
   }
 
   updateEventPhoto(photo: File){
@@ -104,11 +109,6 @@ export class EventServiceService {
   deleteEvent(id: number){
     return this.http.delete<any>(`${this.URL_API_EVENT}/delete/${id}`)
   }
-
-  // obtener datos de un evento - lo usamos para algo?
-  // getOneEvent(id: number){
-  //   return this.http.get<any>(`${this.URL_API_EVENT}/${id}`)
-  // }
   
   // obtener listado de eventos (feed)
   getManyEvent(){

@@ -16,7 +16,7 @@ export class ModalToChangePwdComponent implements OnInit {
 
   // Form
   passForm = new FormGroup({
-    oldPassword: new FormControl('', {validators: [Validators.required]}),
+    oldPassword: new FormControl('', {validators: [Validators.required, Validators.maxLength(255)]}),
     newPassword: new FormControl('', {validators: [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}')]}),
     repeatPassword: new FormControl('', {validators: [Validators.required]}),
   }, {validators: passwordsValidator})

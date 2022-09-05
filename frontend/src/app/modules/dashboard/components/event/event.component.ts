@@ -1,9 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 // Interfaces
 import { Event } from '@etp/dashboard/interfaces'
-// Services
-import { EventServiceService } from '@etp/dashboard/services';
 
 @Component({
   selector: 'etp-event',
@@ -17,10 +14,7 @@ export class EventComponent implements OnInit {
 
   idUser!: number
   
-  constructor(
-    private eventService: EventServiceService,
-    private router: Router,
-  ) { }
+  constructor( ) { }
 
   ngOnInit(): void {
   }

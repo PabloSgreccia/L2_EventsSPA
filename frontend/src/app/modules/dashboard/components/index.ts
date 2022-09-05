@@ -1,5 +1,6 @@
 export * from './event/event.component'
-export * from './modal-msg/modal-msg.component'
 export * from './modal-to-edit/modal-to-edit.component'
 export * from './modal-to-change-photo/modal-to-change-photo.component'
 export * from './modal-to-change-pwd/modal-to-change-pwd.component'
+export * from './modal-to-change-photo-event/modal-to-change-photo-event.component'
+export * from './modal-to-change-photo-type/modal-to-change-photo-type.component'

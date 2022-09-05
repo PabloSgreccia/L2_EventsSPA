@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ModalErrorComponent } from '@etp/shared/components';
 import { User } from '@etp/shared/interfaces';
 import { UserServiceService } from '@etp/shared/services';
-import { ModalErrorComponent } from 'src/app/modules/dashboard/components/modal-error/modal-error.component';
 
 @Component({
   selector: 'etp-verifications',
