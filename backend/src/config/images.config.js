@@ -2,19 +2,10 @@ const multer = require('multer')
 
 function uploadImage(model) {
     const storage = multer.diskStorage({
-        destination: `./public/images/${model}`,
+        destination: './public/images/upload',
         filename: function (_req, file, cb) {
             let extension = file.originalname.slice(file.originalname.lastIndexOf('.'))
-            if (model==='user') {
-                cb(null, `${model.email}${extension}`)
-            }
-            if (model==='event') {
-                cb(null, `${model.title}${extension}`)
-            }
-            if (model==='type') {
-                cb(null, `${model.type}${extension}`)
-            }
-            
+            cb(null, Date.now()+extension)
         },
     })
 
