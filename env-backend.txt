@@ -1,0 +1,24 @@
+PORT=3000
+
+#DB Config
+DB_TYPE=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_NAME=eventos
+DB_USER=[yourdbuser]
+DB_PASS=[yourdbpassword]
+
+#APIs host
+URL = localhost:3000/api
+PHOTO=http://localhost:3000/
+STATIC=./public/
+
+#JWT
+ACCESS_TOKEN_SECRET=anysecrettoken
+
+#MAIL
+EMAil_USER=[youremail]
+EMAIL_PASS=[emailpassword]
+MAIL_HOST=[emailhost]
+MAIL_PORT=587
+MAIL_SECURE=false

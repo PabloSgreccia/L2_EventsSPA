@@ -7,9 +7,8 @@ import { environment } from 'src/environments/environment';
 })
 export class TypeServiceService {
 
-  // URL_API_TYPE = "http://localhost:3000/api/type"
-  // URL_API_TYPE = `${environment.HOST}/api/type`
-  URL_API_TYPE = "https://eventoslasegunda.herokuapp.com/api/type"
+  // URL_API_TYPE = "https://eventoslasegunda.herokuapp.com/api/type"
+  URL_API_TYPE = `${environment.HOST}/api/type`
   
   constructor(
     private http: HttpClient,
