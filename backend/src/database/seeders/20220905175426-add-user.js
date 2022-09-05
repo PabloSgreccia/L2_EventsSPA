@@ -7,7 +7,7 @@ module.exports = {
       {
         name: 'Admin',
         email: 'admin@admin.com',
-        password: bcrypt.hash('Admin123', 10),
+        password: await bcrypt.hash('Admin123', 10),
         role: 'admin',
         photo: '',
         validated: 3,
@@ -20,7 +20,7 @@ module.exports = {
       {
         name: 'Pablo',
         email: 'pablo@gmail.com',
-        password: bcrypt.hash('Pablo123', 10),
+        password: await bcrypt.hash('Pablo123', 10),
         role: 'user',
         photo: '',
         validated: 1,
