@@ -61,7 +61,7 @@ const show = async (req, res) => {
             }
         });
         if(!user.photo){
-            user.photo = 'http://localhost:3000/images/defUser.png'
+            user.photo = 'https://lh6.googleusercontent.com/O_UM2GOw2WXEvZ1L32IdeyhXIfslTZqSjPC3Rp9Io58FkUS8QFssJbkzOoBLiFI7p71KSRHJlig3xRMUsMSd8mRwTzTRcePUmXRCI8I5FR8gSO-S3ePvz9kj6F-BSsbN5Q=w1280'
         }
         if (user) {
             return res.status(200).json({
