@@ -24,6 +24,7 @@ You also can visit a user profile and check all the events created by this user.
     5. setup and start DB: ensure you have a BD client running, then run in console at backend folder
         4.1: npx sequelize-cli db:create
         4.2: npx sequelize-cli db:migrate
+        4.3: npx sequelize-cli db:seed:all
     6. Run backend server: "npm start" (or "npm run dev" in developer mode) 
     7. Run frontend server: "ng serve"
     8. Open "http://localhost:4200" in a browser.
