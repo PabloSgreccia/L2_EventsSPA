@@ -11,9 +11,8 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
   
-  // URL_API_USER = "http://localhost:3000/api/user"
-  URL_API_USER = "https://eventoslasegunda.herokuapp.com/api/user"
-  // URL_API_USER = `${environment.HOST}/api/user`
+  // URL_API_USER = "https://eventoslasegunda.herokuapp.com/api/user"
+  URL_API_USER = `${environment.HOST}/api/user`
 
   constructor(
     private http: HttpClient,
