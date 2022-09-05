@@ -162,7 +162,7 @@ const validationUser = async (req, res) => {
                 active: true,
                 validationCode: ""
             }).then(user => {
-                return res.redirect('https://www.google.com/')
+                return res.redirect('https://l2-events-7vdbyv7cw-pablosgreccia.vercel.app/signmenu')
 
                 
             })
