@@ -9,7 +9,7 @@ const { validationMail, passRecovery } = require('../contrtoller/mail.controller
 const { Op, and } = require('sequelize');
 const formidable = require('formidable');
 
-const IMGURL = `${process.env.PHOTO}/imgaes/default/`
+const IMGURL = `${process.env.PHOTO}images/default`
 
 // List all users
 const showAll = async (req, res) => {
@@ -63,7 +63,7 @@ const show = async (req, res) => {
             }
         });
         if(!user.photo){
-            user.photo = `${IMGURL}/defUser`
+            user.photo = `${IMGURL}/defUser.png`
         }
         if (user) {
             return res.status(200).json({
