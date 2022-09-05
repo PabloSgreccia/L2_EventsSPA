@@ -31,7 +31,7 @@ const showAll = async (req, res) => {
         events = events.map(function(event){
             if (!event.photo) {
                 // Add default event photo
-                event.photo = 'https://lh3.googleusercontent.com/5A94mc7Kbz9unJxUIn4uHRiC7boI0lObrw1OOJYURctaz-exkyA8gjbtxpCanpO3zudaVdKNlbcauHhkwdErsdifIei8VZJkHGJqSuhC_17-zcxTTqDvCCl4tZvynsPLvQ=w1280'
+                event.photo = 'https://lh6.googleusercontent.com/VbXynfUrxyIPsEgmkd_2liJ0rhQFzqNA99scv4G67lFZQVslHxk1EXdKq425Yzt2FrHhCfYe7xLljF4_2gq3aAUjGWym5z5Cm16x4n4lmAaQEZW8iND__clPEZaF_N39Qw=w1280'
             }
             // state of user validation
             if (event.user.validated === 3) {
@@ -41,7 +41,7 @@ const showAll = async (req, res) => {
             }
             // Add default user photo
             if(!event.user.photo){
-                event.user.photo = 'https://lh6.googleusercontent.com/sGCb8bPWG0Zp9kMvoAv4jAih4PqAoyd3FgzTmJPVP6waSlnOn2OK-bEYi9S5ktd3ASylZyLTTe3ZrgIFYeY9mjwBXfei1hpyU9logjUajFuobh-vlJhKFFNsyhNHRcTegQ=w1280'
+                event.user.photo = 'https://lh3.googleusercontent.com/5ok_R5vOHhUaPNFqLkGO_wRxC6uSPspTjkBHEDfs3JVQ04X0hhj-9lzaAkVDY-uXAbbMlZnQPcED27i7fgw2keuVRL61ApeG2Q90tQEccB7tdgr4yTx_DJYN2iOZqlBqkA=w1280'
             }
             return event;
          })
@@ -113,7 +113,7 @@ const showEvent = async (req, res) => {
         })
         // Edit data before to send to FE
         if (!event.photo) {
-            event.photo = 'https://lh3.googleusercontent.com/5A94mc7Kbz9unJxUIn4uHRiC7boI0lObrw1OOJYURctaz-exkyA8gjbtxpCanpO3zudaVdKNlbcauHhkwdErsdifIei8VZJkHGJqSuhC_17-zcxTTqDvCCl4tZvynsPLvQ=w1280'
+            event.photo = 'https://lh6.googleusercontent.com/VbXynfUrxyIPsEgmkd_2liJ0rhQFzqNA99scv4G67lFZQVslHxk1EXdKq425Yzt2FrHhCfYe7xLljF4_2gq3aAUjGWym5z5Cm16x4n4lmAaQEZW8iND__clPEZaF_N39Qw=w1280'
         }
         // state of user validation
         if (event.user.validated === 3) {
@@ -123,7 +123,7 @@ const showEvent = async (req, res) => {
         }
         // Add default user photo
         if(!event.user.photo){
-            event.user.photo = 'https://lh6.googleusercontent.com/sGCb8bPWG0Zp9kMvoAv4jAih4PqAoyd3FgzTmJPVP6waSlnOn2OK-bEYi9S5ktd3ASylZyLTTe3ZrgIFYeY9mjwBXfei1hpyU9logjUajFuobh-vlJhKFFNsyhNHRcTegQ=w1280'
+            event.user.photo = 'https://lh3.googleusercontent.com/5ok_R5vOHhUaPNFqLkGO_wRxC6uSPspTjkBHEDfs3JVQ04X0hhj-9lzaAkVDY-uXAbbMlZnQPcED27i7fgw2keuVRL61ApeG2Q90tQEccB7tdgr4yTx_DJYN2iOZqlBqkA=w1280'
         }
         
         return res.status(200).json({ people, event })
@@ -156,7 +156,7 @@ const eventscreatedbyuser = async (req, res) => {
         events = events.map(function(event){
             if (!event.photo) {
                 // Add default event photo
-                event.photo = 'https://lh3.googleusercontent.com/5A94mc7Kbz9unJxUIn4uHRiC7boI0lObrw1OOJYURctaz-exkyA8gjbtxpCanpO3zudaVdKNlbcauHhkwdErsdifIei8VZJkHGJqSuhC_17-zcxTTqDvCCl4tZvynsPLvQ=w1280'
+                event.photo = 'https://lh6.googleusercontent.com/VbXynfUrxyIPsEgmkd_2liJ0rhQFzqNA99scv4G67lFZQVslHxk1EXdKq425Yzt2FrHhCfYe7xLljF4_2gq3aAUjGWym5z5Cm16x4n4lmAaQEZW8iND__clPEZaF_N39Qw=w1280'
             }
             // state of user validation
             if (event.user.validated === 3) {
@@ -166,7 +166,7 @@ const eventscreatedbyuser = async (req, res) => {
             }
             // Add default user photo
             if(!event.user.photo){
-                event.user.photo = 'https://lh6.googleusercontent.com/sGCb8bPWG0Zp9kMvoAv4jAih4PqAoyd3FgzTmJPVP6waSlnOn2OK-bEYi9S5ktd3ASylZyLTTe3ZrgIFYeY9mjwBXfei1hpyU9logjUajFuobh-vlJhKFFNsyhNHRcTegQ=w1280'
+                event.user.photo = 'https://lh3.googleusercontent.com/5ok_R5vOHhUaPNFqLkGO_wRxC6uSPspTjkBHEDfs3JVQ04X0hhj-9lzaAkVDY-uXAbbMlZnQPcED27i7fgw2keuVRL61ApeG2Q90tQEccB7tdgr4yTx_DJYN2iOZqlBqkA=w1280'
             }
             return event;
          })
@@ -215,7 +215,7 @@ const eventsfollowedbyuser = async (req, res) => {
         eventsList = eventsList.map(function(event){
             if (!event.photo) {
                 // Add default event photo
-                event.photo = 'https://lh3.googleusercontent.com/5A94mc7Kbz9unJxUIn4uHRiC7boI0lObrw1OOJYURctaz-exkyA8gjbtxpCanpO3zudaVdKNlbcauHhkwdErsdifIei8VZJkHGJqSuhC_17-zcxTTqDvCCl4tZvynsPLvQ=w1280'
+                event.photo = 'https://lh6.googleusercontent.com/VbXynfUrxyIPsEgmkd_2liJ0rhQFzqNA99scv4G67lFZQVslHxk1EXdKq425Yzt2FrHhCfYe7xLljF4_2gq3aAUjGWym5z5Cm16x4n4lmAaQEZW8iND__clPEZaF_N39Qw=w1280'
             }
             // state of user validation
             if (event.user.validated === 3) {
@@ -225,7 +225,7 @@ const eventsfollowedbyuser = async (req, res) => {
             }
             // Add default user photo
             if(!event.user.photo){
-                event.user.photo = 'https://lh6.googleusercontent.com/sGCb8bPWG0Zp9kMvoAv4jAih4PqAoyd3FgzTmJPVP6waSlnOn2OK-bEYi9S5ktd3ASylZyLTTe3ZrgIFYeY9mjwBXfei1hpyU9logjUajFuobh-vlJhKFFNsyhNHRcTegQ=w1280'
+                event.user.photo = 'https://lh3.googleusercontent.com/5ok_R5vOHhUaPNFqLkGO_wRxC6uSPspTjkBHEDfs3JVQ04X0hhj-9lzaAkVDY-uXAbbMlZnQPcED27i7fgw2keuVRL61ApeG2Q90tQEccB7tdgr4yTx_DJYN2iOZqlBqkA=w1280'
             }
             return event;
         })

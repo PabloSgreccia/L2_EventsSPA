@@ -61,7 +61,7 @@ const show = async (req, res) => {
             }
         });
         if(!user.photo){
-            user.photo = 'https://lh6.googleusercontent.com/sGCb8bPWG0Zp9kMvoAv4jAih4PqAoyd3FgzTmJPVP6waSlnOn2OK-bEYi9S5ktd3ASylZyLTTe3ZrgIFYeY9mjwBXfei1hpyU9logjUajFuobh-vlJhKFFNsyhNHRcTegQ=w1280'
+            user.photo = 'https://lh3.googleusercontent.com/5ok_R5vOHhUaPNFqLkGO_wRxC6uSPspTjkBHEDfs3JVQ04X0hhj-9lzaAkVDY-uXAbbMlZnQPcED27i7fgw2keuVRL61ApeG2Q90tQEccB7tdgr4yTx_DJYN2iOZqlBqkA=w1280'
         }
         if (user) {
             return res.status(200).json({
