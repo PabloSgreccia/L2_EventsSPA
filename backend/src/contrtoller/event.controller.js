@@ -129,7 +129,7 @@ const showEvent = async (req, res) => {
         return res.status(200).json({ people, event })
 
     } catch (error) {
-        return res.status(400).json({ msg: 'Something went wrong trying to get users' })
+        return res.status(400).json({ msg: 'Something went wrong trying to get events' })
     }
 };
 
