@@ -10,6 +10,8 @@ const {Sequelize} = require('../database/models/');
 const formidable = require('formidable');
 const { where } = require('sequelize');
 
+const IMGURL = `${process.env.PHOTO}/imgaes/default/`
+
 // List all events 
 const showAll = async (req, res) => {
     try {
@@ -31,7 +33,7 @@ const showAll = async (req, res) => {
         events = events.map(function(event){
             if (!event.photo) {
                 // Add default event photo
-                event.photo = 'https://lh6.googleusercontent.com/VbXynfUrxyIPsEgmkd_2liJ0rhQFzqNA99scv4G67lFZQVslHxk1EXdKq425Yzt2FrHhCfYe7xLljF4_2gq3aAUjGWym5z5Cm16x4n4lmAaQEZW8iND__clPEZaF_N39Qw=w1280'
+                event.photo = `${IMGURL}/defEvent`
             }
             // state of user validation
             if (event.user.validated === 3) {
@@ -41,7 +43,7 @@ const showAll = async (req, res) => {
             }
             // Add default user photo
             if(!event.user.photo){
-                event.user.photo = 'https://lh3.googleusercontent.com/5ok_R5vOHhUaPNFqLkGO_wRxC6uSPspTjkBHEDfs3JVQ04X0hhj-9lzaAkVDY-uXAbbMlZnQPcED27i7fgw2keuVRL61ApeG2Q90tQEccB7tdgr4yTx_DJYN2iOZqlBqkA=w1280'
+                event.user.photo = `${IMGURL}/defUser`
             }
             return event;
          })
@@ -112,8 +114,8 @@ const showEvent = async (req, res) => {
             }]
         })
         // Edit data before to send to FE
-        if (!event.photo) {
-            event.photo = 'https://lh6.googleusercontent.com/VbXynfUrxyIPsEgmkd_2liJ0rhQFzqNA99scv4G67lFZQVslHxk1EXdKq425Yzt2FrHhCfYe7xLljF4_2gq3aAUjGWym5z5Cm16x4n4lmAaQEZW8iND__clPEZaF_N39Qw=w1280'
+        if (!event.photo) {   
+            event.photo = `${IMGURL}/defEvent`  
         }
         // state of user validation
         if (event.user.validated === 3) {
@@ -123,7 +125,7 @@ const showEvent = async (req, res) => {
         }
         // Add default user photo
         if(!event.user.photo){
-            event.user.photo = 'https://lh3.googleusercontent.com/5ok_R5vOHhUaPNFqLkGO_wRxC6uSPspTjkBHEDfs3JVQ04X0hhj-9lzaAkVDY-uXAbbMlZnQPcED27i7fgw2keuVRL61ApeG2Q90tQEccB7tdgr4yTx_DJYN2iOZqlBqkA=w1280'
+            event.user.photo = `${IMGURL}/defUser`
         }
         
         return res.status(200).json({ people, event })
@@ -154,9 +156,8 @@ const eventscreatedbyuser = async (req, res) => {
     
         // Edit data before to send to FE
         events = events.map(function(event){
-            if (!event.photo) {
-                // Add default event photo
-                event.photo = 'https://lh6.googleusercontent.com/VbXynfUrxyIPsEgmkd_2liJ0rhQFzqNA99scv4G67lFZQVslHxk1EXdKq425Yzt2FrHhCfYe7xLljF4_2gq3aAUjGWym5z5Cm16x4n4lmAaQEZW8iND__clPEZaF_N39Qw=w1280'
+            if (!event.photo) {   
+                event.photo = `${IMGURL}/defEvent`  
             }
             // state of user validation
             if (event.user.validated === 3) {
@@ -166,7 +167,7 @@ const eventscreatedbyuser = async (req, res) => {
             }
             // Add default user photo
             if(!event.user.photo){
-                event.user.photo = 'https://lh3.googleusercontent.com/5ok_R5vOHhUaPNFqLkGO_wRxC6uSPspTjkBHEDfs3JVQ04X0hhj-9lzaAkVDY-uXAbbMlZnQPcED27i7fgw2keuVRL61ApeG2Q90tQEccB7tdgr4yTx_DJYN2iOZqlBqkA=w1280'
+                event.user.photo = `${IMGURL}/defUser`
             }
             return event;
          })
@@ -213,9 +214,8 @@ const eventsfollowedbyuser = async (req, res) => {
 
         // Edit data before to send to FE
         eventsList = eventsList.map(function(event){
-            if (!event.photo) {
-                // Add default event photo
-                event.photo = 'https://lh6.googleusercontent.com/VbXynfUrxyIPsEgmkd_2liJ0rhQFzqNA99scv4G67lFZQVslHxk1EXdKq425Yzt2FrHhCfYe7xLljF4_2gq3aAUjGWym5z5Cm16x4n4lmAaQEZW8iND__clPEZaF_N39Qw=w1280'
+            if (!event.photo) {   
+                event.photo = `${IMGURL}/defEvent`  
             }
             // state of user validation
             if (event.user.validated === 3) {
@@ -225,7 +225,7 @@ const eventsfollowedbyuser = async (req, res) => {
             }
             // Add default user photo
             if(!event.user.photo){
-                event.user.photo = 'https://lh3.googleusercontent.com/5ok_R5vOHhUaPNFqLkGO_wRxC6uSPspTjkBHEDfs3JVQ04X0hhj-9lzaAkVDY-uXAbbMlZnQPcED27i7fgw2keuVRL61ApeG2Q90tQEccB7tdgr4yTx_DJYN2iOZqlBqkA=w1280'
+                event.user.photo = `${IMGURL}/defUser`
             }
             return event;
         })

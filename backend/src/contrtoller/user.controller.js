@@ -9,6 +9,8 @@ const { validationMail, passRecovery } = require('../contrtoller/mail.controller
 const { Op, and } = require('sequelize');
 const formidable = require('formidable');
 
+const IMGURL = `${process.env.PHOTO}/imgaes/default/`
+
 // List all users
 const showAll = async (req, res) => {
     try {
@@ -61,7 +63,7 @@ const show = async (req, res) => {
             }
         });
         if(!user.photo){
-            user.photo = 'https://lh3.googleusercontent.com/5ok_R5vOHhUaPNFqLkGO_wRxC6uSPspTjkBHEDfs3JVQ04X0hhj-9lzaAkVDY-uXAbbMlZnQPcED27i7fgw2keuVRL61ApeG2Q90tQEccB7tdgr4yTx_DJYN2iOZqlBqkA=w1280'
+            user.photo = `${IMGURL}/defUser`
         }
         if (user) {
             return res.status(200).json({
