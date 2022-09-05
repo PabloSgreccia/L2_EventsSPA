@@ -23,9 +23,7 @@ export class AboutComponent implements OnInit {
       next: (response) => {
         this.userService.updateUser(response.user);
       },
-      error: ((err) => {
-        // this.router.navigate(['/signmenu'])
-      }) 
+      error: ((err) => { }) 
     })
   }
 
