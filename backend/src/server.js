@@ -7,6 +7,13 @@ const app = express();
 
 const myCron = require('./config/cron'); //importa el cron
 
+//Documentation
+const swaggerUI = require('swagger-ui-express')
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerOptions=require('./untils/swagger-options')
+const setup = swaggerJsDoc(swaggerOptions)
+
+
 //Requerir router
 const routerEvent = require('./routes/event.routes');
 const routerUser = require('./routes/user.routes');
@@ -19,13 +26,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extend:false}));
 app.use(json());
-app.use(express.static(process.env.STATIC))
+app.use(express.static(process.env.STATIC)) 
+
 
 //Rutas
 app.use('/api/type',routerType);
 app.use('/api/event',routerEvent);
 app.use('/api/user',routerUser);
 app.use('/api/contact',routerContact);
+app.use('/api-doc',swaggerUI.serve,swaggerUI.setup(setup))
 
 
 

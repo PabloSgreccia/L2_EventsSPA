@@ -123,14 +123,12 @@ const register = async (req, res) => {
 const uploadPhoto = async (req, res) => {
     try {
         let photo= process.env.PHOTO+req.file.path.substr(req.file.path.lastIndexOf('images'))
-        console.log(photo);
         const id = req.userId
         const user = await User.findOne({
             where: {
                 id: id
             }
         })
-        console.log(user.name);
         if (!user) {
             return res.status(404).json({
                 msg: 'Error en la actualización de la foto'
@@ -164,7 +162,7 @@ const validationUser = async (req, res) => {
                 active: true,
                 validationCode: ""
             }).then(user => {
-                return res.redirect('https://l2-events-7vdbyv7cw-pablosgreccia.vercel.app/signmenu')
+                return res.redirect(process.env.FRONTEND)
 
                 
             })
