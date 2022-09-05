@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class ContactServiceService {
   
   // URL_API_CONTACT = "http://localhost:3000/api/contact"
-  URL_API_CONTACT = "http://eventoslasegunda.herokuapp.com/api/contact"
+  URL_API_CONTACT = "https://eventoslasegunda.herokuapp.com/api/contact"
   // URL_API_CONTACT = `${environment.HOST}/api/contact`
 
   constructor(

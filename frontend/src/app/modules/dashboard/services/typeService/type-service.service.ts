@@ -9,7 +9,7 @@ export class TypeServiceService {
 
   // URL_API_TYPE = "http://localhost:3000/api/type"
   // URL_API_TYPE = `${environment.HOST}/api/type`
-  URL_API_TYPE = "http://eventoslasegunda.herokuapp.com/api/type"
+  URL_API_TYPE = "https://eventoslasegunda.herokuapp.com/api/type"
   
   constructor(
     private http: HttpClient,

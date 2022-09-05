@@ -9,7 +9,7 @@ export const environment = {
   // Mobile host
   //HOST:'http://192.168.0.205:3000'
   // Heroku host
-  HOST:'http://eventoslasegunda.herokuapp.com'
+  HOST:'https://eventoslasegunda.herokuapp.com'
 };
 
 /*
