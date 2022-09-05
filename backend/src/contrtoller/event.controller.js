@@ -10,7 +10,7 @@ const {Sequelize} = require('../database/models/');
 const formidable = require('formidable');
 const { where } = require('sequelize');
 
-const IMGURL = `${process.env.PHOTO}/imgaes/default/`
+const IMGURL = `${process.env.PHOTO}images/default`
 
 // List all events 
 const showAll = async (req, res) => {
@@ -33,7 +33,7 @@ const showAll = async (req, res) => {
         events = events.map(function(event){
             if (!event.photo) {
                 // Add default event photo
-                event.photo = `${IMGURL}/defEvent`
+                event.photo = `${IMGURL}/defEvent.jpg`
             }
             // state of user validation
             if (event.user.validated === 3) {
@@ -43,7 +43,7 @@ const showAll = async (req, res) => {
             }
             // Add default user photo
             if(!event.user.photo){
-                event.user.photo = `${IMGURL}/defUser`
+                event.user.photo = `${IMGURL}/defUser.png`
             }
             return event;
          })
@@ -115,7 +115,7 @@ const showEvent = async (req, res) => {
         })
         // Edit data before to send to FE
         if (!event.photo) {   
-            event.photo = `${IMGURL}/defEvent`  
+            event.photo = `${IMGURL}/defEvent.jpg`  
         }
         // state of user validation
         if (event.user.validated === 3) {
@@ -125,7 +125,7 @@ const showEvent = async (req, res) => {
         }
         // Add default user photo
         if(!event.user.photo){
-            event.user.photo = `${IMGURL}/defUser`
+            event.user.photo = `${IMGURL}/defUser.png`
         }
         
         return res.status(200).json({ people, event })
@@ -157,7 +157,7 @@ const eventscreatedbyuser = async (req, res) => {
         // Edit data before to send to FE
         events = events.map(function(event){
             if (!event.photo) {   
-                event.photo = `${IMGURL}/defEvent`  
+                event.photo = `${IMGURL}/defEvent.jpg`  
             }
             // state of user validation
             if (event.user.validated === 3) {
@@ -167,7 +167,7 @@ const eventscreatedbyuser = async (req, res) => {
             }
             // Add default user photo
             if(!event.user.photo){
-                event.user.photo = `${IMGURL}/defUser`
+                event.user.photo = `${IMGURL}/defUser.png`
             }
             return event;
          })
@@ -215,7 +215,7 @@ const eventsfollowedbyuser = async (req, res) => {
         // Edit data before to send to FE
         eventsList = eventsList.map(function(event){
             if (!event.photo) {   
-                event.photo = `${IMGURL}/defEvent`  
+                event.photo = `${IMGURL}/defEvent.jpg`  
             }
             // state of user validation
             if (event.user.validated === 3) {
@@ -225,7 +225,7 @@ const eventsfollowedbyuser = async (req, res) => {
             }
             // Add default user photo
             if(!event.user.photo){
-                event.user.photo = `${IMGURL}/defUser`
+                event.user.photo = `${IMGURL}/defUser.png`
             }
             return event;
         })
