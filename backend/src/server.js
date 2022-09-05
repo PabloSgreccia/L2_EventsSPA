@@ -20,8 +20,6 @@ app.use(express.json());
 app.use(express.urlencoded({extend:false}));
 app.use(json());
 app.use(express.static(process.env.STATIC))
-// app.use(express.static(path.join(__dirname, './public')))
-// app.use(express.static(process.env.STATIC))
 
 //Rutas
 app.use('/api/type',routerType);

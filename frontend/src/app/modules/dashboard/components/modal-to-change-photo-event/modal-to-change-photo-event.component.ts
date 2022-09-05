@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EventServiceService } from '../../services/eventService/event-service.service';
 
 @Component({
@@ -14,8 +14,9 @@ export class ModalToChangePhotoEventComponent implements OnInit {
 
   constructor(
     private eventService: EventServiceService,
-    private dialogRef: MatDialogRef<ModalToChangePhotoEventComponent>
-  ) {}
+    private dialogRef: MatDialogRef<ModalToChangePhotoEventComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: {eventId: number}
+  ) {  }
 
   ngOnInit(): void {
 
@@ -29,7 +30,7 @@ export class ModalToChangePhotoEventComponent implements OnInit {
       this.error = 'Select an image.' 
     } else {
       // BE API
-      this.eventService.updateEventPhoto(this.file)
+      this.eventService.updateEventPhoto(this.file, this.data.eventId)
         .subscribe({
           next: () => {this.dialogRef.close(true)},            
           error: ((err: any) => {

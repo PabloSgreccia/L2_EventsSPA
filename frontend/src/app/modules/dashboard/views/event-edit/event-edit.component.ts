@@ -185,7 +185,7 @@ export class EventEditComponent implements OnInit {
 
   // Change event photo
   changePhoto(){
-    const dialogRef = this.dialog.open(ModalToChangePhotoEventComponent);
+    const dialogRef = this.dialog.open(ModalToChangePhotoEventComponent, { data: { eventId: this.eventForm.controls.id.value } });
     dialogRef.afterClosed()
     .subscribe(result => {
         if (result) { this.dialog.open(ModalMsgComponent, { data: { msg: 'Event photo successfully updated.' } });

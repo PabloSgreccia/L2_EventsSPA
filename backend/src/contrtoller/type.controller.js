@@ -67,6 +67,31 @@ const update = async (req,res)=>{
     }
 
 }
+// Upload type photo 
+const uploadPhoto = async (req, res) => {
+    const typeId = req.params.idType
+    try {
+        let photo= process.env.PHOTO+req.file.path.substr(req.file.path.lastIndexOf('images'))
+        console.log(photo);
+        const evnt = await Type.findOne({
+            where: {
+                id: typeId
+            }
+        })
+        if (!evnt) {
+            return res.status(404).json({
+                msg: 'Error en la actualización de la foto'
+            })
+        }
+        await evnt.update({
+            photo
+        })
+        return res.status(200).json({msg:'Foto agregada correctamente'})
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+    }
+}
 
 // delete type
 const deleteType = async (req, res) => {
@@ -95,5 +120,6 @@ module.exports = {
     showAll,
     newType,
     deleteType,
-    update
+    update,
+    uploadPhoto
 };

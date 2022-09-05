@@ -120,7 +120,7 @@ const register = async (req, res) => {
 // Update user photo
 const uploadPhoto = async (req, res) => {
     try {
-        let photo= process.env.PHOTO+req.file.path.substr(req.file.path.lastIndexOf('imgs'))
+        let photo= process.env.PHOTO+req.file.path.substr(req.file.path.lastIndexOf('images'))
         console.log(photo);
         const id = req.userId
         const user = await User.findOne({
@@ -146,8 +146,7 @@ const uploadPhoto = async (req, res) => {
 
 // Validate user via email
 const validationUser = async (req, res) => {
-    const validationCode = req.params.code
-
+    const validationCode = req.params.code   
     try {
         const user = await User.findOne({
             where: {
@@ -163,15 +162,11 @@ const validationUser = async (req, res) => {
                 active: true,
                 validationCode: ""
             }).then(user => {
-                res.status(200).json({
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    role: user.role,
-                    validated: user.validated,
-                    'msg': 'Se actualizó correctamente'
-                })
+                return res.redirect('https://l2-events-7vdbyv7cw-pablosgreccia.vercel.app/signmenu')
+
+                
             })
+            
         } 
     } catch (error) {
         console.log(error);
