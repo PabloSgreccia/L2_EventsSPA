@@ -7,6 +7,7 @@ const url = process.env.URL
 const transporter = nodemailer.createTransport({
     host: MailConfig.host,
     port: MailConfig.port,
+    secure:MailConfig.secure,
     auth: {
         user: MailConfig.user,
         pass: MailConfig.pass
@@ -20,7 +21,7 @@ async function validationMail(user) {
         to: user.email, // list of receivers
         subject: "Por favor verifique su registro", // Subject line
         html: `${user.name},<br> Por favor acceda al siguiente link para dar de alta su usuario:<br>
-        <h3><a href=${url}/user/validation/${user.validationCode}>Confirmar Registro</a></h3>  Muchas gracias,<br>
+        <h3><a href=http://${url}/user/validation/${user.validationCode}>Confirmar Registro</a></h3>  Muchas gracias,<br>
         Equipo la segunda`
 
     });
