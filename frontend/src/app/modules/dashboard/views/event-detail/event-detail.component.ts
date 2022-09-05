@@ -1,13 +1,14 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 // Interfaces
 import { Event } from '@etp/dashboard/interfaces'
 // Services
 import { EventServiceService } from '@etp/dashboard/services';
 import { UserServiceService } from '@etp/shared/services';
-import { ModalErrorComponent } from '../../../../shared/components/modal-error/modal-error.component';
-import { ActivatedRoute } from '@angular/router';
+// Components
+import { ModalErrorComponent, ModalMsgComponent } from '@etp/shared/components';
 
 interface UserEvents {
   id: number,
@@ -38,7 +39,6 @@ export class EventDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void{
-    
     // Get logged user information from observable
     this.userService.getUser().subscribe({
       next: user => {
@@ -102,7 +102,8 @@ export class EventDetailComponent implements OnInit {
       name: this.userName,
       favourite: false
     })
-    this.userService.userJoinsEvent(this.event.id).subscribe()
+    this.userService.userJoinsEvent(this.event.id)
+    .subscribe({ error: (err) => { this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong, try again' } });}})
   }
   
   // User quits the event
@@ -110,16 +111,15 @@ export class EventDetailComponent implements OnInit {
     this.event.cantPeople = (this.event.cantPeople || 0) - 1  
     this.userParticipateEvent = false
     this.userEvents = this.userEvents.filter(user => user.id !== this.idUser)
-    this.userService.userLeftEvent(this.event.id).subscribe()
+    this.userService.userLeftEvent(this.event.id)
+    .subscribe({ error: (err) => { this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong, try again' } });}})
   }
 
   // Event admin cancels the event
   cancelEvent(){
     this.eventService.cancelEvent(this.event.id, true)
     .subscribe({
-      next: (res) => {
-        this.eventService.setEvent(res.updatedEvent)
-      },
+      next: (res) => { this.eventService.setEvent(res.updatedEvent) },
       error: ((err: any) => {  this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong trying to cancel the event. Try again' }})})
     })
   }
@@ -129,14 +129,13 @@ export class EventDetailComponent implements OnInit {
     this.eventService.deleteEvent(this.event.id)
     .subscribe({
       next: (res) => {
+        const dialogRef = this.dialog.open(ModalMsgComponent, { data: { msg: 'Event deleted.' } });
         this.eventService.setEvent(res.updatedEvent)
+        dialogRef.afterClosed().subscribe(_ => { this.router.navigate(['/dashboard/feed']) });
         this.router.navigate(['/dashboard/feed']);
       },
       error: ((err: any) => {  
-        const dialogRef = this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong trying to delete the event. Try again' }})
-        dialogRef.afterClosed().subscribe(result => {
-          this.router.navigate(['/dashboard/feed']);
-        });
+        this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong trying to delete the event. Try again' }})
       })
     })
   }
@@ -144,12 +143,20 @@ export class EventDetailComponent implements OnInit {
   // Event admin fav a user
   favuser(idUser: number, fav: boolean){
     if (this.event.user.id === this.idUser ) {
-      this.userEvents = this.userEvents.map(function(user){
-        if (user.id === idUser) {
-          user.favourite = fav
-        }
-        return user})
-      this.userService.userFavedForEvent(idUser, this.event.id, fav).subscribe()
+      this.userService.userFavedForEvent(idUser, this.event.id, fav)
+      .subscribe({
+        next: res => { 
+          // Update users list
+          this.userEvents = this.userEvents
+            .map(function(user){ 
+              if (user.id === idUser) { 
+                user.favourite = fav 
+              } 
+              return user
+            })
+        },
+        error: (err) => { this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong, try again' } }); }
+      })
     }
   }
 

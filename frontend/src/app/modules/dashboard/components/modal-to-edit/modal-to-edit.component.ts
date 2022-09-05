@@ -41,7 +41,6 @@ export class ModalToEditComponent implements OnInit {
           next: (res) => { this.dialogRef.close(true) },
           error: ((err: any) => {
             this.error = 'Something went wrong trying to update your name.';
-            console.log(err);
           })
         })
     }
