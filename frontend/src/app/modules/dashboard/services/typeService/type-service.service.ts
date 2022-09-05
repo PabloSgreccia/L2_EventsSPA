@@ -14,12 +14,10 @@ export class TypeServiceService {
     private http: HttpClient,
   ) { }
   
-  // TODO: add photo 
   createType(type: string){
     return this.http.post<any>(`${this.URL_API_TYPE}/create`, {type})
   }
   
-  // TODO: add photo 
   updateType(id: number, type: string){    
     return this.http.patch<any>(`${this.URL_API_TYPE}/update/${id}`, {type})
   }
@@ -32,10 +30,10 @@ export class TypeServiceService {
     return this.http.get<any>(`${this.URL_API_TYPE}/views`)
   }
 
-  updateTypePhoto(photo: File){
+  updateTypePhoto(photo: File, typeId:number){
     const formdata = new FormData()
     formdata.append('photo', photo)
-    return this.http.post<any>(`${this.URL_API_TYPE}/uploadphoto`, formdata)
+      return this.http.post<any>(`${this.URL_API_TYPE}/uploadphoto/${typeId}`, formdata)
 }
 
 }

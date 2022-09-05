@@ -241,54 +241,83 @@ const eventsfollowedbyuser = async (req, res) => {
 const createEvent = async (req, res) => {
     const idUser_admin = req.userId
 
-    const form = formidable({
-        multiples: true
-    });
-    console.log(form._events.field);
-    let result = form.parse(req, async (err, payload, photo) => {
-        const {
-            title,
-            description,
-            mode,
-            province,
-            city,
-            street,
-            link,
-            number,
-            init_date,
-            end_date,
-            idType
-        } = JSON.parse(payload.payload)
-        console.log(photo);
+    try {
+            const form = formidable({ multiples: true });
+            let result = form.parse(req, async (err, payload) => {
+                const {
+                    title,
+                    description,
+                    mode,
+                    province,
+                    city,
+                    street,
+                    link,
+                    number,
+                    init_date,
+                    end_date,
+                    idType
+                } = JSON.parse(payload.payload)
+                
+                let event = await Event.create({
+                    title,
+                    description,
+                    mode,
+                    province,
+                    city,
+                    street,
+                    number,
+                    link,
+                    init_date,
+                    end_date,
+                    idUser_admin,
+                    idType,
+                }).then(event => {
+                    
+                    return res.status(200).json({
+                        eventId: event.id,
+                        'mgs': 'Evento creado correctamente'
+                    })}
+                )
+                if (event) {
+                    return event
+                } else {
+                    return false
+                }
+            });
+            if (!result) {
+                return res.status(404).json({
+                    msg: 'Error al crear el evento'
+                })
+            }
+    } catch (error) {
+        console.log(error);
+        return res.status(404).json({ msg: 'Something went wrong' })
+    }
+}
 
-        let event = await Event.create({
-            title,
-            description,
-            mode,
-            province,
-            city,
-            street,
-            number,
-            link,
-            init_date,
-            end_date,
-            idUser_admin,
-            idType
+// Update EVENT photo
+const uploadPhoto = async (req, res) => {
+    const eventId = req.params.idEvent
+    try {
+        let photo= process.env.PHOTO+req.file.path.substr(req.file.path.lastIndexOf('images'))
+        console.log(photo);
+        const evnt = await Event.findOne({
+            where: {
+                id: eventId
+            }
         })
-        if (event) {
-            return event
-        } else {
-            return false
+        if (!evnt) {
+            return res.status(404).json({
+                msg: 'Error en la actualización de la foto'
+            })
         }
-    });
-    if (result) {
-        return res.status(200).json({
-            'mgs': 'Evento creado correctamente'
+        await evnt.update({
+            photo
         })
-    } else {
-        return res.status(404).json({
-            msg: 'Error al crear el evento'
-        })
+        return res.status(200).json({msg:'Foto agregada correctamente'})
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ msg: 'Something went wrong at backend.'})
     }
 }
 
@@ -353,5 +382,6 @@ module.exports = {
     destroyEvent,
     showAllAdmin,
     eventscreatedbyuser, 
-    eventsfollowedbyuser
+    eventsfollowedbyuser,
+    uploadPhoto
 }

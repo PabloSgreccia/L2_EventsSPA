@@ -107,7 +107,7 @@ export class TypesComponent implements OnInit {
   }
 
   changePhoto(){
-    const dialogRef = this.dialog.open(ModalToChangePhotoTypeComponent);
+    const dialogRef = this.dialog.open(ModalToChangePhotoTypeComponent, { data: { typeId: this.typeForm.controls.id.value } });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.openDialog('Event Photo Updated')

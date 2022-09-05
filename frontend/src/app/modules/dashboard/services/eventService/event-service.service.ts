@@ -71,9 +71,9 @@ export class EventServiceService {
     event.init_date = event.init_date.toString()
     event.end_date = event.end_date.toString()
     const formdata = new FormData()
-    if (photo) {
-      formdata.append('photo', photo)
-    }
+    // if (photo) {
+    //   formdata.append('photo', photo)
+    // }
     formdata.append('payload', JSON.stringify(event))
 
     // let headers = new Headers();
@@ -90,10 +90,10 @@ export class EventServiceService {
     return this.http.patch<any>(`${this.URL_API_EVENT}/update`, event)
   }
 
-  updateEventPhoto(photo: File){
+  updateEventPhoto(photo: File, eventId:number){
       const formdata = new FormData()
       formdata.append('photo', photo)
-      return this.http.post<any>(`${this.URL_API_EVENT}/uploadphoto`, formdata)
+      return this.http.post<any>(`${this.URL_API_EVENT}/uploadphoto/${eventId}`, formdata)
   }
 
   // el admin del evento, cancela un evento

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { EventServiceService } from '@etp/dashboard/services';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { EventServiceService, TypeServiceService } from '@etp/dashboard/services';
 
 @Component({
   selector: 'etp-modal-to-change-photo-type',
@@ -13,8 +13,9 @@ export class ModalToChangePhotoTypeComponent implements OnInit {
   error: string = ''
 
   constructor(
-    private eventService: EventServiceService,
-    private dialogRef: MatDialogRef<ModalToChangePhotoTypeComponent>
+    private typeService: TypeServiceService,
+    private dialogRef: MatDialogRef<ModalToChangePhotoTypeComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: {typeId: number}
   ) {}
 
   ngOnInit(): void {
@@ -29,7 +30,7 @@ export class ModalToChangePhotoTypeComponent implements OnInit {
       this.error = 'Select an image.' 
     } else {
       // BE API
-      this.eventService.updateEventPhoto(this.file)
+      this.typeService.updateTypePhoto(this.file, this.data.typeId)
         .subscribe({
           next: () => {this.dialogRef.close(true)},            
           error: ((err: any) => {

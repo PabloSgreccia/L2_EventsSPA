@@ -143,6 +143,13 @@ export class NewEventComponent implements OnInit {
         this.eventService.createEvent(newEvent, this.file)
           .subscribe({
             next: (res) => {
+              this.eventService.updateEventPhoto(this.file, res.eventId)
+                .subscribe({       
+                  error: ((err: any) => {
+                    this.error = 'Something went wrong trying to update your photo.';
+                  })
+                })
+
               this.spinner = false;
               const dialogRef = this.dialog.open(ModalMsgComponent, { data: { msg: 'Event successfully created.' } })
               dialogRef.afterClosed().subscribe(_ => { this.router.navigate(['/dashboard/feed']) })
