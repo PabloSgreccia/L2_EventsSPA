@@ -61,10 +61,10 @@ export class ContactComponent implements OnInit {
     if (this.contactForm.status === 'VALID') {
       // Create contact with form values and a date
       let newContact: Contact = {
-        name: this.contactForm.controls.subject.value || '',
-        email: this.contactForm.controls.subject.value || '',
+        name: this.contactForm.controls.name.value || '',
+        email: this.contactForm.controls.email.value || '',
         subject: this.contactForm.controls.subject.value || '',
-        description: this.contactForm.controls.subject.value || '',
+        description: this.contactForm.controls.description.value || '',
         date: (new Date()).toString(),
         read: false
       }

@@ -38,8 +38,8 @@
     <mat-form-field appearance="fill">
       <mat-label>Event Mode</mat-label>
       <mat-select formControlName="mode">
-        <mat-option *ngFor="let mode of modes" [value]="mode">
-          {{mode}}
+        <mat-option *ngFor="let mode of modes" [value]="mode.value">
+          {{mode.viewValue}}
         </mat-option>
       </mat-select>
     </mat-form-field>

@@ -19,4 +19,8 @@ export class EventComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // redirect(link: string){
+  //   window.location.href = link;
+  // }
+
 }

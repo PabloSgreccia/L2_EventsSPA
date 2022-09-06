@@ -56,8 +56,8 @@ router.post("/create",verifyToken,adminRole,newType);
  * paht:
  * /type/update/:id:
  *   patch:
- *    description: El admin elimina a un usuario
- *    summary: El admin elimina a un usuario
+ *    description: El admin actualiza un tipo
+ *    summary: El admin actualiza un tipo
  *    tags:
  *      - type
  *    parameters:
@@ -69,7 +69,7 @@ router.post("/create",verifyToken,adminRole,newType);
  *        description: id del type a modificar
  *    responses:
  *      200:
- *        description: Devuelve los atributos del type creado
+ *        description: Devuelve los atributos del type editado
  *      404:
  *        description: Tipo no encontrado
  *      400:
@@ -77,7 +77,42 @@ router.post("/create",verifyToken,adminRole,newType);
  */
 router.patch("/update/:id",verifyToken,adminRole,update)
 
-router.delete("/delete/:id",verifyToken,adminRole,deleteType);
+/**
+ * @openapi
+ * paht:
+ * /type/update/:id:
+ *   patch:
+ *    description: El admin elimina a un tipo
+ *    summary: El admin elimina a un tipo
+ *    tags:
+ *      - type
+ *    parameters:
+ *      - id: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: integer
+ *        description: id del type a modificar
+ *    requestBody:
+ *      required: false
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: oject
+ *            properties:
+ *              active:
+ *                type: boolean
+ *                format: tinyint(255)
+ *                example: true
+ *    responses:
+ *      200:
+ *        description: Devuelve los atributos del type creado
+ *      404:
+ *        description: Tipo no encontrado
+ *      400:
+ *        description: Devuelve el mensaje de error del catch
+ */
+router.patch("/delete/:id",verifyToken,adminRole,deleteType);
 /**
  * @openapi
  * paht:
