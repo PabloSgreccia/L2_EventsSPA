@@ -383,11 +383,13 @@ const downUserByAdmin = async (req, res) => {
         if (!user) {
             return res.status(404).json({ msg: "Usuario no encontrado" })
         } else {
-            Event.update({ cancelled: true }, { where: { idUser_admin: id }})
-            user.update({ active })
-            .then(user => {
-                res.status(200).json({ 'msg': 'Se actualizó correctamente' })
-            })
+            Event.update({ cancelled: true }, { where: { idUser_admin: id }}).then(
+                Users_events.destroy({where: {userId: id}})
+                    .then(user.update({ active })
+                        .then(user => { res.status(200).json({ 'msg': 'Se actualizó correctamente' })
+                    })
+                )
+            )
         }
     } catch (error) {
         console.log(error);

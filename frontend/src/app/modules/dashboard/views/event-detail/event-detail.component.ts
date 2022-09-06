@@ -119,7 +119,10 @@ export class EventDetailComponent implements OnInit {
   cancelEvent(){
     this.eventService.cancelEvent(this.event.id, true)
     .subscribe({
-      next: (res) => { this.eventService.setEvent(res.updatedEvent) },
+      next: (res) => { 
+        this.eventService.setEvent(res.updatedEvent)
+        this.event.cancelled = true
+      },
       error: ((err: any) => {  this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong trying to cancel the event. Try again' }})})
     })
   }
@@ -132,7 +135,6 @@ export class EventDetailComponent implements OnInit {
         const dialogRef = this.dialog.open(ModalMsgComponent, { data: { msg: 'Event deleted.' } });
         this.eventService.setEvent(res.updatedEvent)
         dialogRef.afterClosed().subscribe(_ => { this.router.navigate(['/dashboard/feed']) });
-        this.router.navigate(['/dashboard/feed']);
       },
       error: ((err: any) => {  
         this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong trying to delete the event. Try again' }})
