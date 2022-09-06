@@ -16,9 +16,9 @@ STATIC=./public/
 #JWT
 ACCESS_TOKEN_SECRET=anysecrettoken
 
-#MAIL
-EMAil_USER=[youremail]
-EMAIL_PASS=[emailpassword]
-MAIL_HOST=[emailhost]
-MAIL_PORT=587
-MAIL_SECURE=false
+#Mail
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=465
+MAIL_SECURE=true
+EMAil_USER=tpfinallasegunda
+EMAIL_PASS=hupdatlnhnxejcys

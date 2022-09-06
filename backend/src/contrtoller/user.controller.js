@@ -213,7 +213,7 @@ const login = async (req, res) => {
                 }
             }).catch(err => {
                 //Fallo al buscar el email en la base de datos
-                return res.status(500).json(err.message)
+                return res.status(400).json(err.message)
             })
     } catch (error) {
         console.log(error);
@@ -429,7 +429,7 @@ const favouriteUser = async (req, res) => {
             return res.status(404).json({ msg: 'Evento no encontrado'})
         }
         if (event.idUser_admin != idUser_admin) {
-            return res.status(404).json({ msg: 'Solo el creador del evento puede realizar esta acción'})
+            return res.status(401).json({ msg: 'Solo el creador del evento puede realizar esta acción'})
         }
     
         const users_events = await Users_events.findOne({
@@ -437,7 +437,7 @@ const favouriteUser = async (req, res) => {
             where: { userId: idUser, eventId: idEvent }
         })
         if (!users_events) {
-            return res.status(404).json({ msg: 'No se encontraron datos' })
+            return res.status(405).json({ msg: 'No se encontraron datos' })
         }
         await users_events.update({ favourite })
         return res.status(200).json({ 'msg': 'Añadido a favoritos'})
