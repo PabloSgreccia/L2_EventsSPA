@@ -147,6 +147,7 @@ const uploadPhoto = async (req, res) => {
 // Validate user via email
 const validationUser = async (req, res) => {
     const validationCode = req.params.code   
+    console.log(validationCode);
     try {
         const user = await User.findOne({
             where: {
@@ -164,7 +165,7 @@ const validationUser = async (req, res) => {
             }).then(user => {
                 return res.redirect(process.env.FRONTEND)
 
-                
+
             })
             
         } 
