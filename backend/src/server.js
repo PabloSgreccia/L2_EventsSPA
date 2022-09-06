@@ -10,7 +10,7 @@ const myCron = require('./config/cron'); //importa el cron
 //Documentation
 const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
-const swaggerOptions=require('./untils/swagger-options')
+const swaggerOptions=require('./utils/swagger-options')
 const setup = swaggerJsDoc(swaggerOptions)
 
 
@@ -34,7 +34,7 @@ app.use('/api/type',routerType);
 app.use('/api/event',routerEvent);
 app.use('/api/user',routerUser);
 app.use('/api/contact',routerContact);
-app.use('/api-doc',swaggerUI.serve,swaggerUI.setup(setup))
+app.use('/api-docs',swaggerUI.serve,swaggerUI.setup(setup))
 
 
 

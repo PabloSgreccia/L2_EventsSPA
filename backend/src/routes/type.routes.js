@@ -76,6 +76,7 @@ router.post("/create",verifyToken,adminRole,newType);
  *        description: Devuelve el mensaje de error del catch
  */
 router.patch("/update/:id",verifyToken,adminRole,update)
+
 router.delete("/delete/:id",verifyToken,adminRole,deleteType);
 /**
  * @openapi

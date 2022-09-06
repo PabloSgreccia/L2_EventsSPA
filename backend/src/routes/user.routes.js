@@ -15,7 +15,7 @@ const {
     updateUser,
     updateUserVerify,
     downUser,
-    destroy,
+    downUserByAdmin,
     logOut,
     favouriteUser,
     showLogged,
@@ -461,11 +461,12 @@ router.patch("/down", verifyToken, downUser)
  *        description: Devuelve el mensaje de error del catch
  */
 router.patch("/favourite", verifyToken, favouriteUser)
+
 /**
  * @openapi
  * paht:
  * /user/delete/:id:
- *   delete:
+ *   patch:
  *    description: El admin elimina a un usuario
  *    summary: El admin elimina a un usuario
  *    tags:
@@ -477,6 +478,17 @@ router.patch("/favourite", verifyToken, favouriteUser)
  *        schema:
  *          type: integer
  *        description: id del usuario a eliminar
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: oject
+ *            properties:
+ *              active:
+ *                type: boolean
+ *                format: tinyint(1)
+ *                example: false
  *    responses:
  *      200:
  *        description: Devuelve los atributos del usuario eliminado
@@ -485,11 +497,12 @@ router.patch("/favourite", verifyToken, favouriteUser)
  *      400:
  *        description: Devuelve el mensaje de error del catch
  */
-router.delete("/delete/:id", verifyToken, adminRole, destroy)
+router.patch("/delete/:id", verifyToken, adminRole, downUserByAdmin)
+
 /**
  * @openapi
  * paht:
- * /user/delete/:idEvent:
+ * /user/userleftevent/:idEvent:
  *   delete:
  *    description: El usuario se da de baja a un evento
  *    summary: El usuario se da de baja a un evento
@@ -511,5 +524,6 @@ router.delete("/delete/:id", verifyToken, adminRole, destroy)
  *        description: Devuelve el mensaje de error del catch
  */
 router.delete("/userleftevent/:idEvent", verifyToken, userleftevent)
+
 
 module.exports = router;

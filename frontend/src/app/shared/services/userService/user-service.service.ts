@@ -67,7 +67,8 @@ export class UserServiceService {
   
   // el adimin elimina un usuario
   deleteUser(id: number){
-    return this.http.delete<any>(`${this.URL_API_USER}/delete/${id}`)
+    const active = false
+    return this.http.patch<any>(`${this.URL_API_USER}/delete/${id}`, {active})
   }
 
   // editar datos de usuario

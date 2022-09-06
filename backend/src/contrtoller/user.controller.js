@@ -6,7 +6,7 @@ const sequelize = require('sequelize');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const { validationMail, passRecovery } = require('../contrtoller/mail.controller');
-const { Op, and } = require('sequelize');
+const { Op, and, where } = require('sequelize');
 const formidable = require('formidable');
 
 const IMGURL = `${process.env.PHOTO}images/default`
@@ -361,6 +361,7 @@ const downUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ msg: "Usuario no encontrado" })
         } else {
+            Event.update({ cancelled: true }, { where: { idUser_admin: id }})
             user.update({ active })
             .then(user => {
                 res.status(200).json({ 'msg': 'Se actualizó correctamente' })
@@ -372,34 +373,27 @@ const downUser = async (req, res) => {
     }
 
 }
-
-// admin delete user account
-const destroy = async (req, res) => {
+// user delete its own account (this method doesnt delete the registed... it only "desactivate" it)
+const downUserByAdmin = async (req, res) => {
     const id = req.params.id;
-
+    const active = req.body.active;
+    
     try {
-        let user = await User.findOne({
-            where: {
-                id: id
-            }
-        });
+        let user = await User.findOne({ where: { id: id } });
         if (!user) {
-            return res.status(404).json({
-                msg: "Usuario no encontrado"
-            })
+            return res.status(404).json({ msg: "Usuario no encontrado" })
         } else {
-            user.destroy().then(user => {
-                res.status(200).json({
-                    user
-                })
+            Event.update({ cancelled: true }, { where: { idUser_admin: id }})
+            user.update({ active })
+            .then(user => {
+                res.status(200).json({ 'msg': 'Se actualizó correctamente' })
             })
         }
     } catch (error) {
         console.log(error);
         return res.status(400).json({ msg: 'Something went wrong at backend.'})
     }
-
-};
+}
 
 // User log ut --> deprecated
 const logOut = async (req, res, next) => {
@@ -519,7 +513,7 @@ module.exports = {
     updateUser,
     updateUserVerify,
     downUser,
-    destroy,
+    downUserByAdmin,
     logOut,
     favouriteUser,
     showLogged,

@@ -6,18 +6,21 @@ module.exports = {
       {
         type: 'Party',
         photo: '',
+        active: true,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         type: 'Sports',
         photo: '',
+        active: true,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         type: 'Meetup',
         photo: '',
+        active: true,
         createdAt: new Date(),
         updatedAt: new Date()
       },

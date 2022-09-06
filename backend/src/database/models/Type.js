@@ -23,7 +23,12 @@ module.exports = (sequelize, DataTypes) => {
     photo: {
       type: DataTypes.STRING,
       allowNull: true
-    }
+    },
+    active:{
+      type:DataTypes.BOOLEAN,
+      allowNull:false,
+      defaultValue:true
+    },
   }, {
     sequelize,
     modelName: 'type',
