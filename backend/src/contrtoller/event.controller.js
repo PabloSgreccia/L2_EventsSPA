@@ -285,7 +285,7 @@ const createEvent = async (req, res) => {
                 }
             });
             if (!result) {
-                return res.status(404).json({
+                return res.status(400).json({
                     msg: 'Error al crear el evento'
                 })
             }
@@ -307,7 +307,7 @@ const uploadPhoto = async (req, res) => {
             }
         })
         if (!evnt) {
-            return res.status(404).json({
+            return res.status(400).json({
                 msg: 'Error en la actualización de la foto'
             })
         }
@@ -317,7 +317,7 @@ const uploadPhoto = async (req, res) => {
         return res.status(200).json({msg:'Foto agregada correctamente'})
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(404).json({ msg: 'Something went wrong at backend.'})
     }
 }
 
@@ -364,12 +364,12 @@ const destroyEvent = async (req, res) => {
                     event.destroy().then(user => { res.status(200).json({'msg': 'El evento ha sido eliminado'})})
                 )
             } else {
-                return res.status(404).json({ 'msg': 'No tiene permisos para eliminar este evento' })
+                return res.status(400).json({ 'msg': 'No tiene permisos para eliminar este evento' })
             }
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(404).json({ msg: 'Something went wrong at backend.'})
     }
 
 };

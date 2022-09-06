@@ -15,7 +15,11 @@ export class TypeServiceService {
   ) { }
   
   createType(type: string){
-    return this.http.post<any>(`${this.URL_API_TYPE}/create`, {type})
+    const body = {
+      type: type,
+      active: true
+    }
+    return this.http.post<any>(`${this.URL_API_TYPE}/create`, body)
   }
   
   updateType(id: number, type: string){    
@@ -23,7 +27,8 @@ export class TypeServiceService {
   }
 
   deleteType(id: number){
-    return this.http.delete<any>(`${this.URL_API_TYPE}/delete/${id}`)
+    const active = false
+    return this.http.patch<any>(`${this.URL_API_TYPE}/delete/${id}`, {active} )
   }
   
   getTypes(){

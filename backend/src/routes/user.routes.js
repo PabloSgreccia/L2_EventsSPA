@@ -15,7 +15,7 @@ const {
     updateUser,
     updateUserVerify,
     downUser,
-    destroy,
+    downUserByAdmin,
     logOut,
     favouriteUser,
     showLogged,
@@ -48,7 +48,7 @@ router.patch("/updateuser", verifyToken, updateUser)
 router.patch("/updateuserverify", verifyToken, adminRole, updateUserVerify)
 router.patch("/down", verifyToken, downUser)
 router.patch("/favourite", verifyToken, favouriteUser)
-router.delete("/delete/:id", verifyToken, adminRole, destroy)
+router.patch("/delete/:id", verifyToken, adminRole, downUserByAdmin)
 router.delete("/userleftevent/:idEvent", verifyToken, userleftevent)
 
 module.exports = router;

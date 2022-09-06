@@ -9,7 +9,7 @@ const { adminRole, verifyToken }=require('../validators/auth')
 router.get("/views",verifyToken,showAll);
 router.post("/create",verifyToken,adminRole,newType);
 router.patch("/update/:id",verifyToken,adminRole,update)
-router.delete("/delete/:id",verifyToken,adminRole,deleteType);
+router.patch("/delete/:id",verifyToken,adminRole,deleteType);
 router.post("/uploadphoto/:idType",verifyToken,upload(),uploadPhoto)
 
 module.exports = router;

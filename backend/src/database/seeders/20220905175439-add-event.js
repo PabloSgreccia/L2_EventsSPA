@@ -58,13 +58,33 @@ module.exports = {
         cancelled: 0,
         idType: 1,
         photo: '',
-        idUser_admin: 2,
+        idUser_admin: 4,
         finished: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: 4,
+        title: 'Boliche',
+        description: 'Seed evento 4',
+        mode: 'site',
+        province: 'Santa Fe',
+        city: 'ROSARIO',
+        street: 'Belgrano',
+        number: 2300,
+        link: '',
+        init_date: 'Wed Oct 23 2022 12:00:00 GMT-0300 (hora estándar de Argentina)',
+        end_date: 'Wed Oct 23 2022 18:00:00 GMT-0300 (hora estándar de Argentina)',
+        cancelled: 0,
+        idType: 1,
+        photo: '',
+        idUser_admin: 3,
+        finished: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
     ], {}),
   down: async (queryInterface) => {
-      await queryInterface.bulkDelete('events', {[Op.or]: [{idUser_admin: 2}]});
+      await queryInterface.bulkDelete('events', {[Op.or]: [{photo: ''}]});
     }
 };

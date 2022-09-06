@@ -5,9 +5,11 @@ const Sequelize = require('sequelize');
 
 // List all types
 const showAll = async (req, res) => {
+    
     try {
         let types = await Type.findAll({
-            attributes: ['id','type']
+            attributes: ['id','type'],
+            where: { active: true }
         })
         if (types) {
             return res.status(200).json({
@@ -96,19 +98,16 @@ const uploadPhoto = async (req, res) => {
 // delete type
 const deleteType = async (req, res) => {
     const id = req.params.id
+    const active = req.body.active
     try {
         let type = await Type.findOne({ where: { id: id } })
         if (!type) {
             return res.status(404).json({msg:"Tipo no encontrado"})
         } else {
-            let event = await Event.findOne({
-                where: { idType: id }
+            type.update({ active })
+            .then(user => {
+                res.status(200).json({ 'msg': 'Se actualizó correctamente' })
             })
-            if (event) {
-                return res.status(400).json({msg:"Cant delete because there are created events with this type"})
-            } else{
-                type.destroy().then( res.status(200).json({status:200,type}))
-            }
         }
     } catch (error) {
         console.log(error);

@@ -37,19 +37,21 @@
       </div>
     </div>
 
-    <img [src]="event.photo" class="event-img event-linker" [routerLink]="['/dashboard/event', event.id]">
-
-    <div class="event-card-footer" [routerLink]="['/dashboard/event', event.id]">
-      <div>
-        <div *ngIf="event.cancelled" class="canceled">
-          Event Cancelled
-        </div>
-      </div>
-      <div class="event-card-footer-stats">
-          <div class="event-card-footer-stats-ppl">
-              <mat-icon>people</mat-icon>
-              {{event.cantPeople}}
+    <div>
+      <img [src]="event.photo" class="event-img event-linker" [routerLink]="['/dashboard/event', event.id]">
+  
+      <div class="event-card-footer" [routerLink]="['/dashboard/event', event.id]">
+        <div>
+          <div *ngIf="event.cancelled" class="canceled">
+            Event Cancelled
           </div>
+        </div>
+        <div class="event-card-footer-stats">
+            <div class="event-card-footer-stats-ppl">
+                <mat-icon>people</mat-icon>
+                {{event.cantPeople}}
+            </div>
+        </div>
       </div>
     </div>
   </div>

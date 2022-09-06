@@ -24,14 +24,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Event.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
-    mode: DataTypes.STRING,
-    province: DataTypes.STRING,
-    city: DataTypes.STRING,
-    street: DataTypes.STRING,
+    title: DataTypes.STRING(40),
+    description: DataTypes.STRING(255),
+    mode: DataTypes.STRING(20),
+    province: DataTypes.STRING(100),
+    city: DataTypes.STRING(100),
+    street: DataTypes.STRING(30),
     number: DataTypes.INTEGER,
-    link: DataTypes.STRING,
+    link: DataTypes.STRING(30),
     init_date: DataTypes.STRING,
     end_date: DataTypes.STRING,
     cancelled: {
