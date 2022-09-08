@@ -8,7 +8,8 @@ import { Event } from '@etp/dashboard/interfaces'
 import { EventServiceService } from '@etp/dashboard/services';
 import { UserServiceService } from '@etp/shared/services';
 // Components
-import { ModalErrorComponent, ModalMsgComponent } from '@etp/shared/components';
+import { ModalMsgComponent } from '@etp/shared/components';
+import { ModalBeforeDeleteComponent } from '@etp/dashboard/components';
 
 interface UserEvents {
   id: number,
@@ -46,7 +47,7 @@ export class EventDetailComponent implements OnInit {
         this.userName = user.name
       },
       error: (err) => {
-        this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong trying to cancel the event. Try again' }})
+        this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar obtener datos'} });
       }
     })
 
@@ -68,30 +69,36 @@ export class EventDetailComponent implements OnInit {
 
           // Sort users to show the best ones first
           if (this.userEvents) { 
-            this.userEvents.sort( function(a, b) {          
-              if (a.favourite === b.favourite) {
-                return ((a.name || 0) < (b.name || 0)) ? 1 : -1;
-              } else {
-                return a.favourite < b.favourite ? 1 : -1;
-              }
-            });
+            this.sortPeople()
           }
         },
         error: ((err: any) => {  
-          const dialogRef = this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong' }})
+          const dialogRef = this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar obtener datos'} });
           dialogRef.afterClosed().subscribe(result => {
             this.router.navigate(['/dashboard/feed']);
           });
         })
       })
     } else {
-      const dialogRef = this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong' }})
+      const dialogRef = this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar obtener datos'} });
       dialogRef.afterClosed().subscribe(result => {
         this.router.navigate(['/dashboard/feed']);
       });
     }
     
   }
+
+  // Sort people list
+  sortPeople() {
+    this.userEvents.sort( function(a, b) {          
+      if (a.favourite === b.favourite) {
+        return (a.name > b.name) ? 1 : -1;
+      } else {
+        return a.favourite < b.favourite ? 1 : -1;
+      }
+    });
+  }
+
 
   // User joins the event
   joinEvent(){
@@ -102,8 +109,9 @@ export class EventDetailComponent implements OnInit {
       name: this.userName,
       favourite: false
     })
+    this.sortPeople()
     this.userService.userJoinsEvent(this.event.id)
-    .subscribe({ error: (err) => { this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong, try again' } });}})
+    .subscribe({ error: (err) => { this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error, vuelva a intentar'} })}})
   }
   
   // User quits the event
@@ -112,7 +120,7 @@ export class EventDetailComponent implements OnInit {
     this.userParticipateEvent = false
     this.userEvents = this.userEvents.filter(user => user.id !== this.idUser)
     this.userService.userLeftEvent(this.event.id)
-    .subscribe({ error: (err) => { this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong, try again' } });}})
+    .subscribe({ error: (err) => { this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error, vuelva a intentar'} })}})
   }
 
   // Event admin cancels the event
@@ -123,23 +131,27 @@ export class EventDetailComponent implements OnInit {
         this.eventService.setEvent(res.updatedEvent)
         this.event.cancelled = true
       },
-      error: ((err: any) => {  this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong trying to cancel the event. Try again' }})})
+      error: ((err: any) => {  this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error, vuelva a intentar' }})})
     })
   }
 
   // Event admin deletes the event
   deleteEvent(){
-    this.eventService.deleteEvent(this.event.id)
-    .subscribe({
-      next: (res) => {
-        const dialogRef = this.dialog.open(ModalMsgComponent, { data: { msg: 'Event deleted.' } });
-        this.eventService.setEvent(res.updatedEvent)
-        dialogRef.afterClosed().subscribe(_ => { this.router.navigate(['/dashboard/feed']) });
-      },
-      error: ((err: any) => {  
-        this.dialog.open(ModalErrorComponent, {data: { msg: 'Something went wrong trying to delete the event. Try again' }})
-      })
-    })
+    const dialogRef = this.dialog.open(ModalBeforeDeleteComponent, { data: { model: 'evento', id: this.event.id } });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.eventService.deleteEvent(this.event.id).subscribe({
+          next: res => {
+            const dialogRef = this.dialog.open(ModalMsgComponent, { data: { title: 'Éxito', msg: 'Evento Eliminado.' } });
+            this.eventService.setEvent(res.updatedEvent)
+            dialogRef.afterClosed().subscribe(_ => { this.router.navigate(['/dashboard/feed']) });  
+          },
+          error: (err) => {
+            this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar borrar el evento.' } });
+          }
+        }) 
+      }}
+    )
   }
 
   // Event admin fav a user
@@ -157,7 +169,9 @@ export class EventDetailComponent implements OnInit {
               return user
             })
         },
-        error: (err) => { this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong, try again' } }); }
+        error: (err) => { 
+          this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar borrar el evento.' } });
+        }
       })
     }
   }

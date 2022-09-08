@@ -18,10 +18,9 @@ import { ModalToChangePwdComponent } from './components/modal-to-change-pwd/moda
 import { ModalToChangePhotoComponent } from './components/modal-to-change-photo/modal-to-change-photo.component';
 import { ModalMsgComponent } from '../../shared/components/modal-msg/modal-msg.component';
 import { EventEditComponent } from './views';
-import { ModalErrorComponent } from '../../shared/components/modal-error/modal-error.component';
 import { ModalToChangePhotoEventComponent } from './components/modal-to-change-photo-event/modal-to-change-photo-event.component';
 import { ModalToChangePhotoTypeComponent } from './components/modal-to-change-photo-type/modal-to-change-photo-type.component';
-import { ModalNoticeComponent } from '../../shared/components/modal-notice/modal-notice.component';
+import { ModalBeforeDeleteComponent } from './components/modal-before-delete/modal-before-delete.component';
 
 
 @NgModule({
@@ -38,10 +37,9 @@ import { ModalNoticeComponent } from '../../shared/components/modal-notice/modal
     ModalToChangePwdComponent,
     ModalToChangePhotoComponent,
     ModalMsgComponent,
-    ModalErrorComponent,
     ModalToChangePhotoEventComponent,
     ModalToChangePhotoTypeComponent,
-    ModalNoticeComponent,
+    ModalBeforeDeleteComponent,
   ],
   imports: [
     CommonModule,

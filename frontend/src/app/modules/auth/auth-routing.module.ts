@@ -14,6 +14,9 @@ const routes: Routes = [
   },{
     path: 'signmenu',
     component: SignmenuComponent
+  },{
+    path: 'signmenu/:success',
+    component: SignmenuComponent
   }
 ];
 

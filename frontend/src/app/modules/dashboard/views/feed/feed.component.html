@@ -1,63 +1,92 @@
-<br>
-<mat-expansion-panel [formGroup]="filtersForm" >
+<br />
+<mat-expansion-panel [formGroup]="filtersForm">
   <mat-expansion-panel-header>
     <mat-panel-title>
       <mat-icon>filter_list</mat-icon>
-      Filters
+      Filtros avanzados
     </mat-panel-title>
   </mat-expansion-panel-header>
 
-  <div class="filter-item">
-    <mat-form-field appearance="fill">
-      <mat-label>Province</mat-label>
-      <mat-select formControlName="province" (selectionChange)="changeProvince()">
-        <mat-option *ngFor="let province of provinces" [value]="province">
-          {{province}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+  <div class="flex-col-stretch advanced-filters">
+    <div class="flex-row-str-str">
+      <mat-form-field appearance="fill" class="field-box">
+        <mat-label>Provincia</mat-label>
+        <mat-select
+          formControlName="province"
+          (selectionChange)="changeProvince()"
+        >
+          <mat-option *ngFor="let province of provinces" [value]="province">
+            {{ province }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>City/Town</mat-label>
+      <mat-form-field appearance="fill" class="field-box">
+        <mat-label>Localidad</mat-label>
         <mat-select formControlName="city">
-        <mat-option *ngFor="let city of cities" [value]="city">
-          {{city}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+          <mat-option *ngFor="let city of cities" [value]="city">
+            {{ city }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Event Type</mat-label>
-      <mat-select formControlName="type">
-        <mat-option *ngFor="let type of eventTypes" [value]="type.id">
-          {{type.type}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    
-    <mat-form-field appearance="fill">
-      <mat-label>Event Mode</mat-label>
-      <mat-select formControlName="mode">
-        <mat-option *ngFor="let mode of modes" [value]="mode.value">
-          {{mode.viewValue}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    
-    <mat-form-field appearance="fill">
-      <mat-label>User</mat-label>
-      <input matInput (keyup)="onKeyUp()" #filterByUser formControlName="user">
-    </mat-form-field>
+    <div class="flex-row-str-str">
+      <mat-form-field appearance="fill" class="field-box">
+        <mat-label>Tipo de evento</mat-label>
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let type of eventTypes" [value]="type.id">
+            {{ type.type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="field-box">
+        <mat-label>Modalidad de evento</mat-label>
+        <mat-select formControlName="mode">
+          <mat-option *ngFor="let mode of modes" [value]="mode.value">
+            {{ mode.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </div>
-  
-  <button mat-raised-button class="filter-apply-btn btn-primary" (click)="filterEvents()">Filter</button>
-  <button mat-raised-button class="filter-apply-btn btn-primary" (click)="resetFilters()">Clear Filters</button>
-
+  <br />
+  <div class="flex-row-cen-end">
+    <button mat-stroked-button color="warn" (click)="resetFilters()">
+      Limpiar Filtros
+    </button>
+    <button mat-stroked-button color="primary" (click)="filterEvents()">
+      Filtrar
+    </button>
+  </div>
 </mat-expansion-panel>
 
+<div class="common-filters">
+  <mat-form-field appearance="fill" class="field-box">
+    <mat-label>
+      <div class="flex-row-cen-str">
+        <mat-icon>person_search</mat-icon>
+        Filtrar por Usuario
+      </div>
+    </mat-label>
+    <input matInput (keyup)="onKeyUp()" #filterByUser />
+  </mat-form-field>
 
-<div class="events-header">
-<div>
+  <mat-form-field appearance="fill" class="field-box">
+    <mat-label>
+      <div class="flex-row-cen-str">
+        <mat-icon>sort</mat-icon>
+        Ordenar por
+      </div>
+    </mat-label>
+    <mat-select (selectionChange)="orderby($event)">
+      <mat-option value="date"> Más Próximos </mat-option>
+      <mat-option value="people"> Más Participantes </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- <div>
   <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="orderby($event)">
     <mat-button-toggle value="date" >
       <mat-icon>date_range</mat-icon>
@@ -69,17 +98,15 @@
       <mat-icon>note_add</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
+</div> -->
 </div>
 
-</div>
+<br />
 
-<br>
 <div class="lista-eventos">
   <div class="evento" *ngFor="let event of filteredEvents">
-
     <etp-event [event]="event"></etp-event>
-
   </div>
 </div>
 
-<p *ngIf="error">{{error}}</p>
+<p *ngIf="error">{{ error }}</p>

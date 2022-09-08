@@ -19,9 +19,9 @@
     <tbody *ngIf="filteredEventsList">
       <tr *ngFor="let event of filteredEventsList">
         <td>{{event.id}}</td>
-        <td>{{event.title}}</td>
-        <td>
-          <mat-icon (click)="deleteEvent(event.id)">delete_forever</mat-icon>
+        <td class="align-start">{{event.title}}</td>
+        <td class="center-td">
+          <mat-icon (click)="deleteEvent(event.id)" class="red center">delete_forever</mat-icon>
         </td>
       </tr>
     <tbody *ngIf="!filteredEventsList">
@@ -31,3 +31,5 @@
     </tbody>
   </table>
 </div>
+
+<span class="floating-message" *ngIf="msg">{{msg}}</span>

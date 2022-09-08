@@ -7,7 +7,7 @@ import { Contact, User } from '@etp/shared/interfaces';
 import { AuthService } from '@etp/auth/services';
 // Components
 import { ContactServiceService, UserServiceService } from '@etp/shared/services';
-import { ModalErrorComponent, ModalMsgComponent } from '@etp/shared/components';
+import { ModalMsgComponent } from '@etp/shared/components';
 import { Router } from '@angular/router';
 
 @Component({
@@ -73,12 +73,12 @@ export class ContactComponent implements OnInit {
       this.contactService.createContact(newContact)
       .subscribe({
         next: res => { 
-          this.dialog.open(ModalMsgComponent, { data: { msg: 'Your email was sent. we will contact you shortly.' } })
+          this.dialog.open(ModalMsgComponent, { data: { title: 'Éxito', msg: 'Mensaje enviado, nos contactaremos contigo en breve.' } })
           .afterClosed().subscribe(_ => {
             this.router.navigate(['/dashboard/feed'])
           })
         },
-        error: ((err) => {  this.dialog.open(ModalErrorComponent, { data: { msg: "Something went wrong, try again" } })  })
+        error: ((err) => {  this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error, reintente' } })  })
       })
     } else {
       this.contactForm.markAllAsTouched;

@@ -36,8 +36,8 @@
         <td>{{type.id}}</td>
         <td>{{type.type}}</td>
         <td class="actions">
-          <mat-icon (click)="deleteType(type.id)">delete_forever</mat-icon>
-          <mat-icon (click)="editType(type)">edit</mat-icon>
+          <mat-icon (click)="deleteType(type.id)" class="red center">delete_forever</mat-icon>
+          <mat-icon (click)="editType(type)" class="blue center">edit</mat-icon>
         </td>
       </tr>
     <tbody *ngIf="initTypesList[0].type === ''">
@@ -47,3 +47,5 @@
     </tbody>
   </table>
 </div>
+
+<span class="floating-message" *ngIf="msg">{{msg}}</span>

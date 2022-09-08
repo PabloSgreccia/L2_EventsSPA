@@ -15,7 +15,7 @@ const IMGURL = `${process.env.PHOTO}images/default`
 const showAll = async (req, res) => {
     try {
         let users = await User.findAll({
-            attributes: ['id', 'name', 'email'],
+            attributes: ['id', 'name', 'email', 'role'],
             where: {
                 active: true
             }

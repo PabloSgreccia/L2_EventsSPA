@@ -4,21 +4,22 @@
         <mat-label>Email</mat-label>
         <input matInput placeholder="Placeholder" formControlName="email">
         <mat-icon matSuffix>alternate_email</mat-icon>
-        <mat-hint class="hint" *ngIf="email.errors?.['email']">Should be a valid email.</mat-hint>
+        <mat-hint class="hint" *ngIf="email.errors?.['email']">Debe ser un email válido.</mat-hint>
     </mat-form-field>
     
     <mat-form-field appearance="outline">
-        <mat-label>Password</mat-label>
+        <mat-label>Contraseña</mat-label>
         <input [type]="inputTypeValue" matInput placeholder="Placeholder" formControlName="password">
         <mat-icon matSuffix class="pointer" (click)="showPassword()">remove_red_eye</mat-icon>
-        <mat-hint class="hint" *ngIf="password.errors?.['pattern']">At least eight characters, one number, one uppercase and one lowercase.</mat-hint>
+        <mat-hint class="hint" *ngIf="password.errors?.['pattern']">Al menos 8 caracteres, una letra mayuscula, una letra minuscula y un numero.</mat-hint>
     </mat-form-field>
     <span class="separator" *ngIf="password.errors?.['pattern']"></span>
     
     <div *ngIf="error" class="form-error-msg">{{error}}</div >
 
     <div class="flex-col-stretch">
-        <button mat-flat-button type="submit" [disabled]="!logInForm.valid" class="btn-primary">Log In</button>    
-        <button mat-flat-button type="button" (click)="forgotPass()" class="btn-primary">Forgot Password</button>    
+        <button mat-flat-button type="submit" [disabled]="!logInForm.valid" class="btn-primary">Loguearse</button>    
+        <a class="forgot-pass" (click)="forgotPass()" >¿Olvidaste tu contraseña?</a>    
     </div>
+    
 </form>

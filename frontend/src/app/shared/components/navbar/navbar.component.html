@@ -2,41 +2,57 @@
     
   <mat-toolbar>
     <button mat-button routerLink="/dashboard">
-      <!-- <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon> -->
-      Home
+      <div class="flex-row-cen-str">
+        <mat-icon>home</mat-icon>
+        <div>Inicio</div>
+      </div>
     </button>
     <button mat-button *ngIf="user.role === 'admin'" [routerLink]="['/admin']">
-      Admin
+      <div class="flex-row-cen-str">
+        <mat-icon>settings</mat-icon>
+        <div>Administrador</div>
+      </div>
     </button>
 
-    <span class="example-spacer"></span>
+    <span class="spacer"></span>
     
-    <button mat-button [matMenuTriggerFor]="menu">About</button>
+    <button mat-button [matMenuTriggerFor]="menu">
+      <div class="flex-row-cen-str">
+        <mat-icon>question_mark</mat-icon>
+      <div>Contáctanos</div>
+      </div>
+    </button>
+    
     <mat-menu #menu="matMenu">
       <button mat-menu-item [routerLink]="['/about']">
-        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="face"></mat-icon>
-        About Us
+        <mat-icon fontIcon="face"></mat-icon>
+        Quiénes somos
       </button>
       <button mat-menu-item [routerLink]="['/contact']">
-        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="contact_support"></mat-icon>
-        Contact
+        <mat-icon fontIcon="contact_support"></mat-icon>
+        Contacto
       </button>
     </mat-menu>
 
     <div *ngIf="user && user.name">
-      <button  mat-button [matMenuTriggerFor]="profile">{{user.name}}</button>
+      <button  mat-button [matMenuTriggerFor]="profile">
+        <div class="flex-row-cen-str">
+          <mat-icon>account_circle</mat-icon>
+        {{user.name}}
+      </div>
+    </button>
       <mat-menu #profile="matMenu">
         <button mat-menu-item [routerLink]="['/dashboard/profile', user.id]">
-          <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="person"></mat-icon>
-          Profile
+          <mat-icon fontIcon="person"></mat-icon>
+          Mi Perfil
         </button>
         <button mat-menu-item [routerLink]="['/dashboard/settings']">
-          <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="settings"></mat-icon>
-          Settings
+          <mat-icon fontIcon="settings"></mat-icon>
+          Editar Perfil
         </button>
         <button mat-menu-item (click)="logOut()">
-          <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="exit_to_app"></mat-icon>
-          Log Out
+          <mat-icon fontIcon="exit_to_app"></mat-icon>
+          Salir
         </button>
       </mat-menu>
     </div>
@@ -48,38 +64,46 @@
   
   <mat-toolbar>
     <button mat-button routerLink="/dashboard">
-      Home
+      <div class="flex-row-cen-str">
+        <mat-icon>home</mat-icon>
+        <div>Inicio</div>
+      </div>
     </button>
     <button mat-button *ngIf="user.role === 'admin'" [routerLink]="['/admin']">
-      Admin
+      <div class="flex-row-cen-str">
+        <mat-icon>settings</mat-icon>
+        <div>Administrador</div>
+      </div>
     </button>
 
-    <span class="example-spacer"></span>
+    <span class="spacer"></span>
 
     <button mat-button [matMenuTriggerFor]="collapse"><mat-icon>menu</mat-icon></button>
     <mat-menu #collapse="matMenu">
       <div *ngIf="user && user.name">
         <button mat-menu-item [routerLink]="['/dashboard/profile', user.id]">
-          <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="person"></mat-icon>
-          Profile
+          <mat-icon fontIcon="person"></mat-icon>
+          Mi Perfil
         </button>
         <button mat-menu-item [routerLink]="['/dashboard/settings']">
-          <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="settings"></mat-icon>
-          Settings
-        </button>
-        <button mat-menu-item (click)="logOut()">
-          <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="exit_to_app"></mat-icon>
-          Log Out
+          <mat-icon fontIcon="settings"></mat-icon>
+          Editar Perfil
         </button>
       </div>
       <button mat-menu-item [routerLink]="['/about']">
-        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="face"></mat-icon>
-        About Us
+        <mat-icon fontIcon="face"></mat-icon>
+        Quiénes somos
       </button>
       <button mat-menu-item [routerLink]="['/contact']">
-        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="contact_support"></mat-icon>
-        Contact
+        <mat-icon fontIcon="contact_support"></mat-icon>
+        Contacto
       </button>
+      <div *ngIf="user && user.name">
+        <button mat-menu-item (click)="logOut()">
+          <mat-icon fontIcon="exit_to_app"></mat-icon>
+          Salir
+        </button>
+      </div>
     </mat-menu>
 
   </mat-toolbar>

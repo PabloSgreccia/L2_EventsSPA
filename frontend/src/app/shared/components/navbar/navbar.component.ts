@@ -7,7 +7,7 @@ import { User } from '@etp/shared/interfaces';
 import { AuthService } from '@etp/auth/services';
 import { UserServiceService } from '@etp/shared/services';
 // Components
-import { ModalErrorComponent } from '../modal-error/modal-error.component';
+import { ModalMsgComponent } from '../modal-msg/modal-msg.component';
 
 @Component({
   selector: 'etp-navbar',
@@ -26,11 +26,12 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // Get user data
     this.userService.getUser().subscribe({
       next: (res:User) => {        
         this.user = res
     }, error: () => {
-      const dialogRef = this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong, sign up again.' } });
+      const dialogRef = this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar obtener los datos del usuario.' } });
       dialogRef.afterClosed().subscribe(_ => { this.router.navigate(['/signmenu']) });
     }})
   }

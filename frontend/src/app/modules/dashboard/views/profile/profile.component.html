@@ -1,53 +1,59 @@
 <br>
 
 <mat-card>
+  <div *ngIf="user">
   <div class="user-info">
     <div class="row-group">
-      <img [src]="user.photo" class="user-img">
-      <div class="user-name">
-        <mat-card-title> {{user.name}}</mat-card-title>
-        <mat-card-subtitle>{{cantEvents || 0 }} Events Created</mat-card-subtitle>
+        <img [src]="user.photo" class="user-img">
+        <div class="user-name">
+          <mat-card-title> {{user.name}}</mat-card-title>
+          <mat-card-subtitle>{{cantEventsCreated || 0 }} Eventos creados</mat-card-subtitle>
+          <mat-card-subtitle>{{cantEventsFollowed || 0 }} Participaciones en eventos</mat-card-subtitle>
+        </div>
       </div>
-    </div>
-    <div>
-      <mat-icon *ngIf="user.validated === 3" class="verify-icon">verified_user</mat-icon>
+      <div>
+        <mat-icon *ngIf="user.validated === 3" class="verify-icon">verified_user</mat-icon>
+      </div>
     </div>
   </div>
 </mat-card>
 
 <br>
+  <button mat-button routerLink="/dashboard/new-event" class="btn-primary">
+    <mat-icon>note_add</mat-icon>
+    Crear nuevo evento
+  </button>
 
-<div class="profile-tabs">
+<br>
+<br>
+
+<div>
   <mat-tab-group mat-stretch-tabs animationDuration="0ms" mat-align-tabs="center">
+    
     <mat-tab label="Created Events">
       <br>
       <div class="lista-eventos">
         <div class="evento" *ngFor="let event of createdEvents">
-          
-          
           <etp-event [event]="event"></etp-event>
-          
         </div>
       </div>
-      
-      <div *ngIf="!createdEvents[0]" class="centered-text">
-        <h3>this user has'n created any events yet</h3>
+      <div *ngIf="createdEvents && !createdEvents[0]" class="centered-text">
+        <h3>Este usuario aún no ha creado ningun evento.</h3>
       </div>
     </mat-tab>
+
     <mat-tab label="Followed Events">
       <br>
       <div class="lista-eventos">
         <div class="evento" *ngFor="let event of followedEvents">
-
           <etp-event [event]="event"></etp-event>
-
         </div>
       </div>
-
-      <div *ngIf="!followedEvents[0]" class="centered-text">
-        <h3>this user has'n participated in any event yet</h3>
+      <div *ngIf="followedEvents && !followedEvents[0]" class="centered-text">
+        <h3>Este usuario aún no ha participado de ningun evento.</h3>
       </div>
     </mat-tab>
+
   </mat-tab-group>
 </div>
 

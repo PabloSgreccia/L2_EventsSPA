@@ -1,26 +1,31 @@
 <br>
 
-<mat-card class="event-card">
+<div *ngIf="event" class="event-card">
+  <mat-card class="admin-event-card" [routerLink]="['/dashboard/profile', event.user.id]">
+    <img [src]="event.user.photo" class="user-img" [routerLink]="['/dashboard/profile', event.user.id]">
+    <p class="admin-name">{{event.user.name}}</p> 
+    <mat-icon *ngIf="event.user.validated" class="verify-icon">verified_user</mat-icon>
+  </mat-card>
+  
+  <br>
+  <br>
+  <div>
+    <mat-card-title>{{event.title}}</mat-card-title>
+  </div>
+  <br>
+  
   <div class="event-img">
     <img [src]="event.photo" class="event-img">
   </div>
 
   <br>
-  <mat-card class="admin-event-card" [routerLink]="['/dashboard/profile', event.user.id]">
-    <img [src]="event.user.photo" class="user-img" [routerLink]="['/dashboard/profile', event.user.id]">
-    <b>{{event.user.name}}</b> 
-    <mat-icon *ngIf="event.user.validated" class="verify-icon">verified_user</mat-icon>
-
-  </mat-card>
-  <br>
 
   <mat-card class="event-data-card">
-    <mat-card-title>{{event.title}}</mat-card-title>
     <div class="aligned-elements">
       <mat-icon>date_range</mat-icon>
       <div class="column-dates">
-        <p>From: {{event.init_date | date:'short'}}</p>
-        <p>To: {{event.end_date | date:'short'}}</p>
+        <p>Desde: {{event.init_date | date:'short'}}</p>
+        <p>Hasta: {{event.end_date | date:'short'}}</p>
       </div>
     </div>
     <!-- <div class="aligned-elements">
@@ -35,27 +40,32 @@
     </div>
     <div class="aligned-elements link-text" *ngIf="event.link">
       <mat-icon>link</mat-icon>
-        {{event.link}}
+      <a href="https://{{event.link}}" target="_blank">{{event.link}}</a>
     </div>
     <div class="aligned-elements user">
       {{event.description}}
     </div>
-    <div *ngIf="event.cancelled" class="cancelled">
-      Event Cancelled 
+    <div *ngIf="event.cancelled; else finished" class="cancelled">
+      Evento Cancelado 
     </div>
+    <ng-template #finished>
+      <div *ngIf="event.finished" class="cancelled">
+        Evento Finalizado 
+      </div>
+    </ng-template>
   </mat-card>
 <br>
 
   <!-- <div class="actions" *ngIf="2 === 2; else notowner"> -->
   <div class="actions" *ngIf="event.user.id === idUser; else notowner">
-    <button mat-stroked-button color="warn" (click)="cancelEvent()" *ngIf="event.end_date > today && !event.cancelled ">Cancel Event</button>
-    <button mat-stroked-button color="warn" (click)="deleteEvent()">Delete Event</button>
-    <button mat-stroked-button color="primary" [routerLink]="['/dashboard/editevent', event.id]" *ngIf="event.end_date > today && !event.cancelled">Edit Event</button>
+    <button mat-stroked-button color="warn" (click)="cancelEvent()" *ngIf="event.end_date > today && !event.cancelled ">Cancelar Evento</button>
+    <button mat-stroked-button color="warn" (click)="deleteEvent()">Eliminar Evento</button>
+    <button mat-stroked-button color="primary" [routerLink]="['/dashboard/editevent', event.id]" *ngIf="event.end_date > today && !event.cancelled">Editar Evento</button>
   </div>
   <ng-template  #notowner>
     <div *ngIf="!event.cancelled">
-      <button  *ngIf="userParticipateEvent && event.end_date > today" mat-stroked-button color="warn" (click)="quitEvent()">QUIT EVENT</button>
-      <button *ngIf="!userParticipateEvent && event.end_date > today" mat-stroked-button color="primary" (click)="joinEvent()" >PARTICIPATE</button>
+      <button  *ngIf="userParticipateEvent && event.end_date > today" mat-stroked-button color="warn" (click)="quitEvent()">SALIR</button>
+      <button *ngIf="!userParticipateEvent && event.end_date > today" mat-stroked-button color="primary" (click)="joinEvent()" >PARTICIPAR</button>
     </div>
   </ng-template>
 
@@ -64,7 +74,7 @@
   <mat-expansion-panel class="participants-card">
     <mat-expansion-panel-header>
       <mat-panel-title class="panel-title">
-        PEOPLE LIST
+        LISTA DE PARTICIPANTES
         <mat-icon>people</mat-icon>
         {{event.cantPeople}}
       </mat-panel-title>
@@ -87,4 +97,4 @@
     </table>
 
   </mat-expansion-panel>
-</mat-card>
+</div>

@@ -17,8 +17,8 @@
           <td>{{user.email}}</td>
           <td>{{user.name}}</td>
           <td class="actions">
-            <mat-icon (click)="declineVerification(user.id)">close</mat-icon>
-            <mat-icon (click)="acceptVerification(user.id)">check</mat-icon>
+            <mat-icon (click)="updateVerification(user.id, 1)" class="red">close</mat-icon>
+            <mat-icon (click)="updateVerification(user.id, 3)" class="green">check</mat-icon>
           </td>
         </tr>
       <tbody *ngIf="!initUsersList">
@@ -29,3 +29,4 @@
     </table>
   </div>
   
+<span class="floating-message" *ngIf="msg">{{msg}}</span>
