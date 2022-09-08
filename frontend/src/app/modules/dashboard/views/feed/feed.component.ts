@@ -7,7 +7,7 @@ import { Event, Type } from '@etp/dashboard/interfaces'
 // Services
 import { EventServiceService, LocationServiceService, TypeServiceService } from '@etp/dashboard/services';
 // Components
-import { ModalErrorComponent } from '@etp/shared/components';
+import { ModalMsgComponent } from '@etp/shared/components';
 
 interface FilterInput {
   value: string;
@@ -50,6 +50,8 @@ export class FeedComponent implements OnInit {
   // Events vars
   initialEvents!: Event[] 
   filteredEvents!: Event[]
+  ActiveEvents!: Event[]
+  filteredActiveEvents!: Event[]
 
   constructor(
     private locationService: LocationServiceService,
@@ -67,7 +69,7 @@ export class FeedComponent implements OnInit {
         this.provinces.sort((a, b) => (a > b) ? 1 : -1)
       },
       error: (err => {
-        this.openErrorDialog("Something went wrong trying to get provinces.")
+        this.openErrorDialog("Ocurrió un error al obtener las provincias.")
       })
     })
 
@@ -79,7 +81,7 @@ export class FeedComponent implements OnInit {
           this.eventTypes = res.types
           this.eventTypes.sort( function(a, b) { return b.type < a.type? 1 : -1; });
         } else {
-          this.openErrorDialog("There aren't any type of event created. Please wait until the admin creates one first.")
+          this.openErrorDialog("Aún no se creó ningun tipo de evento. Por favor aguarde hasta que el administrador de la página cree alguno.")
         }
       }
     })
@@ -90,26 +92,34 @@ export class FeedComponent implements OnInit {
       next: res => {        
         if (res.events[0].id) {
           this.initialEvents = res.events
+          this.initialEvents.sort(
+          function(a, b) {          
+              if (a.finished === b.finished) {
+                return ((new Date(b.init_date)) < (new Date(a.init_date))) ? 1 : -1;
+              }
+              return new Date(b.init_date) > new Date(a.init_date) ? 1 : -1;
+          });
           this.filteredEvents = this.initialEvents
-          this.filteredEvents.sort( function(a, b) { return new Date(b.init_date) > new Date(a.init_date)? 1 : -1; });
         } else {
-          this.error = "There aren't any active event"
+          this.error = "No hay eventos disponibles."
         }
       }, error: (err) => {
-        this.openErrorDialog("Something went wrong trying to get events.")
+        this.openErrorDialog("Ocurrió un error al intentar obtener eventos.")
       }
     })
   }
 
   // Open error dialog
   openErrorDialog(msg: string) {
-    this.dialog.open(ModalErrorComponent, { data: { msg } });
+    this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg } });
   }
 
   // Reser form filters
   resetFilters(){
     this.filteredEvents = this.initialEvents
+    this.cities = [],
     this.filtersForm.reset()
+    this.error = ''
   }
 
   // Filter events after press button
@@ -134,12 +144,14 @@ export class FeedComponent implements OnInit {
         .filter(event => (event.mode === this.filtersForm.controls.mode.value) || (event.mode === "mixed"))
     } 
     if (this.filteredEvents.length === 0) {
-      this.openErrorDialog('There arent events with this criteria.')
+      this.openErrorDialog('No hay eventos que cumplan con los criterios de búsqueda ingresados.')
+      this.filteredEvents = this.initialEvents
     }
   }
 
   // Filter by user
   async onKeyUp(){
+    this.error = ''
     this.filtersForm.controls.city.reset()
     this.filtersForm.controls.province.reset()
     this.filtersForm.controls.type.reset()
@@ -150,7 +162,7 @@ export class FeedComponent implements OnInit {
       this.filteredEvents = this.initialEvents
     }
     if (this.filteredEvents.length === 0) {
-      this.openErrorDialog('There arent events with this criteria.')
+      this.error = "No hay eventos creados del usuario ingresado."
     }
   }
 
@@ -165,7 +177,7 @@ export class FeedComponent implements OnInit {
         this.cities.sort((a, b) => (a > b) ? 1 : -1)
       },
       error: (err => {
-        this.openErrorDialog("Something went wrong trying to get cities.")
+        this.openErrorDialog(`Ocurrió un error al intentar obtener las ciudades de ${this.filtersForm.controls.province.value}.`)
       })
     })
   }
@@ -174,13 +186,19 @@ export class FeedComponent implements OnInit {
   orderby(event: any){
     if (event.value === 'date') {
       //Order by date (desc)
-      this.filteredEvents.sort( function(a, b) { return new Date(b.init_date) > new Date(a.init_date)? 1 : -1; });
+      this.filteredEvents.sort(
+        function(a, b) {          
+           if (a.finished === b.finished) {
+              return ((new Date(b.init_date)) < (new Date(a.init_date))) ? 1 : -1;
+           }
+           return new Date(b.init_date) > new Date(a.init_date) ? 1 : -1;
+        });
     }else if (event.value === 'people') {
       //Order by people (desc)
       this.filteredEvents.sort(
         function(a, b) {          
            if (a.finished === b.finished) {
-              return ((a.cantPeople || 0) < (b.cantPeople || 0)) ? 1 : -1;
+              return ((a.cantPeople) < (b.cantPeople)) ? 1 : -1;
            }
            return a.finished > b.finished ? 1 : -1;
         });

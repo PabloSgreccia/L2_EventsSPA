@@ -2,21 +2,26 @@
 
     <div class="event-card-header event-linker">
       <img [src]="event.user.photo" class="user-img" [routerLink]="['/dashboard/profile', event.user.id]">
-      <div class="event-card-header-info" [routerLink]="['/dashboard/event', event.id]">
+      <div class="event-card-header-info">
 
-        <div class="card-title">
+        <div class="card-title" [routerLink]="['/dashboard/event', event.id]">
           <mat-card-title>{{event.title}}</mat-card-title>
           <div>
             <mat-icon *ngIf="event.user.validated" class="verify-icon">verified_user</mat-icon>
           </div>
         </div>
 
-        <div class="aligned-elements">
+        <div class="aligned-elements user" [routerLink]="['/dashboard/event', event.id]">
+          <mat-icon>face</mat-icon>
+          <b>{{event.user.name}}</b>
+        </div>
+
+        <div class="aligned-elements" [routerLink]="['/dashboard/event', event.id]">
           <mat-icon>date_range</mat-icon>
           {{event.init_date | date:'short'}}
         </div>
 
-        <div class="aligned-elements" *ngIf="event.province">
+        <div class="aligned-elements" *ngIf="event.province" [routerLink]="['/dashboard/event', event.id]">
           <mat-icon> place</mat-icon>
           {{event.province}},
           {{event.city}},
@@ -26,12 +31,7 @@
 
         <div class="aligned-elements" *ngIf="event.link">
           <mat-icon>link</mat-icon>
-          <p class="link-url">{{event.link}}</p>
-        </div>
-
-        <div class="aligned-elements user">
-          <mat-icon>face</mat-icon>
-          {{event.user.name}}
+            <a href="https://{{event.link}}" target="_blank">{{event.link}}</a>
         </div>
 
       </div>
@@ -42,9 +42,15 @@
   
       <div class="event-card-footer" [routerLink]="['/dashboard/event', event.id]">
         <div>
-          <div *ngIf="event.cancelled" class="canceled">
+          <div *ngIf="event.cancelled; else isActive" class="canceled">
             Event Cancelled
           </div>
+          <ng-template #isActive>
+            <div *ngIf="(event.init_date <= today) && (event.end_date >= today)" class="live-event">
+              Ocurriendo ahora
+            </div>
+
+          </ng-template>
         </div>
         <div class="event-card-footer-stats">
             <div class="event-card-footer-stats-ppl">

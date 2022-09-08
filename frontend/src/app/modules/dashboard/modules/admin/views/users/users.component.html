@@ -12,16 +12,18 @@
 
   <table>
     <thead>
+      <th>ID</th>
       <th>Name</th>
       <th>Email</th>
       <th>Actions</th>
     </thead>
     <tbody *ngIf="editedUsersList">
       <tr *ngFor="let user of editedUsersList">
-        <td>{{user.name}}</td>
-        <td>{{user.email}}</td>
-        <td>
-          <mat-icon (click)="deleteUser(user.id)">delete_forever</mat-icon>
+        <td [routerLink]="['/dashboard/profile', user.id]">{{user.id}}</td>
+        <td [routerLink]="['/dashboard/profile', user.id]">{{user.name}}</td>
+        <td [routerLink]="['/dashboard/profile', user.id]">{{user.email}}</td>
+        <td class="center-td">
+          <mat-icon (click)="deleteUser(user.id)" class="red center">delete_forever</mat-icon>
         </td>
       </tr>
     <tbody *ngIf="!editedUsersList">
@@ -31,3 +33,5 @@
     </tbody>
   </table>
 </div>
+
+<span class="floating-message" *ngIf="msg">{{msg}}</span>

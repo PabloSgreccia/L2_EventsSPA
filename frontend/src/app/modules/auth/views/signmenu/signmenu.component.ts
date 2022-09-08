@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'etp-signmenu',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignmenuComponent implements OnInit {
 
-  constructor() { }
+  msg!:string
+
+  constructor(
+    private route: ActivatedRoute,
+  ) { }
 
   ngOnInit(): void {
+    this.route.params.subscribe(param => {
+      if (typeof param['success'] !== 'undefined') {
+          this.msg = 'Validación exitosa';
+          setTimeout(()=>{ this.msg = '' }, 4000);     
+      } 
+     });
   }
 
 }

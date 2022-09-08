@@ -17,10 +17,12 @@ export class EventComponent implements OnInit {
   constructor( ) { }
 
   ngOnInit(): void {
+    this.event.init_date = new Date(this.event.init_date)
+    this.event.end_date = new Date(this.event.end_date)
   }
 
-  // redirect(link: string){
-  //   window.location.href = link;
-  // }
+  redirectTo(link: string){
+    window.open(`http:${link}`, "_blank")
+  }
 
 }

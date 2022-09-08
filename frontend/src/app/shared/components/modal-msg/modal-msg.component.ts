@@ -8,7 +8,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class ModalMsgComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {msg: string}) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {title: string, msg: string}) { }
   
   ngOnInit(): void {
   }

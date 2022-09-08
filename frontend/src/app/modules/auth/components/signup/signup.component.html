@@ -1,39 +1,39 @@
 <form [formGroup]="signUpForm" (ngSubmit)="signUp()" class="flex-col-str-str">
 
     <mat-form-field appearance="outline">
-        <mat-label>Name</mat-label>
+        <mat-label>Nombre completo</mat-label>
         <input matInput placeholder="Placeholder" formControlName="name">
         <mat-icon matSuffix>person</mat-icon>
-        <mat-hint class="hint" *ngIf="name.errors?.['maxlength']">Less than 50 chars.</mat-hint>
+        <mat-hint class="hint" *ngIf="name.errors?.['maxlength']">Hasta 50 caracteres.</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
         <input matInput placeholder="Placeholder" formControlName="email">
         <mat-icon matSuffix>alternate_email</mat-icon>
-        <mat-hint class="hint" *ngIf="email.errors?.['email']">Should be a valid email.</mat-hint>
-        <mat-hint class="hint" *ngIf="email.errors?.['maxlength']">Less than 100 chars.</mat-hint>
+        <mat-hint class="hint" *ngIf="email.errors?.['email']">debe ser un email válido.</mat-hint>
+        <mat-hint class="hint" *ngIf="email.errors?.['maxlength']">Hasta 100 caracteres.</mat-hint>
     </mat-form-field>
     
     <mat-form-field appearance="outline">
-        <mat-label>Password</mat-label>
+        <mat-label>Contraseña</mat-label>
         <input [type]="inputTypeValue" matInput placeholder="Placeholder" #passwordInput formControlName="password">
         <mat-icon matSuffix class="pointer" (click)="showPassword()">remove_red_eye</mat-icon>
-        <mat-hint class="hint" *ngIf="password.errors?.['pattern']">At least eight characters, one number, one uppercase and one lowercase.</mat-hint>
-        <mat-hint class="hint" *ngIf="password.errors?.['maxlength']">Less than 255 chars.</mat-hint>
+        <mat-hint class="hint" *ngIf="password.errors?.['pattern']">Al menos 8 caracteres, una letra mayuscula, una letra minuscula y un numero.</mat-hint>
+        <mat-hint class="hint" *ngIf="password.errors?.['maxlength']">Hasta 255 caracteres.</mat-hint>
     </mat-form-field>
     <span *ngIf="password.errors?.['pattern']" class="separator"></span>
 
     <mat-form-field appearance="outline">
-        <mat-label>Repeat Password</mat-label>
+        <mat-label>Repetir contraseña</mat-label>
         <input [type]="inputTypeValue" matInput placeholder="Placeholder" #reppasswordInput formControlName="repeatpassword">
         <mat-icon matSuffix class="pointer" (click)="showPassword()">remove_red_eye</mat-icon>
-        <mat-hint class="hint" *ngIf="f.errors?.['passDoesntMatch']">Passwords doesn't match.</mat-hint>
+        <mat-hint class="hint" *ngIf="f.errors?.['passDoesntMatch']">Las contraseñas no coinciden.</mat-hint>
     </mat-form-field>
 
         <div *ngIf="error" class="form-error-msg">{{error}}</div >
 
-    <button mat-flat-button type="submit" class="btn-primary" [disabled]="!signUpForm.valid">Sign Up</button>    
+    <button mat-flat-button type="submit" class="btn-primary" [disabled]="!signUpForm.valid">Registrarse</button>    
     
     <div class="spinner" *ngIf="spinner">
         <mat-spinner></mat-spinner>

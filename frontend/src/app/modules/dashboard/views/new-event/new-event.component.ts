@@ -8,7 +8,7 @@ import { EventServiceService, LocationServiceService, TypeServiceService } from 
 //Interfaces
 import { Type } from '@etp/dashboard/interfaces';
 // Components
-import { ModalErrorComponent, ModalMsgComponent } from '@etp/shared/components';
+import { ModalMsgComponent } from '@etp/shared/components';
 
 
 @Component({
@@ -72,7 +72,7 @@ export class NewEventComponent implements OnInit {
         this.provinces.sort()//(a, b) => (a.value > b.value) ? 1 : -1)
       },
       error: ((err: any) => {
-        this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong trying to get provinces' } });
+        this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar obtener la lista de provincias' } });
       })
     })
 
@@ -88,7 +88,7 @@ export class NewEventComponent implements OnInit {
           }       
         },
         error: ((err: any) => {
-          const dialogRef = this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong, try again' } });
+          const dialogRef = this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar obtener la lista de tipos de eventos' } });
           dialogRef.afterClosed().subscribe(_ => { this.location.back() });
         })
       })
@@ -103,7 +103,7 @@ export class NewEventComponent implements OnInit {
         this.cities.sort()
       },
       error: ((err: any) => {
-        this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong trying to get cities' } });
+        this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar obtener las ciudades.' } });	
       })
     })
   }
@@ -153,13 +153,13 @@ export class NewEventComponent implements OnInit {
               }
 
               this.spinner = false;
-              const dialogRef = this.dialog.open(ModalMsgComponent, { data: { msg: 'Event successfully created.' } })
+              const dialogRef = this.dialog.open(ModalMsgComponent, { data: { title: 'Éxito', msg: 'Evento creado!'} });
               dialogRef.afterClosed().subscribe(_ => { this.router.navigate(['/dashboard/feed']) })
               
             },            
             error: ((err: any) => {
               this.spinner = false;
-                this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong, try again' } });
+              this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar crear el evento.' } });	
             })
           })
       }

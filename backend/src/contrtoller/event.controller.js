@@ -10,6 +10,9 @@ const {Sequelize} = require('../database/models/');
 const formidable = require('formidable');
 const { where } = require('sequelize');
 
+
+
+
 const IMGURL = `${process.env.PHOTO}images/default`
 
 // List all events 

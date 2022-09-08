@@ -6,7 +6,7 @@ import { Contact } from '@etp/shared/interfaces';
 // Services
 import { ContactServiceService } from '@etp/shared/services';
 // Components
-import { ModalErrorComponent } from '@etp/shared/components';
+import { ModalMsgComponent } from '@etp/shared/components';
 
 @Component({
   selector: 'etp-contact-list',
@@ -27,24 +27,26 @@ export class ContactListComponent implements OnInit {
     this.getContactList()
   }
 
-  // Get list of contact forms from BE
+  // Get list of messages forms from BE
   getContactList(){
     this.contactService.listContacts()
     .subscribe({
       next: res => { this.contactList = res.contact},
       error: (err) => {
-        const dialogRef = this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong, try again' } });
+        const dialogRef = this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar obtener la lista de mensajes.' } });
         dialogRef.afterClosed().subscribe(_ => { this.router.navigate(['/admin/panel']) });
       }
     })
   }
 
-  // Delete an email
+  // Delete a message
   deleteContact(id:number){
     this.contactService.deteleContact(id)
     .subscribe({
       next: res => { this.getContactList()},
-      error: (err) => { this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong, try again' } });}
+      error: (err) => { 
+        this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar eliminar el mensaje.' } });
+      }
     })
   }
 }

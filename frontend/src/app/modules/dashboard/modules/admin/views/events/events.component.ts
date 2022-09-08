@@ -1,6 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalBeforeDeleteComponent } from '@etp/dashboard/components';
 // Services
 import { EventServiceService } from '@etp/dashboard/services';
+import { ModalMsgComponent } from '@etp/shared/components';
 
 
 interface EventInterface {
@@ -17,11 +20,13 @@ export class EventsComponent implements OnInit {
 
   initEventsList!: EventInterface[]
   filteredEventsList!: EventInterface[]
+  msg!:string
 
   @ViewChild("filterByEvent") filterByEvent: ElementRef | undefined;
   
   constructor(
-    private eventService: EventServiceService
+    private eventService: EventServiceService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -40,13 +45,30 @@ export class EventsComponent implements OnInit {
           });
         this.filteredEventsList = this.initEventsList
       },
-      error: (err) => {}
+      error: (err) => {
+        this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar obtener la lista de eventos.' } });
+      }
     })
   }
 
   // delete event
   deleteEvent(id:number){
-    this.eventService.deleteEvent(id).subscribe(_ => this.getEvents())
+    const dialogRef = this.dialog.open(ModalBeforeDeleteComponent, { data: { model: 'evento', id: id } });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.eventService.deleteEvent(id).subscribe({
+          next: res => {
+            this.initEventsList = this.initEventsList.filter(event => event.id !== id);
+            this.filteredEventsList = this.filteredEventsList.filter(event => event.id !== id);
+            this.msg = `Evento con ID ${id} eliminado`;
+            setTimeout(()=>{ this.msg = '' }, 3000);     
+          },
+          error: (err) => {
+            this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar borrar el evento.' } });
+          }
+        }) 
+      }}
+    )
   }
 
   // Filter by Event name

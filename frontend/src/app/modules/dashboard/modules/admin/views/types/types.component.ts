@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { ModalBeforeDeleteComponent, ModalToChangePhotoTypeComponent } from '@etp/dashboard/components';
 // Interfaces
 import { Type } from '@etp/dashboard/interfaces';
 // Services
 import { TypeServiceService } from '@etp/dashboard/services';
-import { ModalErrorComponent } from 'src/app/shared/components/modal-error/modal-error.component';
-import { ModalToChangePhotoTypeComponent } from 'src/app/modules/dashboard/components/modal-to-change-photo-type/modal-to-change-photo-type.component';
+// Components
 import { ModalMsgComponent } from '@etp/shared/components';
 
 @Component({
@@ -22,6 +22,7 @@ export class TypesComponent implements OnInit {
   }]
   selectedType!: Type
   changeFotoDisabled: boolean = true
+  msg!:string
 
   typeForm = new FormGroup({
     type: new FormControl('', {validators: [Validators.required]}),
@@ -73,18 +74,22 @@ export class TypesComponent implements OnInit {
 
   // Delete type functionality
   deleteType(id:number){
-    this.typeService.deleteType(id)
-    .subscribe({
-      next: (res) => { this.getTypes() },
-      error: ((err) => { this.openErrorDialog(err.error.msg) }) 
-    })
+    const dialogRef = this.dialog.open(ModalBeforeDeleteComponent, { data: { model: 'evento', id: id } });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.typeService.deleteType(id).subscribe({
+          next: res => {
+            this.initTypesList = this.initTypesList.filter(type => type.id !== id);
+            this.msg = `Tipo de evento con ID ${id} eliminado`;
+            setTimeout(()=>{ this.msg = '' }, 3000);     
+          },
+          error: (err) => {
+            this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar borrar el tipo de evento.' } });
+          }
+        }) 
+      }}
+    )
   }
-
-  // Open error dialog
-  openErrorDialog(msg: string) {
-    this.dialog.open(ModalErrorComponent, { data: { msg } });
-  }
-
 
   // Fill form with data
   editType(type: Type){
@@ -94,23 +99,18 @@ export class TypesComponent implements OnInit {
     this.typeForm.controls.type.setValue(type.type)     
   }
   
+  // Reset Form
   resetForm(){
     this.typeForm.reset()
     this.changeFotoDisabled = true
   }
-  
-  openDialog(msg: string) {
-    this.dialog.open(ModalMsgComponent, {
-      data: { msg },
-    });
-    this.changeFotoDisabled = true
-  }
 
+  // Change photo
   changePhoto(){
     const dialogRef = this.dialog.open(ModalToChangePhotoTypeComponent, { data: { typeId: this.typeForm.controls.id.value } });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.openDialog('Event Photo Updated')
+        this.dialog.open(ModalMsgComponent, { data: { title: 'Éxito', msg: 'Foto de evento actualizada'} });
     }
     });
   }

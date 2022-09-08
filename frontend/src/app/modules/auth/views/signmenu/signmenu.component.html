@@ -1,14 +1,17 @@
+<br>
 <div class="signmenu">
     <div class="subsignmenu">
         <mat-tab-group mat-stretch-tabs animationDuration="0ms" mat-align-tabs="center">
-            <mat-tab label="Log In">
+            <mat-tab label="Loguearse">
                 <br>
                 <etp-login></etp-login>
             </mat-tab>
-            <mat-tab label="Sign Up">
+            <mat-tab label="Registrarse">
                 <br>
                 <etp-signup></etp-signup>
             </mat-tab>
         </mat-tab-group>
     </div>
 </div>
+
+<span class="floating-message" *ngIf="msg">{{msg}}</span>

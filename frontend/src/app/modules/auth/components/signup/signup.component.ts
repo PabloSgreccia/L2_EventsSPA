@@ -4,8 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 // Services
 import { AuthService } from '@etp/auth/services';
+// Modules
 import { ModalMsgComponent } from '@etp/shared/components';
-// Components
 
 @Component({
   selector: 'etp-signup',
@@ -23,6 +23,7 @@ export class SignupComponent implements OnInit {
   inputTypeValue: string = "password"
   error: string = '';
   spinner: boolean = false
+  msg!: string
   
   // Form
   signUpForm = new FormGroup({
@@ -40,14 +41,15 @@ export class SignupComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    public dialog: MatDialog
-    ) { }
+    public dialog: MatDialog,
+  ) { }
 
     // If logged, redirect to feed
   ngOnInit(): void {
     if (this.authService.loggedIn()) {
       this.router.navigate(['/dashboard']);
     }
+    
   }
 
   // ########################## Functionalities
@@ -66,7 +68,9 @@ export class SignupComponent implements OnInit {
         .subscribe({
           next: res => {
             this.spinner = false;
-            this.openDialog('We sent you a verification email, please check it. This will allows you to login.')
+            this.dialog.open(ModalMsgComponent, { data: { title: 'Éxito', msg: 'Te enviamos un mail de verificación de cuenta, por favor checkealo y seguí los pasos indicados para verificar tu cuenta'} })
+            .afterClosed()
+              .subscribe(_ => { window.location.reload()})
           },
           error: ((err) => {
             this.spinner = false;
@@ -78,13 +82,6 @@ export class SignupComponent implements OnInit {
     }
   }
   
-  // Show dialog with message
-  openDialog(msg: string) {
-    this.dialog.open(ModalMsgComponent, {data: { msg }})
-    .afterClosed()
-      .subscribe(_ => { window.location.reload()})
-  }
-
   // Show or hide password functionality
   showPassword(){
     if (this.inputTypeValue === 'password') {

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ModalErrorComponent } from '@etp/shared/components';
+import { ModalMsgComponent } from '@etp/shared/components';
+// Interfaces
 import { User } from '@etp/shared/interfaces';
+// Services
 import { UserServiceService } from '@etp/shared/services';
 
 @Component({
@@ -13,6 +15,7 @@ export class VerificationsComponent implements OnInit {
 
   initUsersList!: User[]
   selectedUser!: User
+  msg!:string
 
   constructor(
     private userService: UserServiceService,
@@ -23,6 +26,7 @@ export class VerificationsComponent implements OnInit {
     this.getUsersList()
   }
 
+  // Get list of users with pending verification
   getUsersList(){
     this.userService.getVerificationPendingsUsers()
     .subscribe({
@@ -33,25 +37,23 @@ export class VerificationsComponent implements OnInit {
     })
   }
 
-  declineVerification(id:number){
-    this.userService.updateVerifyStatus(id, 1)
+  updateVerification(id:number, status:number){
+    this.userService.updateVerifyStatus(id, status)
     .subscribe({
-      next: (res) => { this.getUsersList() },
-      error: ((err) => { this.openErrorDialog("Something went wrong, try again.") }) 
+      next: (res) => { 
+        this.getUsersList() 
+        this.initUsersList = this.initUsersList.filter(user => user.id !== id);
+        if (status === 1) {
+          this.msg = `Verificacion a usuario con ID ${id} rechazada`;
+        } else {
+          this.msg = `Verificacion a usuario con ID ${id} aceptada`;
+        }
+        setTimeout(()=>{ this.msg = '' }, 3000);     
+      },
+      error: ((err) => { 
+        this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error, vuelva a intentar.'} });
+      }) 
     })
-  }
 
-  acceptVerification(id:number){
-    this.userService.updateVerifyStatus(id, 3)
-    .subscribe({
-      next: (res) => { this.getUsersList() },
-      error: ((err) => { this.openErrorDialog("Something went wrong, try again.") }) 
-    })
   }
-
-  // Open error dialog
-  openErrorDialog(msg: string) {
-    this.dialog.open(ModalErrorComponent, { data: { msg } });
-  }
-
 }

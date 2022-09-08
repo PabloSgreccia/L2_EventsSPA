@@ -1,7 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ModalErrorComponent } from '@etp/shared/components';
+import { ModalBeforeDeleteComponent } from '@etp/dashboard/components';
+import { ModalMsgComponent } from '@etp/shared/components';
 // Interfaces
 import { User } from '@etp/shared/interfaces';
 // Services
@@ -16,6 +17,7 @@ export class UsersComponent implements OnInit {
 
   initUsersList!: User[]
   editedUsersList!: User[]
+  msg!:string
 
   @ViewChild("filterByUser") filterByUser: ElementRef | undefined;
   
@@ -29,15 +31,16 @@ export class UsersComponent implements OnInit {
     this.getUsersList()
   }
 
+  // Get user list from BE
   getUsersList(){
     this.userService.getManyUsers()
     .subscribe({
       next: res => {        
-        this.initUsersList = res.users
+        this.initUsersList = res.users.filter( (user: User) => user.role != 'admin')
         this.editedUsersList = this.initUsersList
       },
       error: (err) => {
-        const dialogRef = this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong, try again' } });
+        const dialogRef = this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar obtener la lista de usuarios.' } });
         dialogRef.afterClosed().subscribe(_ => { this.router.navigate(['/admin/panel']) });
       }
     })
@@ -45,14 +48,22 @@ export class UsersComponent implements OnInit {
 
   // Delete user functionality
   deleteUser(id:number){
-    this.userService.deleteUser(id)
-    .subscribe({
-      next: res => { this.getUsersList()},
-      error: (err) => {
-        const dialogRef = this.dialog.open(ModalErrorComponent, { data: { msg: 'Something went wrong, try again' } });
-        dialogRef.afterClosed().subscribe(_ => { this.router.navigate(['/admin/panel']) });
-      }
-    })
+    const dialogRef = this.dialog.open(ModalBeforeDeleteComponent, { data: { model: 'usuario', id: id } });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.deleteUser(id).subscribe({
+          next: res => {
+            this.initUsersList = this.initUsersList.filter(user => user.id !== id);
+            this.editedUsersList = this.editedUsersList.filter(user => user.id !== id);
+            this.msg = `Usuario con ID ${id} eliminado`;
+            setTimeout(()=>{ this.msg = '' }, 3000);     
+          },
+          error: (err) => {
+            this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar borrar el usuario.' } });
+          }
+        }) 
+      }}
+    )
   }
 
   // Filter by user name or email

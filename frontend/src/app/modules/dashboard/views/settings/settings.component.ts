@@ -7,8 +7,8 @@ import { User } from '@etp/shared/interfaces';
 import { UserServiceService } from '@etp/shared/services';
 import { AuthService } from '@etp/auth/services';
 // Components
-import { ModalToChangePhotoComponent, ModalToChangePwdComponent, ModalToEditComponent } from "@etp/dashboard/components";
-import { ModalErrorComponent } from '@etp/shared/components';
+import { ModalBeforeDeleteComponent, ModalToChangePhotoComponent, ModalToChangePwdComponent, ModalToEditComponent } from "@etp/dashboard/components";
+import { ModalMsgComponent } from '@etp/shared/components';
 
 
 @Component({
@@ -87,18 +87,23 @@ export class SettingsComponent implements OnInit {
   askForValidation(){    
     this.userService.updateVerifyStatusUser(2).subscribe({
       next: (res) => { this.askDisabled = true }, 
-    error: () => { this.openErrorDialog("Something went wrong, try again.") }})
+      error: () => { 
+        this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error, reintente.' } });
+      }})
   }
 
   // This functions WON'T delete an user, only the admin can delete users. the user will be marked as unactive
   deleteUser(){
-    this.userService.desactivateUser(false).subscribe({
-      next: (res) => { this.authService.logOut() }, 
-      error: () => { this.openErrorDialog("Something went wrong, try again.") }})
-  }
-
-  // Open error dialog
-  openErrorDialog(msg: string) {
-    this.dialog.open(ModalErrorComponent, { data: { msg } });
+    const dialogRef = this.dialog.open(ModalBeforeDeleteComponent, { data: { model: 'usuario', id: this.user.id } });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.desactivateUser(false).subscribe({
+          next: res => { this.authService.logOut() },
+          error: (err) => {
+            this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error, reintente.' } });
+          }
+        }) 
+      }}
+    )
   }
 }
