@@ -1,9 +1,9 @@
-<p mat-dialog-title>Select new photo:</p>
+<p mat-dialog-title>Seleccione una imagen:</p>
 
 <input type="file" accept=".jpg,.png" (change)="handleFileInput($event)">
 <br>
 <span *ngIf="error">{{error}}</span>
 <div class="actions">
-  <button mat-stroked-button color="warn" [mat-dialog-close]="false">Cancel</button>
-  <button mat-stroked-button color="primary" (click)="savePhoto()">Save</button>
+  <button mat-stroked-button color="warn" [mat-dialog-close]="false">Cancelar</button>
+  <button mat-stroked-button color="primary" (click)="savePhoto()">Guardar</button>
 </div>

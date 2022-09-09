@@ -3,31 +3,31 @@
     <form [formGroup]="contactForm" (ngSubmit)="sendForm()">
 
       <mat-form-field appearance="fill">
-        <mat-label>Name</mat-label>
+        <mat-label>Nombre</mat-label>
         <input matInput formControlName="name">
-        <mat-hint *ngIf="name.errors?.['maxlength']">Max 50 characters.</mat-hint>
+        <mat-hint *ngIf="name.errors?.['maxlength']">Máximo 50 caracteres.</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
         <mat-label>Email</mat-label>
         <input matInput formControlName="email">
-        <mat-hint *ngIf="email.errors?.['email']">Should be a valid email.</mat-hint>
-        <mat-hint *ngIf="email.errors?.['maxlength']">Max 100 characters.</mat-hint>
+        <mat-hint *ngIf="email.errors?.['email']">Ingrese un email válido.</mat-hint>
+        <mat-hint *ngIf="email.errors?.['maxlength']">Máximo 100 caracteres.</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
-        <mat-label>Subject</mat-label>
+        <mat-label>Asúnto</mat-label>
         <input matInput formControlName="subject">
-        <mat-hint *ngIf="subject.errors?.['maxlength']">Max 30 characters.</mat-hint>
+        <mat-hint *ngIf="subject.errors?.['maxlength']">Máximo 30 caracteres.</mat-hint>
       </mat-form-field>
 
 
       <mat-form-field appearance="fill">
-        <mat-label>Description</mat-label>
+        <mat-label>Descripción</mat-label>
         <textarea matInput #message maxlength="255" formControlName="description"></textarea>
         <mat-hint align="end" class="chars-ref">{{message.value.length}} / 255</mat-hint>
-        <mat-hint *ngIf="description.errors?.['minlength']">At least 10 characters.</mat-hint>
-        <mat-hint *ngIf="description.errors?.['maxlength']">Max 255 characters.</mat-hint>
+        <mat-hint *ngIf="description.errors?.['minlength']">Al menos 10 caracteres.</mat-hint>
+        <mat-hint *ngIf="description.errors?.['maxlength']">Máximo 255 caracteres.</mat-hint>
     </mat-form-field>
 
 
@@ -35,7 +35,7 @@
         <div *ngIf="error" class="errormsg">{{error}}</div>
       </span>
 
-      <button mat-flat-button type="submit" [disabled]="!contactForm.valid">Continue</button>
+      <button mat-flat-button type="submit" [disabled]="!contactForm.valid">Enviar</button>
     </form>
   </div>
 

@@ -35,7 +35,7 @@ const {
 /**
  * @openapi
  * paht:
- * /user/views:
+ * /api/user/views:
  *   get:
  *    description: Muestra al admin el listado de todos los usuarios activos
  *    summary: Muestra al admin el listado de todos los usuarios activos
@@ -48,10 +48,11 @@ const {
  *        description: Devuelve el mensaje de error del catch
  */
 router.get("/views", verifyToken, adminRole, showAll)
+
 /**
  * @openapi
  * paht:
- * /user/validations:
+ * /api/user/validations:
  *   get:
  *    description: Muestra al admin el listado de todos los usuarios que solicitaron validar su cuenta
  *    summary: Muestra al admin el listado de todos los usuarios que solicitaron validar su cuenta
@@ -64,10 +65,11 @@ router.get("/views", verifyToken, adminRole, showAll)
  *        description: Devuelve el mensaje de error del catch
  */
 router.get("/validations", verifyToken, adminRole, pendingValidationUser)
+
 /**
  * @openapi
  * paht:
- * /user/view/:id:
+ * /api/user/view/:id:
  *   get:
  *    description: Muestra al usuario que este logueado el perfil de un usuario espesífico
  *    summary: Muestra al usuario que este logueado el perfil de un usuario espesífico
@@ -89,10 +91,11 @@ router.get("/validations", verifyToken, adminRole, pendingValidationUser)
  *        description: Devuelve el mensaje de error del catch
  */
 router.get("/view/:id", verifyToken, show)
+
 /**
  * @openapi
  * paht:
- * /user/logged:
+ * /api/user/logged:
  *   get:
  *    description: Devuelve la información del usuario logueado
  *    summary: Devuelve la información del usuario logueado
@@ -107,10 +110,11 @@ router.get("/view/:id", verifyToken, show)
  *        description: Devuelve el mensaje de error del catch
  */
 router.get("/logged", verifyToken, showLogged)
+
 /**
  * @openapi
  * paht:
- * /user/register:
+ * /api/user/register:
  *   post:
  *    description: Se registra un nuevo usuario
  *    summary: Se registra un nuevo usuario
@@ -121,7 +125,7 @@ router.get("/logged", verifyToken, showLogged)
  *      content:
  *        application/json:
  *          schema:
- *            type: oject
+ *            type: object
  *            properties:
  *              name:
  *                type: string
@@ -141,10 +145,11 @@ router.get("/logged", verifyToken, showLogged)
  *        description: Devuelve el mensaje de error del catch
  */
 router.post("/register", validateRegister, EmailIsUnique,upload(), register)
+
 /**
  * @openapi
  * paht:
- * /user/login:
+ * /api/user/login:
  *   post:
  *    description: Logueo de usuario
  *    summary: Logueo de usuario
@@ -155,7 +160,7 @@ router.post("/register", validateRegister, EmailIsUnique,upload(), register)
  *      content:
  *        application/json:
  *          schema:
- *            type: oject
+ *            type: object
  *            properties:
  *              email:
  *                type: string
@@ -176,10 +181,11 @@ router.post("/register", validateRegister, EmailIsUnique,upload(), register)
  *        description: Devuelve el mensaje de error del catch
  */
 router.post("/login", login)
+
 /**
  * @openapi
  * paht:
- * /user/uploadphoto:
+ * /api/user/uploadphoto:
  *   post:
  *    description: Carga una foto al usuario logueado
  *    summary: Carga una foto al usuario logueado
@@ -190,7 +196,7 @@ router.post("/login", login)
  *      content:
  *        multipart/form-data:
  *          schema:
- *            type: oject
+ *            type: object
  *            properties:
  *              photo:
  *                profileImage:
@@ -206,7 +212,7 @@ router.post("/uploadphoto", verifyToken,upload(),uploadPhoto)
 /**
  * @openapi
  * paht:
- * /user/userjoinevent:
+ * /api/user/userjoinevent:
  *   post:
  *    description: El usuario logueado se anota a un evento
  *    summary: El usuario logueado se anota a un evento
@@ -217,7 +223,7 @@ router.post("/uploadphoto", verifyToken,upload(),uploadPhoto)
  *      content:
  *        application/json:
  *          schema:
- *            type: oject
+ *            type: object
  *            properties:
  *              idEvent:
  *                profileImage:
@@ -235,7 +241,7 @@ router.post("/userjoinevent", verifyToken,validationJoinEvent, userjoinevent)
 /**
  * @openapi
  * paht:
- * /user/validation/:code:
+ * /api/user/validation/:code:
  *   get:
  *    description: A travez de un link en su correo permite validar la cuaenta del usuario pasando a usuario activo
  *    summary: A travez de un link en su correo permite validar la cuaenta del usuario pasando a usuario activo
@@ -258,7 +264,7 @@ router.get("/validation/:code", validationUser)
 /**
  * @openapi
  * paht:
- * /user/logOut:
+ * /api/user/logOut:
  *   post:
  *    description: Termina la sesión del usuario logueado
  *    summary: Termina la sesión del usuario logueado
@@ -274,7 +280,7 @@ router.post("/logout", logOut)
 /**
  * @openapi
  * paht:
- * /user/forgot:
+ * /api/user/forgot:
  *   post:
  *    description: Envia un mail con una nueva contraseña generada aleatoriamente
  *    summary: Envia un mail con una nueva contraseña generada aleatoriamente
@@ -285,7 +291,7 @@ router.post("/logout", logOut)
  *      content:
  *        application/json:
  *          schema:
- *            type: oject
+ *            type: object
  *            properties:
  *              email:
  *                type: string
@@ -303,7 +309,7 @@ router.post("/forgot", forgot)
 /**
  * @openapi
  * paht:
- * /user/updatepass:
+ * /api/user/updatepass:
  *   patch:
  *    description: Actualiza la contraseña del usuario logueado
  *    summary: Actualiza la contraseña del usuario logueado
@@ -314,7 +320,7 @@ router.post("/forgot", forgot)
  *      content:
  *        application/json:
  *          schema:
- *            type: oject
+ *            type: object
  *            properties:
  *              password:
  *                type: string
@@ -332,7 +338,7 @@ router.patch("/updatepass", verifyToken, passValidation, updatePass)
 /**
  * @openapi
  * paht:
- * /user/updateuser:
+ * /api/user/updateuser:
  *   patch:
  *    description: Actualiza los datos del usuraio logueado
  *    summary: Actualiza los datos del usuraio logueado
@@ -343,7 +349,7 @@ router.patch("/updatepass", verifyToken, passValidation, updatePass)
  *      content:
  *        application/json:
  *          schema:
- *            type: oject
+ *            type: object
  *            properties:
  *              name:
  *                type: string
@@ -369,7 +375,7 @@ router.patch("/updateuser", verifyToken, updateUser)
 /**
  * @openapi
  * paht:
- * /user/updateuserverify:
+ * /api/user/updateuserverify:
  *   patch:
  *    description: El admin valida la cuenta como verdadera
  *    summary: El admin valida la cuenta como verdadera
@@ -380,7 +386,7 @@ router.patch("/updateuser", verifyToken, updateUser)
  *      content:
  *        application/json:
  *          schema:
- *            type: oject
+ *            type: object
  *            properties:
  *              idUser:
  *                type: integer
@@ -402,7 +408,7 @@ router.patch("/updateuserverify", verifyToken, adminRole, updateUserVerify)
 /**
  * @openapi
  * paht:
- * /user/down:
+ * /api/user/down:
  *   patch:
  *    description: El usuario logueado desactiva su cuenta
  *    summary: El usuario logueado desactiva su cuenta
@@ -413,7 +419,7 @@ router.patch("/updateuserverify", verifyToken, adminRole, updateUserVerify)
  *      content:
  *        application/json:
  *          schema:
- *            type: oject
+ *            type: object
  *            properties:
  *              active:
  *                type: boolean
@@ -431,7 +437,7 @@ router.patch("/down", verifyToken, downUser)
 /**
  * @openapi
  * paht:
- * /user/favourite:
+ * /api/user/favourite:
  *   patch:
  *    description: El usuario logueado desactiva su cuenta
  *    summary: El usuario logueado desactiva su cuenta
@@ -442,7 +448,7 @@ router.patch("/down", verifyToken, downUser)
  *      content:
  *        application/json:
  *          schema:
- *            type: oject
+ *            type: object
  *            properties:
  *              active:
  *                type: boolean
@@ -465,7 +471,7 @@ router.patch("/favourite", verifyToken, favouriteUser)
 /**
  * @openapi
  * paht:
- * /user/delete/:id:
+ * /api/user/delete/:id:
  *   patch:
  *    description: El admin elimina a un usuario
  *    summary: El admin elimina a un usuario
@@ -483,7 +489,7 @@ router.patch("/favourite", verifyToken, favouriteUser)
  *      content:
  *        application/json:
  *          schema:
- *            type: oject
+ *            type: object
  *            properties:
  *              active:
  *                type: boolean
@@ -502,7 +508,7 @@ router.patch("/delete/:id", verifyToken, adminRole, downUserByAdmin)
 /**
  * @openapi
  * paht:
- * /user/userleftevent/:idEvent:
+ * /api/user/userleftevent/:idEvent:
  *   delete:
  *    description: El usuario se da de baja a un evento
  *    summary: El usuario se da de baja a un evento

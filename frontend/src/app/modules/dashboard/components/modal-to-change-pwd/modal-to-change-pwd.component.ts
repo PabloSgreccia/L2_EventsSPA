@@ -40,7 +40,7 @@ export class ModalToChangePwdComponent implements OnInit {
             this.dialogRef.close() 
           },
           error: ((err: any) => {
-            this.error = err.error.msg 
+            this.error = 'Ocurrió un error. Reintente.'
           })
         })
     }

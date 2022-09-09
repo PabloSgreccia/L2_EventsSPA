@@ -43,7 +43,7 @@
       <div class="event-card-footer" [routerLink]="['/dashboard/event', event.id]">
         <div>
           <div *ngIf="event.cancelled; else isActive" class="canceled">
-            Event Cancelled
+            Evento Cancelado
           </div>
           <ng-template #isActive>
             <div *ngIf="(event.init_date <= today) && (event.end_date >= today)" class="live-event">
