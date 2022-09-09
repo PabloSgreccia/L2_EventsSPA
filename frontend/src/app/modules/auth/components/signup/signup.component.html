@@ -11,7 +11,7 @@
         <mat-label>Email</mat-label>
         <input matInput placeholder="Placeholder" formControlName="email">
         <mat-icon matSuffix>alternate_email</mat-icon>
-        <mat-hint class="hint" *ngIf="email.errors?.['email']">debe ser un email válido.</mat-hint>
+        <mat-hint class="hint" *ngIf="email.errors?.['email']">Ingrese un email válido.</mat-hint>
         <mat-hint class="hint" *ngIf="email.errors?.['maxlength']">Hasta 100 caracteres.</mat-hint>
     </mat-form-field>
     

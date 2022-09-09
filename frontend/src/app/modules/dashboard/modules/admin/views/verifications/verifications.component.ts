@@ -44,9 +44,9 @@ export class VerificationsComponent implements OnInit {
         this.getUsersList() 
         this.initUsersList = this.initUsersList.filter(user => user.id !== id);
         if (status === 1) {
-          this.msg = `Verificacion a usuario con ID ${id} rechazada`;
+          this.msg = `Verificación a usuario con ID ${id} rechazada`;
         } else {
-          this.msg = `Verificacion a usuario con ID ${id} aceptada`;
+          this.msg = `Verificación a usuario con ID ${id} aceptada`;
         }
         setTimeout(()=>{ this.msg = '' }, 3000);     
       },

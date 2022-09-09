@@ -78,7 +78,7 @@ export class ContactComponent implements OnInit {
             this.router.navigate(['/dashboard/feed'])
           })
         },
-        error: ((err) => {  this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error, reintente' } })  })
+        error: ((err) => {  this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error, reintente.' } })  })
       })
     } else {
       this.contactForm.markAllAsTouched;

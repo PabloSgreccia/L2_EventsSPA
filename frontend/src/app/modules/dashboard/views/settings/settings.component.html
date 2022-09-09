@@ -1,17 +1,17 @@
 <br>
 <h2>
-  Your Profile:
+  Editar perfil:
 </h2>
 <mat-card class="settings-items">
   <table>
-    <tr rowspan="2" class="bold">Photo:</tr>
+    <tr rowspan="2" class="bold">Foto:</tr>
     <tr>
       <!-- <td class="bold">Photo:</td> -->
       <td><img [src]="user.photo" class="user-img"></td>
       <td>
-        <button class="btn-primary" mat-raised-button (click)="changePhotoDialog()">Change</button></td>
+        <button class="btn-primary" mat-raised-button (click)="changePhotoDialog()">Cambiar</button></td>
     </tr>
-    <tr rowspan="2" class="bold">Name and Email:</tr>
+    <tr rowspan="2" class="bold">Nombre y email:</tr>
     <tr>
       <td>
         <div>
@@ -19,37 +19,37 @@
           <p>{{user.email}}</p>
         </div>
       </td>
-      <td><button class="btn-primary" mat-raised-button (click)="changeDataDialog()">Change</button></td>
+      <td><button class="btn-primary" mat-raised-button (click)="changeDataDialog()">Cambiar</button></td>
     </tr>
-    <tr rowspan="2" class="bold">Password:</tr>
+    <tr rowspan="2" class="bold">Contraseña:</tr>
     <tr>
       <td>***********</td>
-      <td><button class="btn-primary" mat-raised-button (click)="changePassDialog()">Change</button></td>
+      <td><button class="btn-primary" mat-raised-button (click)="changePassDialog()">Cambiar</button></td>
     </tr>
     
-    <tr rowspan="2" class="bold">Validation:</tr>
+    <tr rowspan="2" class="bold">Validación:</tr>
     <tr *ngIf="user.validated === 3; else pending">
-      <td>Validated User</td>
+      <td>Validado</td>
         <mat-icon>verified_user</mat-icon>
     </tr>
 
     <ng-template #pending>
       <tr *ngIf="user.validated === 2; else notvalidated">
-        <td>Pending</td>
-        <td><button class="btn-primary" mat-raised-button disabled="true">Pending</button></td>
+        <td>Pendiente</td>
+        <td><button class="btn-primary" mat-raised-button disabled="true">Pendiente</button></td>
       </tr>
     </ng-template>
 
     <ng-template #notvalidated>
       <tr>
-        <td>Not validated</td>
-        <td><button class="btn-primary" mat-raised-button (click)="askForValidation()" [disabled]="askDisabled">Ask for</button></td>
+        <td>No validado</td>
+        <td><button class="btn-primary" mat-raised-button (click)="askForValidation()" [disabled]="askDisabled">Solicitar</button></td>
       </tr>
     </ng-template>
 
     <tr>
       <td>
-        <button mat-stroked-button color="warn" (click)="deleteUser()">DELETE USER</button></td>
+        <button mat-stroked-button color="warn" (click)="deleteUser()">ELIMINAR USUARIO</button></td>
     </tr>
 
   </table>

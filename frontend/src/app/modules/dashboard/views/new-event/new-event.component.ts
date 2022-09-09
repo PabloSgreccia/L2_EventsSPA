@@ -122,16 +122,16 @@ export class NewEventComponent implements OnInit {
         this.eventForm.controls.init_hour.value 
         && this.eventForm.controls.end_hour.value   
         && (this.eventForm.controls.init_hour.value > 23 || this.eventForm.controls.end_hour.value > 23) ) {
-          this.error = 'Error in hours.' 
+          this.error = 'Horas inválidas.' 
       // Validate if there is end date is lower than init date
       } else if (startevent > endevent) {
-        this.error = 'Error in dates.' 
+        this.error = 'Fechas inválidas.' 
       // Validate if the init day is highen than today
       } else if (startevent < new Date()) {
-        this.error = 'Init day is lower than today.' 
+        this.error = 'Fecha de inicio inválida.' 
       // Validate if the file isnt an image
       } else if (this.file && !(this.file.type).includes("image")) {
-        this.error = 'Error in File.' 
+        this.error = 'Error en la imagen.' 
       } else {
                 
         let newEvent = this.eventForm.value;
