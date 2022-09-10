@@ -154,8 +154,7 @@ export class NewEventComponent implements OnInit {
 
               this.spinner = false;
               const dialogRef = this.dialog.open(ModalMsgComponent, { data: { title: 'Éxito', msg: 'Evento creado!'} });
-              dialogRef.afterClosed().subscribe(_ => { this.router.navigate(['/dashboard/feed']) })
-              
+              dialogRef.afterClosed().subscribe(_ => { this.router.navigate([`/dashboard/event/${res.eventId}`]) })              
             },            
             error: ((err: any) => {
               this.spinner = false;
