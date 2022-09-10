@@ -8,9 +8,6 @@ const jwt = require('jsonwebtoken')
 const { validationMail} = require('../contrtoller/mail.controller');
 const {Sequelize} = require('../database/models/');
 const formidable = require('formidable');
-const { where } = require('sequelize');
-
-
 
 
 const IMGURL = `${process.env.PHOTO}images/default`
@@ -34,10 +31,10 @@ const showAll = async (req, res) => {
     
         // Edit data before to send to FE
         events = events.map(function(event){
-            if (!event.photo) {
-                // Add default event photo
-                event.photo = `${IMGURL}/defEvent.jpg`
-            }
+            // Add default event photo
+            // if (!event.photo) {
+            //     event.photo = `${IMGURL}/defEvent.jpg`
+            // }
             // state of user validation
             if (event.user.validated === 3) {
                 event.user.validated = true
@@ -45,16 +42,16 @@ const showAll = async (req, res) => {
                 event.user.validated = false
             }
             // Add default user photo
-            if(!event.user.photo){
-                event.user.photo = `${IMGURL}/defUser.png`
-            }
+            // if(!event.user.photo){
+            //     event.user.photo = `${IMGURL}/defUser.png`
+            // }
             return event;
          })
     
         return res.status(200).json({ events })
         
     } catch (error) {
-        return res.status(404).json({ msg: 'Something went wrong trying to get data' })
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 };
 
@@ -67,7 +64,7 @@ const showAllAdmin = async (req, res) => {
         })
         return res.status(200).json({events})
     } catch (error) {
-        return res.status(400).json({ msg: 'Something went wrong trying to get data' })
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 }
@@ -117,9 +114,9 @@ const showEvent = async (req, res) => {
             }]
         })
         // Edit data before to send to FE
-        if (!event.photo) {   
-            event.photo = `${IMGURL}/defEvent.jpg`  
-        }
+        // if (!event.photo) {   
+        //     event.photo = `${IMGURL}/defEvent.jpg`  
+        // }
         // state of user validation
         if (event.user.validated === 3) {
             event.user.validated = true
@@ -127,14 +124,14 @@ const showEvent = async (req, res) => {
             event.user.validated = false
         }
         // Add default user photo
-        if(!event.user.photo){
-            event.user.photo = `${IMGURL}/defUser.png`
-        }
+        // if(!event.user.photo){
+        //     event.user.photo = `${IMGURL}/defUser.png`
+        // }
         
         return res.status(200).json({ people, event })
 
     } catch (error) {
-        return res.status(400).json({ msg: 'Something went wrong trying to get events' })
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 };
 
@@ -159,9 +156,9 @@ const eventscreatedbyuser = async (req, res) => {
     
         // Edit data before to send to FE
         events = events.map(function(event){
-            if (!event.photo) {   
-                event.photo = `${IMGURL}/defEvent.jpg`  
-            }
+            // if (!event.photo) {   
+            //     event.photo = `${IMGURL}/defEvent.jpg`  
+            // }
             // state of user validation
             if (event.user.validated === 3) {
                 event.user.validated = true
@@ -169,16 +166,16 @@ const eventscreatedbyuser = async (req, res) => {
                 event.user.validated = false
             }
             // Add default user photo
-            if(!event.user.photo){
-                event.user.photo = `${IMGURL}/defUser.png`
-            }
+            // if(!event.user.photo){
+            //     event.user.photo = `${IMGURL}/defUser.png`
+            // }
             return event;
          })
     
         return res.status(200).json({ events })
         
     } catch (error) {
-        return res.status(404).json({ msg: 'Something went wrong trying to get data' })
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 };
 
@@ -211,15 +208,14 @@ const eventsfollowedbyuser = async (req, res) => {
                     attributes: ['type']
                 }]
             })
-            
             eventsList.push(event)
         }
 
         // Edit data before to send to FE
         eventsList = eventsList.map(function(event){
-            if (!event.photo) {   
-                event.photo = `${IMGURL}/defEvent.jpg`  
-            }
+            // if (!event.photo) {   
+            //     event.photo = `${IMGURL}/defEvent.jpg`  
+            // }
             // state of user validation
             if (event.user.validated === 3) {
                 event.user.validated = true
@@ -227,16 +223,16 @@ const eventsfollowedbyuser = async (req, res) => {
                 event.user.validated = false
             }
             // Add default user photo
-            if(!event.user.photo){
-                event.user.photo = `${IMGURL}/defUser.png`
-            }
+            // if(!event.user.photo){
+            //     event.user.photo = `${IMGURL}/defUser.png`
+            // }
             return event;
         })
 
         return res.status(200).json({ events: eventsList })
         
     } catch (error) {
-        return res.status(404).json({ msg: 'Something went wrong trying to get data' })
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 };
 
@@ -245,56 +241,32 @@ const createEvent = async (req, res) => {
     const idUser_admin = req.userId
 
     try {
-            const form = formidable({ multiples: true });
-            let result = form.parse(req, async (err, payload) => {
-                const {
-                    title,
-                    description,
-                    mode,
-                    province,
-                    city,
-                    street,
-                    link,
-                    number,
-                    init_date,
-                    end_date,
-                    idType
-                } = JSON.parse(payload.payload)
-                
-                let event = await Event.create({
-                    title,
-                    description,
-                    mode,
-                    province,
-                    city,
-                    street,
-                    number,
-                    link,
-                    init_date,
-                    end_date,
-                    idUser_admin,
-                    idType,
-                }).then(event => {
-                    
-                    return res.status(200).json({
-                        eventId: event.id,
-                        'mgs': 'Evento creado correctamente'
-                    })}
-                )
-                if (event) {
-                    return event
-                } else {
-                    return false
-                }
-            });
-            if (!result) {
-                return res.status(400).json({
-                    msg: 'Error al crear el evento'
-                })
-            }
+        const form = formidable({ multiples: true });
+        let result = form.parse(req, async (err, payload) => {
+            const {
+                title, description, mode, province, city, street, link, number, init_date, end_date, idType
+            } = JSON.parse(payload.payload)
+            photo = 'https://thumbsnap.com/s/dmFvAhYh.jpg'
+            // Create the event
+            let event = await Event.create({
+                title, description, mode, province, city, street, number, link, init_date, end_date, idUser_admin, idType, photo
+            }).then(event => {
+                return res.status(200).json({
+                    eventId: event.id,
+                    'mgs': 'Evento creado correctamente'
+                })}
+            )
+            // return false from this function if something went wrong
+            if (event) { return event } 
+            else { return false}
+        });
+        if (!result) {
+            return res.status(404).json({
+                msg: 'Error al crear el evento'
+            })
+        }
     } catch (error) {
-        console.log(error);
-        return res.status(404).json({ msg: 'Something went wrong' })
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -303,15 +275,14 @@ const uploadPhoto = async (req, res) => {
     const eventId = req.params.idEvent
     try {
         let photo= process.env.PHOTO+req.file.path.substr(req.file.path.lastIndexOf('images'))
-        console.log(photo);
         const evnt = await Event.findOne({
             where: {
                 id: eventId
             }
         })
         if (!evnt) {
-            return res.status(400).json({
-                msg: 'Error en la actualización de la foto'
+            return res.status(404).json({
+                msg: 'Evento no encontrado'
             })
         }
         await evnt.update({
@@ -319,8 +290,7 @@ const uploadPhoto = async (req, res) => {
         })
         return res.status(200).json({msg:'Foto agregada correctamente'})
     } catch (error) {
-        console.log(error);
-        return res.status(404).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -336,14 +306,13 @@ const updateEvent = async (req, res) => {
         } else {
             if (event.idUser_admin === idUser_admin) {
                 event.update({id, title, description, mode, province, city, street, number, link, init_date, end_date, idType, cancelled })
-                .then(updatedEvent => {res.status(200).json({updatedEvent, 'msg': 'Se actualizó correctamente'})})
+                .then(updatedEvent => {res.status(200).json({updatedEvent, 'msg': 'Se actualizó correctamente el evento'})})
             } else {
-                return res.status(404).json({ 'msg': 'No tiene permisos para editar este evento'})
+                return res.status(401).json({ 'msg': 'No tiene permisos para editar este evento'})
             }
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
     
@@ -367,12 +336,11 @@ const destroyEvent = async (req, res) => {
                     event.destroy().then(user => { res.status(200).json({'msg': 'El evento ha sido eliminado'})})
                 )
             } else {
-                return res.status(400).json({ 'msg': 'No tiene permisos para eliminar este evento' })
+                return res.status(401).json({ 'msg': 'No tiene permisos para eliminar este evento' })
             }
         }
     } catch (error) {
-        console.log(error);
-        return res.status(404).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 };
