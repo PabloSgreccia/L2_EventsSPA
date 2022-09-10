@@ -7,13 +7,13 @@ const createContact = async (req, res) => {
     try {
         const contact = await Contact.create({name, email, subject, description, date, read})    
         if (!contact) {
-            return res.status(404).json({ msg: 'Message doesnt created'})
+            return res.status(404).json({ msg: 'Mensaje no creado'})
         } else {
-            return res.status(200).json({ msg: 'Message seccessfully created'})
+            return res.status(201).json({ msg: 'Mensaje creado exitosamente'})
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -22,13 +22,13 @@ const viewAll = async (req, res) => {
     try {
         let contact = await Contact.findAll()
         if (!contact) {
-            return res.status(404).json({ msg: 'Nothing to show' })
+            return res.status(404).json({ msg: 'No se encontraron mensajes' })
         } else {
             return res.status(200).json({ contact })
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -39,14 +39,14 @@ const view = async (req, res) => {
     try {
         let contact = await Contact.findOne({ where: { id: id } })
         if (!contact) {
-            return res.status(404).json({ msg: 'Nothing to show'})
+            return res.status(404).json({ msg: 'No se encontró el mensaje'})
         } else {
             await contact.update({ read: true })
             return res.status(200).json({ contact })
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -58,14 +58,14 @@ const notRead = async (req, res) => {
     try {
         const contact = await Contact.findOne({ where: { id: id } })
         if (!contact) {
-            return res.status(404).json({ msg: 'No hay mensajes para mostrar' })
+            return res.status(404).json({ msg: 'No se encontró el mensaje' })
         } else {
             await contact.update({ read: read })
-                .then(contact => { res.status(200).json({ msg: 'Contact updated.'})})
+                .then(contact => { res.status(200).json({ msg: 'Mensaje actualizado.'})})
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -75,13 +75,13 @@ const deleteContact = async (req, res) => {
     try {
         const contact = await Contact.findOne({ where:{ id:id } })
         if (!contact) {
-            return res.status(404).json({ msg: 'Error trying to delete' })
+            return res.status(404).json({ msg: 'Error al eliminar mensaje' })
         } 
         await contact.destroy()
-        return res.status(200).json({ msg: 'Message deleted' })
+        return res.status(200).json({ msg: 'Mensaje eliminado' })
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 

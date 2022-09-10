@@ -1,28 +1,28 @@
 <br>
-<h2 class="form-container">Create new Event</h2>
+<h2 class="form-container">Crear nuevo evento</h2>
 
 <div class="form-container">
   <div class="sub-form-container">
     <form [formGroup]="eventForm" (ngSubmit)="createEvent()">
 
       <mat-form-field appearance="fill">
-        <mat-label>Title</mat-label>
+        <mat-label>Título</mat-label>
         <input matInput formControlName="title">
-        <mat-hint class="hint" *ngIf="title.errors?.['maxlength']">Less than 40 chars.</mat-hint>
+        <mat-hint class="hint" *ngIf="title.errors?.['maxlength']">Hasta 40 caracteres.</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
-        <mat-label>Description</mat-label>
+        <mat-label>Descripción</mat-label>
         <textarea matInput formControlName="description"></textarea>
-        <mat-hint class="hint" *ngIf="description.errors?.['maxlength']">Less than 255 chars.</mat-hint>
+        <mat-hint class="hint" *ngIf="description.errors?.['maxlength']">Hasta 255 caracteres.</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
-        <mat-label>Mode</mat-label>
+        <mat-label>Modalidad</mat-label>
         <mat-select formControlName="mode" (selectionChange)="modeChange()">
-          <mat-option value="site">On-site</mat-option>
+          <mat-option value="site">Presencial</mat-option>
           <mat-option value="virtual">Virtual</mat-option>
-          <mat-option value="mixed">Mixed</mat-option>
+          <mat-option value="mixed">Mixto</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -30,7 +30,7 @@
       <div *ngIf="(mode.value === 'site') || (mode.value === 'mixed')">
         <div class="same-row-inputs">
           <mat-form-field appearance="fill">
-            <mat-label>Province</mat-label>
+            <mat-label>Provincia</mat-label>
             <mat-select formControlName="province" (selectionChange)="changeProvince()">
               <mat-option *ngFor="let province of provinces" [value]="province">
                 {{province}}
@@ -39,7 +39,7 @@
           </mat-form-field>
 
           <mat-form-field appearance="fill">
-            <mat-label>City/Town</mat-label>
+            <mat-label>Localidad</mat-label>
             <mat-select formControlName="city">
               <mat-option *ngFor="let city of cities" [value]="city">
                 {{city}}
@@ -50,15 +50,15 @@
 
         <div class="same-row-inputs">
           <mat-form-field appearance="fill">
-            <mat-label>Street</mat-label>
+            <mat-label>Calle</mat-label>
             <input matInput placeholder="Placeholder" formControlName="street">
-          <mat-hint class="hint" *ngIf="street.errors?.['maxlength']">Less than 30 chars.</mat-hint>
+          <mat-hint class="hint" *ngIf="street.errors?.['maxlength']">Hasta 30 caracteres.</mat-hint>
         </mat-form-field>
 
           <mat-form-field appearance="fill">
-            <mat-label>Number</mat-label>
+            <mat-label>Número</mat-label>
             <input type="number" matInput placeholder="Placeholder" formControlName="number">
-          <mat-hint class="hint" *ngIf="number.errors?.['max']">Less 9999.</mat-hint>
+          <mat-hint class="hint" *ngIf="number.errors?.['max']">Hasta 9999.</mat-hint>
         </mat-form-field>
         </div>
       </div>
@@ -66,11 +66,11 @@
       <mat-form-field appearance="fill" *ngIf="(mode.value === 'virtual') || (mode.value === 'mixed')">
         <mat-label>Link</mat-label>
         <input matInput placeholder="Placeholder" formControlName="link">
-          <mat-hint class="hint" *ngIf="link.errors?.['maxlength']">Less than 30 chars.</mat-hint>
+          <mat-hint class="hint" *ngIf="link.errors?.['maxlength']">Hasta 30 caracteres.</mat-hint>
         </mat-form-field>
 
       <mat-form-field appearance="fill">
-        <mat-label>Enter a date range</mat-label>
+        <mat-label>Rango de fechas</mat-label>
         <mat-date-range-input [formGroup]="eventForm" [rangePicker]="picker">
           <input matStartDate formControlName="init_date" placeholder="Start day">
           <input matEndDate formControlName="end_date" placeholder="End day">
@@ -78,26 +78,26 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
 
-        <mat-error *ngIf="eventForm.controls.init_date.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-        <mat-error *ngIf="eventForm.controls.end_date.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+        <mat-error *ngIf="eventForm.controls.init_date.hasError('matStartDateInvalid')">Fecha de inicio inválida</mat-error>
+        <mat-error *ngIf="eventForm.controls.end_date.hasError('matEndDateInvalid')">Fecha de fin inválida</mat-error>
       </mat-form-field>
       <div class="same-row-inputs">
         <mat-form-field appearance="fill">
-          <mat-label>Start Hour</mat-label>
+          <mat-label>Hora de inicio</mat-label>
           <input matInput type="number" min="00" max="23" formControlName="init_hour">
-          <mat-hint class="hint" *ngIf="init_hour.errors?.['min']">from 0 to 23.</mat-hint>
-          <mat-hint class="hint" *ngIf="init_hour.errors?.['max']">from 0 to 23.</mat-hint>
+          <mat-hint class="hint" *ngIf="init_hour.errors?.['min']">de 0 a 23.</mat-hint>
+          <mat-hint class="hint" *ngIf="init_hour.errors?.['max']">de 0 a 23.</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <mat-label>End Hour</mat-label>
+          <mat-label>Hora de fin</mat-label>
           <input matInput type="number" min="00" max="23" formControlName="end_hour">
-          <mat-hint class="hint" *ngIf="end_hour.errors?.['min']">from 0 to 23.</mat-hint>
-          <mat-hint class="hint" *ngIf="end_hour.errors?.['max']">from 0 to 23.</mat-hint>
+          <mat-hint class="hint" *ngIf="end_hour.errors?.['min']">de 0 a 23.</mat-hint>
+          <mat-hint class="hint" *ngIf="end_hour.errors?.['max']">de 0 a 23.</mat-hint>
         </mat-form-field>
       </div>
 
       <mat-form-field appearance="fill">
-        <mat-label>Type</mat-label>
+        <mat-label>Tipo</mat-label>
         <mat-select formControlName="idType">
           <mat-option *ngFor="let type of types" value="{{type.id}}">{{type.type}}</mat-option>
         </mat-select>
@@ -109,8 +109,7 @@
         <div *ngIf="error" class="errormsg">{{error}}</div>
       </span>
 
-      <button mat-flat-button type="submit" [disabled]="!eventForm.valid">Continue</button>
-      <!-- <button mat-flat-button type="submit">Continue</button> -->
+      <button mat-flat-button type="submit" [disabled]="!eventForm.valid">Guardar</button>
     </form>
   </div>
 

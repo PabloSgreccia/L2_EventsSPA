@@ -9,8 +9,7 @@ const { validationMail, passRecovery } = require('../contrtoller/mail.controller
 const { Op, and, where } = require('sequelize');
 const formidable = require('formidable');
 
-
-const IMGURL = `${process.env.PHOTO}images/default`
+// const IMGURL = `${process.env.PHOTO}images/default`
 
 // List all users
 const showAll = async (req, res) => {
@@ -26,7 +25,7 @@ const showAll = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 };
@@ -47,7 +46,7 @@ const pendingValidationUser = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -63,9 +62,9 @@ const show = async (req, res) => {
                 id: id
             }
         });
-        if(!user.photo){
-            user.photo = `${IMGURL}/defUser.png`
-        }
+        // if(!user.photo){
+        //     user.photo = `${IMGURL}/defUser.png`
+        // }
         if (user) {
             return res.status(200).json({
                 user
@@ -77,7 +76,7 @@ const show = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 };
 
@@ -88,11 +87,13 @@ const register = async (req, res) => {
     try {
         let validationCode = (Math.random() + 1).toString(36)
         params.password = await bcrypt.hash(req.body.password, 10);
+        photo = 'https://thumbsnap.com/s/WeDacXjq.jpg'
         let user = await User.create({
             name: params.name,
             email: params.email,
             password: params.password,
-            validationCode: validationCode
+            validationCode: validationCode,
+            photo: photo
         })
         if (user) {
             try {
@@ -110,12 +111,12 @@ const register = async (req, res) => {
             })
         } else {
             return res.status(404).json({
-                'msg': 'No se recibieron los datos'
+                'msg': 'No pudo crear el usuario'
             })
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 };
@@ -134,7 +135,7 @@ console.log(req.body);
         })
         if (!user) {
             return res.status(404).json({
-                msg: 'Error en la actualización de la foto'
+                msg: 'Usuario no encontrado'
             })
         }
         await user.update({
@@ -143,7 +144,7 @@ console.log(req.body);
         return res.status(200).json({msg:'Foto agregada correctamente'})
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -167,14 +168,11 @@ const validationUser = async (req, res) => {
                 validationCode: ""
             }).then(user => {
                 return res.redirect(process.env.FRONTEND)
-
-
             })
-            
         } 
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -204,14 +202,12 @@ const login = async (req, res) => {
                     }, process.env.ACCESS_TOKEN_SECRET, {
                         expiresIn: "8h"
                     })
-    
-    
                     return res.status(200).json({
                         token
                     })
                 } else {
                     //Acceso denegado - Usuario y/o contraseña invalidos
-                    return res.status(401).json({
+                    return res.status(404).json({
                         msg: 'Usuario y/o contraseña incorrecta'
                     })
                 }
@@ -221,7 +217,7 @@ const login = async (req, res) => {
             })
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 }
@@ -242,12 +238,12 @@ const userjoinevent = async (req, res) => {
             })
         } else {
             return res.status(404).json({
-                msg: "error no se pudo anotar"
+                msg: "error, no se completó la operación"
             })
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -265,18 +261,18 @@ const userleftevent = async (req, res) => {
         })
         if (!userEvent) {
             return res.status(404).json({
-                msg: "No se completo la operación"
+                msg: "Relación entre evento y usuario no encontrada"
             })
         } else {
             userEvent.destroy().then(userEvent => {
                 res.status(200).json({
-                    userEvent
+                    msg: "Usuario salió del evento"
                 })
             })
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -292,7 +288,6 @@ const updatePass = async (req, res) => {
                 id: id,
             }
         });
-
         if (!user) {
             return res.status(404).json({
                 msg: "Usuario no encontrado"
@@ -309,7 +304,7 @@ const updatePass = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 }
@@ -330,7 +325,7 @@ const updateUser = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 }
@@ -350,7 +345,7 @@ const updateUserVerify = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 }
@@ -373,7 +368,7 @@ const downUser = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 }
@@ -390,14 +385,14 @@ const downUserByAdmin = async (req, res) => {
             Event.update({ cancelled: true }, { where: { idUser_admin: id }}).then(
                 Users_events.destroy({where: {userId: id}})
                     .then(user.update({ active })
-                        .then(user => { res.status(200).json({ 'msg': 'Se actualizó correctamente' })
+                        .then(user => { res.status(200).json({ 'msg': 'Se desactivó el usuario' })
                     })
                 )
             )
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -406,13 +401,12 @@ const logOut = async (req, res, next) => {
     try {
         //Eliminar cookie jwt
         res.clearCookie('jwt')
-        //Redirigir a la vista de login
         res.status(200).json({
             msg: 'sesion terminada'
         })
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 };
 
@@ -437,13 +431,13 @@ const favouriteUser = async (req, res) => {
             where: { userId: idUser, eventId: idEvent }
         })
         if (!users_events) {
-            return res.status(405).json({ msg: 'No se encontraron datos' })
+            return res.status(405).json({ msg: 'No se encontró relacion entre el usuario y el evento' })
         }
         await users_events.update({ favourite })
         return res.status(200).json({ 'msg': 'Añadido a favoritos'})
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 }
@@ -472,7 +466,7 @@ const showLogged = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 };
 
@@ -482,7 +476,7 @@ const forgot = async (req, res) => {
     try {
         const user = await User.findOne({ where: { email: email } })
         if (!user) { 
-            return res.status(404).json({ msg: 'Incorrect email address' }) 
+            return res.status(404).json({ msg: 'Email no encontrado' }) 
         }
         // Generate new random password
         const newPass = user.name.toUpperCase() + (Math.random() + 1).toString(36)

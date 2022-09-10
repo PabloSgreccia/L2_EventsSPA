@@ -14,6 +14,7 @@ export class TypeServiceService {
     private http: HttpClient,
   ) { }
   
+  // Crea un tipo de evento
   createType(type: string){
     const body = {
       type: type,
@@ -22,19 +23,23 @@ export class TypeServiceService {
     return this.http.post<any>(`${this.URL_API_TYPE}/create`, body)
   }
   
+  // Actualiza un tipo de evento
   updateType(id: number, type: string){    
     return this.http.patch<any>(`${this.URL_API_TYPE}/update/${id}`, {type})
   }
 
+  // Elimina un tipo de evento
   deleteType(id: number){
     const active = false
     return this.http.patch<any>(`${this.URL_API_TYPE}/delete/${id}`, {active} )
   }
   
+  // Obtiene todos los tipos de evento
   getTypes(){
     return this.http.get<any>(`${this.URL_API_TYPE}/views`)
   }
 
+  // Actualiza la foto de un tipo de evento
   updateTypePhoto(photo: File, typeId:number){
     const formdata = new FormData()
     formdata.append('photo', photo)

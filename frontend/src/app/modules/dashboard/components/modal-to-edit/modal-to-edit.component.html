@@ -1,14 +1,14 @@
-<p mat-dialog-title>Insert New Name:</p>
+<p mat-dialog-title>Ingrese el nuevo nombre:</p>
 <form [formGroup]="dataForm" (ngSubmit)="saveName()" class="modify-sections">
   <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
       <input matInput formControlName="name">
-      <mat-hint class="hint" *ngIf="name.errors?.['pattern']">At least eight characters, one number, one uppercase and one lowercase.</mat-hint>
-      <mat-hint class="hint" *ngIf="name.errors?.['maxlength']">At least eight characters, one number, one uppercase and one lowercase.</mat-hint>
+      <mat-hint class="hint" *ngIf="name.errors?.['pattern']">Solo letras y espacios.</mat-hint>
+      <mat-hint class="hint" *ngIf="name.errors?.['maxlength']">Hasta 50 caracteres.</mat-hint>
   </mat-form-field>
   <span *ngIf="error">{{error}}</span>
   <div mat-dialog-actions>
-    <button mat-stroked-button color="warn" type="button" [mat-dialog-close]="false">Cancel</button>
-    <button mat-stroked-button color="primary" type="submit">Save</button>
+    <button mat-stroked-button color="warn" type="button" [mat-dialog-close]="false">Cancelar</button>
+    <button mat-stroked-button color="primary" type="submit">Guardar</button>
   </div> 
 </form>

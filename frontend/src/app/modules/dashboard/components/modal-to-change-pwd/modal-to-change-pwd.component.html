@@ -1,31 +1,31 @@
-<p mat-dialog-title>Change Password:</p>
+<p mat-dialog-title>Cambiar contraseña:</p>
 <form [formGroup]="passForm" (ngSubmit)="savePass()" class="modify-sections">
 
   <mat-form-field appearance="outline">
-      <mat-label>Old Password</mat-label>
+      <mat-label>Antigua contraseña</mat-label>
       <input [type]="inputTypeValue" matInput formControlName="oldPassword">
       <mat-icon matSuffix class="pointer" (click)="showPassword()">remove_red_eye</mat-icon>
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-      <mat-label>New Password</mat-label>
+      <mat-label>Nueva contraseña</mat-label>
       <input [type]="inputTypeValue" matInput formControlName="newPassword">
       <mat-icon matSuffix class="pointer" (click)="showPassword()">remove_red_eye</mat-icon>
-      <mat-hint class="hint" *ngIf="newPassword.errors?.['pattern']">At least eight characters, one number, one uppercase and one lowercase.</mat-hint>
+      <mat-hint class="hint" *ngIf="newPassword.errors?.['pattern']">Al menos 8 caracteres, una letra mayuscula, una letra minuscula y un numero.</mat-hint>
   </mat-form-field>
   <span *ngIf="newPassword.errors?.['pattern']" class="separator"></span>
 
   <mat-form-field appearance="outline">
-      <mat-label>Repeat Password</mat-label>
+      <mat-label>Repetir contraseña</mat-label>
       <input [type]="inputTypeValue" matInput formControlName="repeatPassword">
       <mat-icon matSuffix class="pointer" (click)="showPassword()">remove_red_eye</mat-icon>
-      <mat-hint class="hint" *ngIf="f.errors?.['passDoesntMatch']">Passwords doesn't match.</mat-hint>
+      <mat-hint class="hint" *ngIf="f.errors?.['passDoesntMatch']">Las contraseñas no coinciden.</mat-hint>
   </mat-form-field>
 
   <span *ngIf="error">{{error}}</span>
 
   <div mat-dialog-actions>
-    <button mat-stroked-button color="warn" type="button" mat-dialog-close>Cancel</button>
-    <button mat-stroked-button color="primary" type="submit">Save</button>
+    <button mat-stroked-button color="warn" type="button" mat-dialog-close>Cancelar</button>
+    <button mat-stroked-button color="primary" type="submit">Guardar</button>
   </div> 
 </form>

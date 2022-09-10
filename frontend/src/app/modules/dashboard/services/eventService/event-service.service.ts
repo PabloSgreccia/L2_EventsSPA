@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Event } from "@etp/dashboard/interfaces";
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -72,14 +72,7 @@ export class EventServiceService {
     event.init_date = event.init_date.toString()
     event.end_date = event.end_date.toString()
     const formdata = new FormData()
-    // if (photo) {
-    //   formdata.append('photo', photo)
-    // }
     formdata.append('payload', JSON.stringify(event))
-
-    // let headers = new Headers();
-    // headers.append('Content-Type','application/json');
-    // JSON.parse(payload) --> BE
     
     return this.http.post<any>(`${this.URL_API_EVENT}/create`, formdata)
   }
@@ -95,6 +88,15 @@ export class EventServiceService {
       const formdata = new FormData()
       formdata.append('photo', photo)
       return this.http.post<any>(`${this.URL_API_EVENT}/uploadphoto/${eventId}`, formdata)
+
+      // const formData = new FormData()
+      // formData.append("image", photo)
+      // return this.http.post<any>(
+      //   `https://api.imgur.com/3/image/`, 
+      //   formData, 
+      //   { headers: new HttpHeaders({
+      //     "Authorization": "Bearer 4021ee0e3a4a3ad774867318ff8dcd51f05b4950"
+      //   })})
   }
 
   // el admin del evento, cancela un evento

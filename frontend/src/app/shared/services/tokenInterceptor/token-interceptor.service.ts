@@ -13,11 +13,17 @@ export class TokenInterceptorService {
   ) { }
   
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const tokenizeReq = req.clone({
-      setHeaders: {
-        authorization: `Bearer ${this.authService.getToken()}`
-      }
-    })
-    return next.handle(tokenizeReq);
+    if (req.url == 'https://api.imgur.com/3/image/') {
+      const tokenizeReq = req.clone()
+      return next.handle(tokenizeReq);
+    }
+    else {
+      const tokenizeReq = req.clone({
+        setHeaders: {
+          authorization: `Bearer ${this.authService.getToken()}`
+        }
+      })
+      return next.handle(tokenizeReq);
+    }
   }
 }

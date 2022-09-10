@@ -20,7 +20,7 @@ module.exports = {
         const seedData = {
           id: i,
           userId: i,
-          eventId: Math.floor(Math.random() * (8 - 1)) + 1,
+          eventId: Math.floor(Math.random() * (9 - 1)) + 1,
           favourite: 0,
           value: null,
           createdAt: new Date(),

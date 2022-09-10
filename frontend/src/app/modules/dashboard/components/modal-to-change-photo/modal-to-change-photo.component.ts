@@ -25,9 +25,9 @@ export class ModalToChangePhotoComponent implements OnInit {
   savePhoto() {
     // Validate if the user selected an image
     if (!this.file) {
-      this.error = 'Select an image.'
+      this.error = 'Seleccione una imagen.'
     } else if (this.file && !(this.file.type).includes("image")) {
-      this.error = 'Select an image.'
+      this.error = 'Seleccione una imagen.'
     } else {
       // BE API
       this.userService.editUserPhoto(this.file)
@@ -36,7 +36,7 @@ export class ModalToChangePhotoComponent implements OnInit {
             this.dialogRef.close(true);
           },
           error: ((err: any) => {
-            this.error = 'Something went wrong trying to update your photo.';
+            this.error = 'Ocurrió un error al intentar actualizar tu foto.';
           })
         })
     }
@@ -47,7 +47,7 @@ export class ModalToChangePhotoComponent implements OnInit {
     const file: File = event.target.files[0];
     this.file = file;
     if (this.file && !(this.file.type).includes("image")) {
-      this.error = 'Select an image.'
+      this.error = 'Seleccione una imagen.'
     } else {
       this.error = ''
     }
