@@ -31,6 +31,8 @@ const { adminRole, verifyToken } = require('../validators/auth')
  *           description: Ocurrió un error en el backend.
  *         401:
  *           description: Usuario no autorizado.
+ *         403:
+ *           description: Usuario no habilitado para esta operación.
  *         404:
  *           description: No se encontraron mensajes.
  */
@@ -50,7 +52,8 @@ router.get("/views",verifyToken,adminRole,viewAll)
  *         name: id
  *         required: true
  *         schema:
- *           type: int(11)
+ *           type: integer
+ *           example: 2
  *         description: ID del mensaje de contacto
  *       - in: header
  *         name: authorization
@@ -65,6 +68,8 @@ router.get("/views",verifyToken,adminRole,viewAll)
  *           description: Ocurrió un error en el backend.
  *         401:
  *           description: Usuario no autorizado.
+ *         403:
+ *           description: Usuario no habilitado para esta operación.
  *         404:
  *           description: no se encontro el mensaje.
  */
@@ -140,7 +145,8 @@ router.post("/create",createContact)
  *         name: id
  *         required: true
  *         schema:
- *           type: int(11)
+ *           type: integer
+ *           example: 2
  *         description: ID del mensaje de contacto
  *     requestBody:
  *       required: true
@@ -159,6 +165,8 @@ router.post("/create",createContact)
  *           description: Ocurrió un error en el backend
  *         401:
  *           description: Usuario no autorizado.
+ *         403:
+ *           description: Usuario no habilitado para esta operación.
  *         404:
  *           description: no se encontro el mensaje
  */
@@ -185,7 +193,8 @@ router.patch("/notread/:id",verifyToken,adminRole,notRead)
  *         name: id
  *         required: true
  *         schema:
- *           type: int(11)
+ *           type: integer
+ *           example: 2
  *         description: ID del mensaje
  *     responses:
  *         200:
@@ -194,6 +203,8 @@ router.patch("/notread/:id",verifyToken,adminRole,notRead)
  *           description: Ocurrió un error en el backend
  *         401:
  *           description: Usuario no autorizado.
+ *         403:
+ *           description: Usuario no habilitado para esta operación.
  *         404:
  *           description: Error al eliminar mensaje
  */

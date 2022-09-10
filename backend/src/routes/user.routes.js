@@ -37,8 +37,8 @@ const {
  * paht:
  * /api/user/views:
  *   get:
- *    description: Muestra al admin el listado de todos los usuarios activos
  *    summary: Muestra al admin el listado de todos los usuarios activos
+ *    description: Muestra al admin el listado de todos los usuarios activos
  *    tags:
  *      - user
  *    responses:
@@ -54,8 +54,8 @@ router.get("/views", verifyToken, adminRole, showAll)
  * paht:
  * /api/user/validations:
  *   get:
- *    description: Muestra al admin el listado de todos los usuarios que solicitaron validar su cuenta
  *    summary: Muestra al admin el listado de todos los usuarios que solicitaron validar su cuenta
+ *    description: Muestra al admin el listado de todos los usuarios que solicitaron validar su cuenta
  *    tags:
  *      - user
  *    responses:
@@ -69,14 +69,14 @@ router.get("/validations", verifyToken, adminRole, pendingValidationUser)
 /**
  * @openapi
  * paht:
- * /api/user/view/:id:
+ * /api/user/view/{id}
  *   get:
- *    description: Muestra al usuario que este logueado el perfil de un usuario espesífico
  *    summary: Muestra al usuario que este logueado el perfil de un usuario espesífico
+ *    description: Muestra al usuario que este logueado el perfil de un usuario espesífico
  *    tags:
  *      - user
  *    parameters:
- *      - id: path
+ *      - in: path
  *        name: id
  *        required: true
  *        schema:
@@ -97,8 +97,8 @@ router.get("/view/:id", verifyToken, show)
  * paht:
  * /api/user/logged:
  *   get:
- *    description: Devuelve la información del usuario logueado
  *    summary: Devuelve la información del usuario logueado
+ *    description: Devuelve la información del usuario logueado
  *    tags:
  *      - user
  *    responses:
@@ -116,8 +116,8 @@ router.get("/logged", verifyToken, showLogged)
  * paht:
  * /api/user/register:
  *   post:
- *    description: Se registra un nuevo usuario
  *    summary: Se registra un nuevo usuario
+ *    description: Se registra un nuevo usuario
  *    tags:
  *      - user
  *    requestBody:
@@ -151,8 +151,8 @@ router.post("/register", validateRegister, EmailIsUnique,upload(), register)
  * paht:
  * /api/user/login:
  *   post:
- *    description: Logueo de usuario
  *    summary: Logueo de usuario
+ *    description: Logueo de usuario
  *    tags:
  *      - user
  *    requestBody:
@@ -187,8 +187,8 @@ router.post("/login", login)
  * paht:
  * /api/user/uploadphoto:
  *   post:
- *    description: Carga una foto al usuario logueado
  *    summary: Carga una foto al usuario logueado
+ *    description: Carga una foto al usuario logueado
  *    tags:
  *      - user
  *    requestBody:
@@ -214,8 +214,8 @@ router.post("/uploadphoto", verifyToken,upload(),uploadPhoto)
  * paht:
  * /api/user/userjoinevent:
  *   post:
- *    description: El usuario logueado se anota a un evento
  *    summary: El usuario logueado se anota a un evento
+ *    description: El usuario logueado se anota a un evento
  *    tags:
  *      - user
  *    requestBody:
@@ -243,8 +243,8 @@ router.post("/userjoinevent", verifyToken,validationJoinEvent, userjoinevent)
  * paht:
  * /api/user/validation/:code:
  *   get:
- *    description: A travez de un link en su correo permite validar la cuaenta del usuario pasando a usuario activo
  *    summary: A travez de un link en su correo permite validar la cuaenta del usuario pasando a usuario activo
+ *    description: A travez de un link en su correo permite validar la cuaenta del usuario pasando a usuario activo
  *    tags:
  *      - user
  *    parameters:
@@ -266,8 +266,8 @@ router.get("/validation/:code", validationUser)
  * paht:
  * /api/user/logOut:
  *   post:
- *    description: Termina la sesión del usuario logueado
  *    summary: Termina la sesión del usuario logueado
+ *    description: Termina la sesión del usuario logueado
  *    tags:
  *      - user
  *    responses:
@@ -282,8 +282,8 @@ router.post("/logout", logOut)
  * paht:
  * /api/user/forgot:
  *   post:
- *    description: Envia un mail con una nueva contraseña generada aleatoriamente
  *    summary: Envia un mail con una nueva contraseña generada aleatoriamente
+ *    description: Envia un mail con una nueva contraseña generada aleatoriamente
  *    tags:
  *      - user
  *    requestBody:
@@ -311,8 +311,8 @@ router.post("/forgot", forgot)
  * paht:
  * /api/user/updatepass:
  *   patch:
- *    description: Actualiza la contraseña del usuario logueado
  *    summary: Actualiza la contraseña del usuario logueado
+ *    description: Actualiza la contraseña del usuario logueado
  *    tags:
  *      - user
  *    requestBody:
@@ -340,8 +340,8 @@ router.patch("/updatepass", verifyToken, passValidation, updatePass)
  * paht:
  * /api/user/updateuser:
  *   patch:
- *    description: Actualiza los datos del usuraio logueado
  *    summary: Actualiza los datos del usuraio logueado
+ *    description: Actualiza los datos del usuraio logueado
  *    tags:
  *      - user
  *    requestBody:
@@ -377,8 +377,8 @@ router.patch("/updateuser", verifyToken, updateUser)
  * paht:
  * /api/user/updateuserverify:
  *   patch:
- *    description: El admin valida la cuenta como verdadera
  *    summary: El admin valida la cuenta como verdadera
+ *    description: El admin valida la cuenta como verdadera
  *    tags:
  *      - user
  *    requestBody:
@@ -410,8 +410,8 @@ router.patch("/updateuserverify", verifyToken, adminRole, updateUserVerify)
  * paht:
  * /api/user/down:
  *   patch:
- *    description: El usuario logueado desactiva su cuenta
  *    summary: El usuario logueado desactiva su cuenta
+ *    description: El usuario logueado desactiva su cuenta
  *    tags:
  *      - user
  *    requestBody:
@@ -439,8 +439,8 @@ router.patch("/down", verifyToken, downUser)
  * paht:
  * /api/user/favourite:
  *   patch:
- *    description: El usuario logueado desactiva su cuenta
  *    summary: El usuario logueado desactiva su cuenta
+ *    description: El usuario logueado desactiva su cuenta
  *    tags:
  *      - user
  *    requestBody:
@@ -471,14 +471,14 @@ router.patch("/favourite", verifyToken, favouriteUser)
 /**
  * @openapi
  * paht:
- * /api/user/delete/:id:
+ * /api/user/delete/{id}
  *   patch:
- *    description: El admin elimina a un usuario
  *    summary: El admin elimina a un usuario
+ *    description: El admin elimina a un usuario
  *    tags:
  *      - user
  *    parameters:
- *      - id: path
+ *      - in: path
  *        name: id
  *        required: true
  *        schema:
@@ -508,10 +508,10 @@ router.patch("/delete/:id", verifyToken, adminRole, downUserByAdmin)
 /**
  * @openapi
  * paht:
- * /api/user/userleftevent/:idEvent:
+ * /api/user/userleftevent/{idEvent}:
  *   delete:
- *    description: El usuario se da de baja a un evento
  *    summary: El usuario se da de baja a un evento
+ *    description: El usuario se da de baja a un evento
  *    tags:
  *      - user
  *    parameters:

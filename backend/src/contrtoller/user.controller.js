@@ -9,7 +9,7 @@ const { validationMail, passRecovery } = require('../contrtoller/mail.controller
 const { Op, and, where } = require('sequelize');
 const formidable = require('formidable');
 
-const IMGURL = `${process.env.PHOTO}images/default`
+// const IMGURL = `${process.env.PHOTO}images/default`
 
 // List all users
 const showAll = async (req, res) => {
@@ -25,7 +25,7 @@ const showAll = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 };
@@ -46,7 +46,7 @@ const pendingValidationUser = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -62,9 +62,9 @@ const show = async (req, res) => {
                 id: id
             }
         });
-        if(!user.photo){
-            user.photo = `${IMGURL}/defUser.png`
-        }
+        // if(!user.photo){
+        //     user.photo = `${IMGURL}/defUser.png`
+        // }
         if (user) {
             return res.status(200).json({
                 user
@@ -76,7 +76,7 @@ const show = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 };
 
@@ -87,11 +87,13 @@ const register = async (req, res) => {
     try {
         let validationCode = (Math.random() + 1).toString(36)
         params.password = await bcrypt.hash(req.body.password, 10);
+        photo = 'https://thumbsnap.com/s/WeDacXjq.jpg'
         let user = await User.create({
             name: params.name,
             email: params.email,
             password: params.password,
-            validationCode: validationCode
+            validationCode: validationCode,
+            photo: photo
         })
         if (user) {
             try {
@@ -108,13 +110,13 @@ const register = async (req, res) => {
                 'msg': 'Se creó correctamente'
             })
         } else {
-            return res.status(404).json({
-                'msg': 'No se recibieron los datos'
+            return res.status(400).json({
+                'msg': 'No pudo crear el usuario'
             })
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 };
@@ -131,7 +133,7 @@ const uploadPhoto = async (req, res) => {
         })
         if (!user) {
             return res.status(404).json({
-                msg: 'Error en la actualización de la foto'
+                msg: 'Usuario no encontrado'
             })
         }
         await user.update({
@@ -140,7 +142,7 @@ const uploadPhoto = async (req, res) => {
         return res.status(200).json({msg:'Foto agregada correctamente'})
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -171,7 +173,7 @@ const validationUser = async (req, res) => {
         } 
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -218,7 +220,7 @@ const login = async (req, res) => {
             })
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 }
@@ -239,12 +241,12 @@ const userjoinevent = async (req, res) => {
             })
         } else {
             return res.status(404).json({
-                msg: "error no se pudo anotar"
+                msg: "error, no se completó la operación"
             })
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -273,7 +275,7 @@ const userleftevent = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -306,7 +308,7 @@ const updatePass = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 }
@@ -327,7 +329,7 @@ const updateUser = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 }
@@ -347,7 +349,7 @@ const updateUserVerify = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 }
@@ -370,7 +372,7 @@ const downUser = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 }
@@ -394,7 +396,7 @@ const downUserByAdmin = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -409,7 +411,7 @@ const logOut = async (req, res, next) => {
         })
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 };
 
@@ -440,7 +442,7 @@ const favouriteUser = async (req, res) => {
         return res.status(200).json({ 'msg': 'Añadido a favoritos'})
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 }
@@ -469,7 +471,7 @@ const showLogged = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 };
 

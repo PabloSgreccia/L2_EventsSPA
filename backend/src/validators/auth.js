@@ -21,7 +21,7 @@ const adminRole = async (req, res, next) => {
       })
     }
   } catch (error) {
-      return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
+      return res.status(403).json({ msg: 'Ocurrió un error al leer las credenciales de administrador.'})
   }
 };
 
@@ -58,7 +58,7 @@ async function verifyToken(req, res, next) {
     req.userId = payload.id;
     next();
   } catch (error) {
-      return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
+      return res.status(401).json({ msg: 'Ocurrió un error al leer las credenciales de usuario.'})
   }
 }
 

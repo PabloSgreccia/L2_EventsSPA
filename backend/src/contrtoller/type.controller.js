@@ -16,13 +16,12 @@ const showAll = async (req, res) => {
                 types
             })
         } else {
-            return res.status(404).json({
-                'mgsg': 'error al mostrar los types'
+            return res.status(200).json({
+                types: []
             })
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 };
@@ -44,8 +43,7 @@ const newType = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 };
 
@@ -64,8 +62,7 @@ const update = async (req,res)=>{
             })
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 
 }
@@ -90,8 +87,7 @@ const uploadPhoto = async (req, res) => {
         })
         return res.status(200).json({msg:'Foto agregada correctamente'})
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
@@ -110,8 +106,7 @@ const deleteType = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({ msg: 'Something went wrong at backend.'})
+        return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 }
 
