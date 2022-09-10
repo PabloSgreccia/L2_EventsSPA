@@ -38,14 +38,26 @@ const {
  * /api/user/views:
  *   get:
  *    summary: Muestra al admin el listado de todos los usuarios activos
- *    description: Muestra al admin el listado de todos los usuarios activos
+ *    description: debes ser usuario administrador para ver esta información.
  *    tags:
  *      - user
+ *    parameters:
+ *      - in: header
+ *        name: authorization
+ *        schema:
+ *          type: string
+ *          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *        required: true
+ *        description: Token del usuario. 
  *    responses:
  *      200:
  *        description: devuelve los atributos de todos los usuarios activos
  *      400:
- *        description: Devuelve el mensaje de error del catch
+ *        description: Ocurrió un error en el backend
+ *      401:
+ *        description: Usuario no autorizado.
+ *      403:
+ *        description: Usuario no habilitado para esta operación.
  */
 router.get("/views", verifyToken, adminRole, showAll)
 
@@ -55,40 +67,62 @@ router.get("/views", verifyToken, adminRole, showAll)
  * /api/user/validations:
  *   get:
  *    summary: Muestra al admin el listado de todos los usuarios que solicitaron validar su cuenta
- *    description: Muestra al admin el listado de todos los usuarios que solicitaron validar su cuenta
+ *    description: Muestra al admin el listado de todos los usuarios que solicitaron validar su cuenta. Debes ser usuario administrador para ver esta información
  *    tags:
  *      - user
+ *    parameters:
+ *      - in: header
+ *        name: authorization
+ *        schema:
+ *          type: string
+ *          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *        required: true
+ *        description: Token del usuario. 
  *    responses:
  *      200:
  *        description: Devuelve los atributos de todos los usuarios que solicitaron validacion
  *      400:
- *        description: Devuelve el mensaje de error del catch
+ *        description: Ocurrió un error en el backend
+ *      401:
+ *        description: Usuario no autorizado.
+ *      403:
+ *        description: Usuario no habilitado para esta operación.
  */
 router.get("/validations", verifyToken, adminRole, pendingValidationUser)
 
 /**
  * @openapi
  * paht:
- * /api/user/view/{id}
+ * /api/user/view/{id}:
  *   get:
  *    summary: Muestra al usuario que este logueado el perfil de un usuario espesífico
  *    description: Muestra al usuario que este logueado el perfil de un usuario espesífico
  *    tags:
  *      - user
  *    parameters:
+ *      - in: header
+ *        name: authorization
+ *        schema:
+ *          type: string
+ *          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *        required: true
+ *        description: Token del usuario. 
  *      - in: path
  *        name: id
  *        required: true
  *        schema:
- *          type: int(11)
+ *          type: integer
+ *          example: 2
  *        description: id del usuario a consultar
  *    responses:
  *      200:
  *        description: devuelve los atributos del usuario
+ *      400:
+ *        description: Ocurrió un error en el backend
+ *      401:
+ *        description: Usuario no autorizado.
  *      404:
  *        description: usuario no encontrado
- *      400:
- *        description: Devuelve el mensaje de error del catch
  */
 router.get("/view/:id", verifyToken, show)
 
@@ -101,15 +135,49 @@ router.get("/view/:id", verifyToken, show)
  *    description: Devuelve la información del usuario logueado
  *    tags:
  *      - user
+ *    parameters:
+ *      - in: header
+ *        name: authorization
+ *        schema:
+ *          type: string
+ *          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *        required: true
+ *        description: Token del usuario. 
  *    responses:
  *      200:
  *        description: devuelve los atributos del usurario
+ *      400:
+ *        description: Ocurrió un error en el backend
+ *      401:
+ *        description: Usuario no autorizado.
  *      404:
  *        description: usuario no encontrado
- *      400:
- *        description: Devuelve el mensaje de error del catch
  */
 router.get("/logged", verifyToken, showLogged)
+
+/**
+ * @openapi
+ * paht:
+ * /api/user/validation/:code:
+ *   get:
+ *    summary: A travez de un link en su correo permite validar la cuaenta del usuario pasando a usuario activo
+ *    description: El codigo a ingresar en el path lo debes buscar en el mail que mandamos al email registrado (o podes verlo tambien en la base de datos)
+ *    tags:
+ *      - user
+ *    parameters:
+ *      - code: path
+ *        name: code
+ *        required: true
+ *        schema:
+ *          type: string
+ *        description: codigo de validacion del usuario generado de forma aleatoria en el registro
+ *    responses:
+ *      400:
+ *        description: Ocurrió un error en el backend
+ *      404:
+ *        description: usuario no encontrado
+ */
+ router.get("/validation/:code", validationUser)
 
 /**
  * @openapi
@@ -120,6 +188,14 @@ router.get("/logged", verifyToken, showLogged)
  *    description: Se registra un nuevo usuario
  *    tags:
  *      - user
+ *    parameters:
+ *      - in: header
+ *        name: authorization
+ *        schema:
+ *          type: string
+ *          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *        required: true
+ *        description: Token del usuario. 
  *    requestBody:
  *      required: true
  *      content:
@@ -135,14 +211,14 @@ router.get("/logged", verifyToken, showLogged)
  *                example: pedrogomez@gmail.com
  *              password:
  *                type: string
- *                example: secret
+ *                example: Micontrasenia123
  *    responses:
  *      200:
  *        description: Devuelve atributos del usuario y el msg Se creó correctamente
+ *      400:
+ *        description: Ocurrió un error en el backend al intentar crear el usuario
  *      404:
  *        description: No se recibieron los datos
- *      400:
- *        description: Devuelve el mensaje de error del catch
  */
 router.post("/register", validateRegister, EmailIsUnique,upload(), register)
 
@@ -169,16 +245,14 @@ router.post("/register", validateRegister, EmailIsUnique,upload(), register)
  *              password:
  *                type: string
  *                format: varchar(255)
- *                example: secret
+ *                example: Micontrasenia123
  *    responses:
  *      200:
  *        description: Regresa el token en el header
+ *      400:
+ *        description: Ocurrió un error en el backend
  *      404:
  *        description: Usuario y/o contraseña incorrecta
- *      401:
- *        description: Usuario y/o contraseña incorrecta
- *      400:
- *        description: Devuelve el mensaje de error del catch
  */
 router.post("/login", login)
 
@@ -191,24 +265,37 @@ router.post("/login", login)
  *    description: Carga una foto al usuario logueado
  *    tags:
  *      - user
+ *    parameters:
+ *      - in: header
+ *        name: authorization
+ *        schema:
+ *          type: string
+ *          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *        required: true
+ *        description: Token del usuario. 
  *    requestBody:
  *      required: true
  *      content:
  *        multipart/form-data:
+ *          required: true
  *          schema:
  *            type: object
  *            properties:
  *              photo:
- *                profileImage:
- *                  type: string
- *                  format: binary
+ *                type: string
+ *                format: binary
  *    responses:
  *      200:
  *        description: Foto agregada correctamente
  *      400:
- *        description: Devuelve el mensaje de error del catch
+ *        description: Ocurrió un error en el backend
+ *      401:
+ *        description: Usuario no autorizado.
+ *      404:
+ *        description: Usuario no encontrado
  */
 router.post("/uploadphoto", verifyToken,upload(),uploadPhoto)
+
 /**
  * @openapi
  * paht:
@@ -218,6 +305,14 @@ router.post("/uploadphoto", verifyToken,upload(),uploadPhoto)
  *    description: El usuario logueado se anota a un evento
  *    tags:
  *      - user
+ *    parameters:
+ *      - in: header
+ *        name: authorization
+ *        schema:
+ *          type: string
+ *          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *        required: true
+ *        description: Token del usuario. 
  *    requestBody:
  *      required: true
  *      content:
@@ -226,41 +321,21 @@ router.post("/uploadphoto", verifyToken,upload(),uploadPhoto)
  *            type: object
  *            properties:
  *              idEvent:
- *                profileImage:
- *                  type: integer
- *                  format: integer
+ *                type: integer
+ *                format: integer
+ *                example: 2
  *    responses:
  *      200:
  *        description: usuario anotado al evento
+ *      400:
+ *        description: Ocurrió un error en el backend
+ *      401:
+ *        description: Usuario no autorizado.
  *      404:
  *        description: error no se pudo anotar
- *      400:
- *        description: Devuelve el mensaje de error del catch
  */
 router.post("/userjoinevent", verifyToken,validationJoinEvent, userjoinevent)
-/**
- * @openapi
- * paht:
- * /api/user/validation/:code:
- *   get:
- *    summary: A travez de un link en su correo permite validar la cuaenta del usuario pasando a usuario activo
- *    description: A travez de un link en su correo permite validar la cuaenta del usuario pasando a usuario activo
- *    tags:
- *      - user
- *    parameters:
- *      - code: path
- *        name: code
- *        required: true
- *        schema:
- *          type: string
- *        description: codigo de validacion del usuario generado de forma aleatoria en el registro
- *    responses:
- *      404:
- *        description: usuario no encontrado
- *      400:
- *        description: Devuelve el mensaje de error del catch
- */
-router.get("/validation/:code", validationUser)
+
 /**
  * @openapi
  * paht:
@@ -274,9 +349,10 @@ router.get("/validation/:code", validationUser)
  *      200:
  *        description: sesion terminada
  *      400:
- *        description: Devuelve el mensaje de error del catch
+ *        description: Ocurrió un error en el backend
  */
 router.post("/logout", logOut)
+
 /**
  * @openapi
  * paht:
@@ -286,6 +362,14 @@ router.post("/logout", logOut)
  *    description: Envia un mail con una nueva contraseña generada aleatoriamente
  *    tags:
  *      - user
+ *    parameters:
+ *      - in: header
+ *        name: authorization
+ *        schema:
+ *          type: string
+ *          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *        required: true
+ *        description: Token del usuario. 
  *    requestBody:
  *      required: true
  *      content:
@@ -300,12 +384,13 @@ router.post("/logout", logOut)
  *    responses:
  *      200:
  *        description: Email sent
- *      404:
- *        description: Incorrect email address
  *      400:
- *        description: Devuelve el mensaje de error del catch
+ *        description: Ocurrió un error en el backend
+ *      404:
+ *        description: Email no encontrado
  */
 router.post("/forgot", forgot)
+
 /**
  * @openapi
  * paht:
@@ -315,6 +400,14 @@ router.post("/forgot", forgot)
  *    description: Actualiza la contraseña del usuario logueado
  *    tags:
  *      - user
+ *    parameters:
+ *      - in: header
+ *        name: authorization
+ *        schema:
+ *          type: string
+ *          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *        required: true
+ *        description: Token del usuario. 
  *    requestBody:
  *      required: true
  *      content:
@@ -325,16 +418,19 @@ router.post("/forgot", forgot)
  *              password:
  *                type: string
  *                format: varchar(255)
- *                example: secret
+ *                example: Micontrasenia123
  *    responses:
  *      200:
  *        description: Contraseña actualizada correctamente
+ *      400:
+ *        description: Ocurrió un error en el backend
+ *      401:
+ *        description: Usuario no autorizado.
  *      404:
  *        description: Usuario no encontrado
- *      400:
- *        description: Devuelve el mensaje de error del catch
  */
 router.patch("/updatepass", verifyToken, passValidation, updatePass)
+
 /**
  * @openapi
  * paht:
@@ -344,6 +440,14 @@ router.patch("/updatepass", verifyToken, passValidation, updatePass)
  *    description: Actualiza los datos del usuraio logueado
  *    tags:
  *      - user
+ *    parameters:
+ *      - in: header
+ *        name: authorization
+ *        schema:
+ *          type: string
+ *          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *        required: true
+ *        description: Token del usuario. 
  *    requestBody:
  *      required: false
  *      content:
@@ -357,21 +461,22 @@ router.patch("/updatepass", verifyToken, passValidation, updatePass)
  *                example: Pedro
  *              validate:
  *                type: integer
- *                format: int(255)
  *                example: 2
  *              active:
  *                type: boolean
- *                format: tinyint(255)
  *                example: true
  *    responses:
  *      200:
- *        description: Usuario no encontrado
- *      404:
  *        description: Se actualizó correctamente
  *      400:
- *        description: Devuelve el mensaje de error del catch
+ *        description: Ocurrió un error en el backend
+ *      401:
+ *        description: Usuario no autorizado.
+ *      404:
+ *        description: Usuario no encontrado
  */
 router.patch("/updateuser", verifyToken, updateUser)
+
 /**
  * @openapi
  * paht:
@@ -381,6 +486,14 @@ router.patch("/updateuser", verifyToken, updateUser)
  *    description: El admin valida la cuenta como verdadera
  *    tags:
  *      - user
+ *    parameters:
+ *      - in: header
+ *        name: authorization
+ *        schema:
+ *          type: string
+ *          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *        required: true
+ *        description: Token del usuario. 
  *    requestBody:
  *      required: true
  *      content:
@@ -390,21 +503,22 @@ router.patch("/updateuser", verifyToken, updateUser)
  *            properties:
  *              idUser:
  *                type: integer
- *                format: int(255)
  *                example: 1
  *              validate:
  *                type: integer
- *                format: int(255)
  *                example: 3
  *    responses:
  *      200:
- *        description: Usuario no encontrado
- *      404:
  *        description: Se actualizó correctamente
  *      400:
- *        description: Devuelve el mensaje de error del catch
+ *        description: Ocurrió un error en el backend
+ *      401:
+ *        description: Usuario no autorizado.
+ *      404:
+ *        description: Usuario no encontrado 
  */
 router.patch("/updateuserverify", verifyToken, adminRole, updateUserVerify)
+
 /**
  * @openapi
  * paht:
@@ -414,6 +528,14 @@ router.patch("/updateuserverify", verifyToken, adminRole, updateUserVerify)
  *    description: El usuario logueado desactiva su cuenta
  *    tags:
  *      - user
+ *    parameters:
+ *      - in: header
+ *        name: authorization
+ *        schema:
+ *          type: string
+ *          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *        required: true
+ *        description: Token del usuario. 
  *    requestBody:
  *      required: true
  *      content:
@@ -423,26 +545,36 @@ router.patch("/updateuserverify", verifyToken, adminRole, updateUserVerify)
  *            properties:
  *              active:
  *                type: boolean
- *                format: tinyint(1)
  *                example: false
  *    responses:
  *      200:
- *        description: Usuario no encontrado
- *      404:
- *        description: Se actualizó correctamente
+ *        description: Se actualizó correctamente 
  *      400:
- *        description: Devuelve el mensaje de error del catch
+ *        description: Ocurrió un error en el backend
+ *      401:
+ *        description: Usuario no autorizado.
+ *      404:
+ *        description: Usuario no encontrado
  */
 router.patch("/down", verifyToken, downUser)
+
 /**
  * @openapi
  * paht:
  * /api/user/favourite:
  *   patch:
- *    summary: El usuario logueado desactiva su cuenta
- *    description: El usuario logueado desactiva su cuenta
+ *    summary: El administrador de un evento favea a un participante
+ *    description: Debes ser el administrador del evento para ejecutar esta acción.
  *    tags:
  *      - user
+ *    parameters:
+ *      - in: header
+ *        name: authorization
+ *        schema:
+ *          type: string
+ *          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *        required: true
+ *        description: Token del usuario. 
  *    requestBody:
  *      required: true
  *      content:
@@ -452,37 +584,50 @@ router.patch("/down", verifyToken, downUser)
  *            properties:
  *              active:
  *                type: boolean
- *                format: tinyint(1)
  *                example: false
+ *              idEvent:
+ *                type: integer
+ *                example: 2
+ *              idUser:
+ *                type: integer
+ *                example: 3
  *    responses:
  *      200:
  *        description: Añadido a favoritos
+ *      400:
+ *        description: Ocurrió un error en el backend
  *      401:
- *        description: Solo el creador del evento puede realizar esta acción
+ *        description: Usuario no autorizado.
  *      404:
  *        description: Evento no encontrado
  *      405:
- *        description: No se encontraron datos
- *      400:
- *        description: Devuelve el mensaje de error del catch
+ *        description: No se encontró relacion entre el usuario y el evento
  */
 router.patch("/favourite", verifyToken, favouriteUser)
 
 /**
  * @openapi
  * paht:
- * /api/user/delete/{id}
+ * /api/user/delete/{id}:
  *   patch:
  *    summary: El admin elimina a un usuario
- *    description: El admin elimina a un usuario
+ *    description: Debes ser administrador para ejecutar esta acción.
  *    tags:
  *      - user
  *    parameters:
+ *      - in: header
+ *        name: authorization
+ *        schema:
+ *          type: string
+ *          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *        required: true
+ *        description: Token del usuario. 
  *      - in: path
  *        name: id
  *        required: true
  *        schema:
  *          type: integer
+ *          example: 2
  *        description: id del usuario a eliminar
  *    requestBody:
  *      required: true
@@ -493,15 +638,18 @@ router.patch("/favourite", verifyToken, favouriteUser)
  *            properties:
  *              active:
  *                type: boolean
- *                format: tinyint(1)
  *                example: false
  *    responses:
  *      200:
- *        description: Devuelve los atributos del usuario eliminado
+ *        description: Se desactivó el usuario
+ *      400:
+ *        description: Ocurrió un error en el backend
+ *      401:
+ *        description: Usuario no autorizado.
+ *      403:
+ *        description: Debes ser administrador.
  *      404:
  *        description: usuario no encontrado
- *      400:
- *        description: Devuelve el mensaje de error del catch
  */
 router.patch("/delete/:id", verifyToken, adminRole, downUserByAdmin)
 
@@ -515,19 +663,29 @@ router.patch("/delete/:id", verifyToken, adminRole, downUserByAdmin)
  *    tags:
  *      - user
  *    parameters:
+ *      - in: header
+ *        name: authorization
+ *        schema:
+ *          type: string
+ *          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *        required: true
+ *        description: Token del usuario. 
  *      - idEvent: path
  *        name: idEvent
  *        required: true
  *        schema:
  *          type: integer
+ *          example: 2
  *        description: id del evento a desuscribirse
  *    responses:
  *      200:
- *        description: Devuelve los id del usuario logueado y el evento al que se bajo
- *      404:
- *        description: No se completo la operación
+ *        description: Usuario salió del evento
  *      400:
- *        description: Devuelve el mensaje de error del catch
+ *        description: Ocurrió un error en el backend
+ *      401:
+ *        description: Usuario no autorizado.
+ *      404:
+ *        description: Relación entre evento y usuario no encontrada
  */
 router.delete("/userleftevent/:idEvent", verifyToken, userleftevent)
 
