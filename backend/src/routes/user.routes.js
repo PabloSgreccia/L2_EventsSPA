@@ -202,7 +202,7 @@ router.post("/login", login)
  *      400:
  *        description: Devuelve el mensaje de error del catch
  */
-router.post("/uploadphoto", verifyToken,upload(),uploadPhoto)
+router.post("/uploadphoto", verifyToken,uploadPhoto)
 /**
  * @openapi
  * paht:

@@ -9,6 +9,7 @@ const { validationMail, passRecovery } = require('../contrtoller/mail.controller
 const { Op, and, where } = require('sequelize');
 const formidable = require('formidable');
 
+
 const IMGURL = `${process.env.PHOTO}images/default`
 
 // List all users
@@ -121,6 +122,8 @@ const register = async (req, res) => {
 
 // Update user photo
 const uploadPhoto = async (req, res) => {
+    
+console.log(req.body);
     try {
         let photo= process.env.PHOTO+req.file.path.substr(req.file.path.lastIndexOf('images'))
         const id = req.userId
