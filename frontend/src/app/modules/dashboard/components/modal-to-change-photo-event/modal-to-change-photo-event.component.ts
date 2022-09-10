@@ -34,6 +34,7 @@ export class ModalToChangePhotoEventComponent implements OnInit {
         .subscribe({
           next: () => {this.dialogRef.close(true)},            
           error: ((err: any) => {
+            console.log(err);
             this.error = 'Ocurrió un error al intentar actualizar la foto.';
           })
         })
