@@ -110,7 +110,7 @@ const register = async (req, res) => {
                 'msg': 'Se creó correctamente'
             })
         } else {
-            return res.status(400).json({
+            return res.status(404).json({
                 'msg': 'No pudo crear el usuario'
             })
         }
@@ -166,10 +166,7 @@ const validationUser = async (req, res) => {
                 validationCode: ""
             }).then(user => {
                 return res.redirect(process.env.FRONTEND)
-
-
             })
-            
         } 
     } catch (error) {
         console.log(error);
@@ -203,14 +200,12 @@ const login = async (req, res) => {
                     }, process.env.ACCESS_TOKEN_SECRET, {
                         expiresIn: "8h"
                     })
-    
-    
                     return res.status(200).json({
                         token
                     })
                 } else {
                     //Acceso denegado - Usuario y/o contraseña invalidos
-                    return res.status(401).json({
+                    return res.status(404).json({
                         msg: 'Usuario y/o contraseña incorrecta'
                     })
                 }
@@ -264,12 +259,12 @@ const userleftevent = async (req, res) => {
         })
         if (!userEvent) {
             return res.status(404).json({
-                msg: "No se completo la operación"
+                msg: "Relación entre evento y usuario no encontrada"
             })
         } else {
             userEvent.destroy().then(userEvent => {
                 res.status(200).json({
-                    userEvent
+                    msg: "Usuario salió del evento"
                 })
             })
         }
@@ -291,7 +286,6 @@ const updatePass = async (req, res) => {
                 id: id,
             }
         });
-
         if (!user) {
             return res.status(404).json({
                 msg: "Usuario no encontrado"
@@ -389,7 +383,7 @@ const downUserByAdmin = async (req, res) => {
             Event.update({ cancelled: true }, { where: { idUser_admin: id }}).then(
                 Users_events.destroy({where: {userId: id}})
                     .then(user.update({ active })
-                        .then(user => { res.status(200).json({ 'msg': 'Se actualizó correctamente' })
+                        .then(user => { res.status(200).json({ 'msg': 'Se desactivó el usuario' })
                     })
                 )
             )
@@ -405,7 +399,6 @@ const logOut = async (req, res, next) => {
     try {
         //Eliminar cookie jwt
         res.clearCookie('jwt')
-        //Redirigir a la vista de login
         res.status(200).json({
             msg: 'sesion terminada'
         })
@@ -436,7 +429,7 @@ const favouriteUser = async (req, res) => {
             where: { userId: idUser, eventId: idEvent }
         })
         if (!users_events) {
-            return res.status(405).json({ msg: 'No se encontraron datos' })
+            return res.status(405).json({ msg: 'No se encontró relacion entre el usuario y el evento' })
         }
         await users_events.update({ favourite })
         return res.status(200).json({ 'msg': 'Añadido a favoritos'})
@@ -481,7 +474,7 @@ const forgot = async (req, res) => {
     try {
         const user = await User.findOne({ where: { email: email } })
         if (!user) { 
-            return res.status(404).json({ msg: 'Incorrect email address' }) 
+            return res.status(404).json({ msg: 'Email no encontrado' }) 
         }
         // Generate new random password
         const newPass = user.name.toUpperCase() + (Math.random() + 1).toString(36)
