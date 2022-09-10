@@ -159,7 +159,7 @@ module.exports = {
           email: faker.internet.email(),
           password: await bcrypt.hash('User123', 10),
           role: 'user',
-          photo: ``,
+          photo: 'https://thumbsnap.com/s/WeDacXjq.jpg',
           validated: notRandomNumbers[Math.floor(Math.random() * notRandomNumbers.length)],
           privacy: null,
           createdAt: new Date(),
