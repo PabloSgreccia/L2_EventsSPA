@@ -94,7 +94,7 @@ export class SettingsComponent implements OnInit {
 
   // This functions WON'T delete an user, only the admin can delete users. the user will be marked as unactive
   deleteUser(){
-    const dialogRef = this.dialog.open(ModalBeforeDeleteComponent, { data: { model: 'usuario', id: this.user.id } });
+    const dialogRef = this.dialog.open(ModalBeforeDeleteComponent, { data: { model: 'usuario', id: 0 } });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.userService.desactivateUser(false).subscribe({

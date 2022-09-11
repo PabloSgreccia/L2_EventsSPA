@@ -70,3 +70,9 @@ button{
 .chars-ref{
     color: gray;
 }
+
+.title-center{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

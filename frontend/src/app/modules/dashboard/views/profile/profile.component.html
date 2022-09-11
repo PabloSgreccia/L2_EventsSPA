@@ -19,10 +19,12 @@
 </mat-card>
 
 <br>
-  <button mat-button routerLink="/dashboard/new-event" class="btn-primary">
-    <mat-icon>note_add</mat-icon>
-    Crear nuevo evento
-  </button>
+  <div *ngIf="loggedUser && user">
+    <button *ngIf="loggedUser.id === user.id" mat-button routerLink="/dashboard/new-event" class="btn-primary">
+      <mat-icon>note_add</mat-icon>
+      Crear nuevo evento
+    </button>
+  </div>
 
 <br>
 <br>

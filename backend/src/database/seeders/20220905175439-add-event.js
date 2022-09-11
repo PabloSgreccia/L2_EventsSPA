@@ -149,7 +149,7 @@ module.exports = {
         id: 8,
         title: 'Exposición proyecto final',
         description: 'Adelmar Galetto y Pablo Sgreccia presentarán "Sharvent", su proyecto final en el curso de "Desarrollador Fullstack" dictado por UTN y La Segunda.',
-        mode: 'Virtual',
+        mode: 'virtual',
         province: '',
         city: '',
         street: '',

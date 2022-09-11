@@ -63,3 +63,25 @@ span{
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+.verify-icon{
+    color: rgb(1, 164, 239);
+    overflow: visible;
+    max-width: 30px;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+h2 {
+    margin: 0px;
+}
+
+.back-icon{
+    cursor: pointer;
+}

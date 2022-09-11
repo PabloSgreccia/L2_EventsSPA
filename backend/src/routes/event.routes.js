@@ -60,7 +60,7 @@ router.get("/views",verifyToken,showAll)
  *         403:
  *           description: Usuario no habilitado para esta operación.
  */
-router.get("/views/admin",adminRole,showAllAdmin)
+router.get("/views/admin",verifyToken,adminRole,showAllAdmin)
 
 /**
  * @openapi

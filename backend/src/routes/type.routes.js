@@ -167,6 +167,7 @@ router.post("/create",verifyToken,adminRole,newType);
  * paht:
  * /api/type/uploadphoto/{idType}:
  *   post:
+ *    deprecated: true
  *    summary: Carga una foto al tipo de evento
  *    description: Debes estár logueado con el usuario administrador para poder cargar una foto al tipo de evento.
  *    tags:
