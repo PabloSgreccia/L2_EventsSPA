@@ -18,7 +18,7 @@ const showAll = async (req, res) => {
         let events = await Event.findAll({
             attributes: {
                 exclude: ['createdAt', 'updatedAt'],
-                //include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos_eventos.users_events AS uev WHERE uev.eventid = eventos_eventos.event.id)`),'cantPeople']]
+                // include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = event.id)`),'cantPeople']]
                 include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
             },
             include: [{
@@ -56,6 +56,7 @@ const showAll = async (req, res) => {
         return res.status(200).json({ events })
         
     } catch (error) {
+        console.log(error);
         return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 };

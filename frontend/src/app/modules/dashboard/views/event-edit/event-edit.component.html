@@ -1,8 +1,12 @@
-<br>
-<h2 class="form-container">Editar Evento</h2>
 
 <div class="form-container">
   <div class="sub-form-container">
+    <h2 class="header-container">
+      <mat-icon [routerLink]="['/dashboard/event', idEvent]">arrow_back</mat-icon>
+      Editar Evento
+      <div></div>
+    </h2>
+    
     <form [formGroup]="eventForm" (ngSubmit)="editEvent()">
 
       <mat-form-field appearance="fill">

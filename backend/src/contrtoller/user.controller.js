@@ -253,7 +253,7 @@ const userleftevent = async (req, res) => {
     const eventId = req.params.idEvent
     try {
         const userEvent = await Users_events.findOne({
-           // attributes: ['userId', 'eventId'],
+            // attributes: ['userId', 'eventId'],
             where: {
                 userId: userId,
                 eventId: eventId
