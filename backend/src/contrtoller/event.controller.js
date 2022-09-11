@@ -18,7 +18,8 @@ const showAll = async (req, res) => {
         let events = await Event.findAll({
             attributes: {
                 exclude: ['createdAt', 'updatedAt'],
-                include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = event.id)`),'cantPeople']]
+                // include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = event.id)`),'cantPeople']]
+                include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
             },
             include: [{
                 model: User,
@@ -26,7 +27,12 @@ const showAll = async (req, res) => {
             }, {
                 model: Type,
                 attributes: ['type']
-            }]
+            },
+            {
+                model: Users_events,
+                attributes:[]
+            }],
+            group: ['users_events.eventId']
         })
     
         // Edit data before to send to FE
@@ -51,6 +57,7 @@ const showAll = async (req, res) => {
         return res.status(200).json({ events })
         
     } catch (error) {
+        console.log(error);
         return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
 };
@@ -100,7 +107,8 @@ const showEvent = async (req, res) => {
         let event = await Event.findOne({
             attributes: {
                 exclude: ['createdAt', 'updatedAt'],
-                include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = ${eventId})`),'cantPeople']]
+                // include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = ${eventId})`),'cantPeople']]
+                include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
             },
             where: {
                 id: eventId
@@ -111,7 +119,12 @@ const showEvent = async (req, res) => {
             }, {
                 model: Type,
                 attributes: ['type']
-            }]
+            },
+            {
+                model: Users_events,
+                attributes:[]
+            }],
+            group: ['users_events.eventId']
         })
         // Edit data before to send to FE
         // if (!event.photo) {   
@@ -142,7 +155,8 @@ const eventscreatedbyuser = async (req, res) => {
         let events = await Event.findAll({
             attributes: {
                 exclude: ['createdAt', 'updatedAt'],
-                include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = event.id)`),'cantPeople']]
+                // include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = event.id)`),'cantPeople']]
+                include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
             },
             where: { idUser_admin: idUser },
             include: [{
@@ -151,7 +165,12 @@ const eventscreatedbyuser = async (req, res) => {
             }, {
                 model: Type,
                 attributes: ['type']
-            }]
+            },
+            {
+                model: Users_events,
+                attributes:[]
+            }],
+            group: ['users_events.eventId']
         })
     
         // Edit data before to send to FE
@@ -195,7 +214,8 @@ const eventsfollowedbyuser = async (req, res) => {
             let event = await Event.findOne({
                 attributes: {
                     exclude: ['createdAt', 'updatedAt'],
-                    include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = ${element.eventId})`),'cantPeople']]
+                    // include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = ${element.eventId})`),'cantPeople']]
+                    include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
                 },
                 where: {
                     id: element.eventId
@@ -206,7 +226,12 @@ const eventsfollowedbyuser = async (req, res) => {
                 }, {
                     model: Type,
                     attributes: ['type']
-                }]
+                },
+                {
+                    model: Users_events,
+                    attributes:[]
+                }],
+                group: ['users_events.eventId']
             })
             eventsList.push(event)
         }

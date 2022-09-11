@@ -18,9 +18,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'idType',
         target_Key: 'id'
       })
-      Event.belongsToMany(models.user, {
-        through: 'users_events'
+      Event.hasMany(models.users_events, {
+        foreignKey: 'eventId'
       })
+      // Event.belongsToMany(models.user, {
+      //   through: 'users_events'
+      // })
     }
   }
   Event.init({
