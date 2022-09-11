@@ -23,7 +23,7 @@
         <td [routerLink]="['/dashboard/profile', user.id]">{{user.name}}</td>
         <td [routerLink]="['/dashboard/profile', user.id]">{{user.email}}</td>
         <td class="center-td">
-          <mat-icon (click)="deleteUser(user.id)" class="red center">delete_forever</mat-icon>
+          <mat-icon (click)="deleteUser(user.id, user.name)" class="red center">delete_forever</mat-icon>
         </td>
       </tr>
     <tbody *ngIf="!editedUsersList">

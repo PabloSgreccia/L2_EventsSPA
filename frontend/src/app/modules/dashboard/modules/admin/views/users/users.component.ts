@@ -47,8 +47,8 @@ export class UsersComponent implements OnInit {
   }
 
   // Delete user functionality
-  deleteUser(id:number){
-    const dialogRef = this.dialog.open(ModalBeforeDeleteComponent, { data: { model: 'usuario', id: id } });
+  deleteUser(id:number, name:string){
+    const dialogRef = this.dialog.open(ModalBeforeDeleteComponent, { data: { model: `usuario "${name}"`, id: id } });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.userService.deleteUser(id).subscribe({

@@ -144,7 +144,8 @@ export class FeedComponent implements OnInit {
         .filter(event => (event.mode === this.filtersForm.controls.mode.value) || (event.mode === "mixed"))
     } 
     if (this.filteredEvents.length === 0) {
-      this.openErrorDialog('No hay eventos que cumplan con los criterios de búsqueda ingresados.')
+      // this.openErrorDialog('No hay eventos que cumplan con los criterios de búsqueda ingresados.')
+      this.dialog.open(ModalMsgComponent, { data: { title: 'No hay eventos!', msg: 'No hay eventos que cumplan con los criterios de búsqueda ingresados' } });
       this.filteredEvents = this.initialEvents
     }
   }
@@ -162,7 +163,7 @@ export class FeedComponent implements OnInit {
       this.filteredEvents = this.initialEvents
     }
     if (this.filteredEvents.length === 0) {
-      this.error = "No hay eventos creados del usuario ingresado."
+      this.error = "No hay eventos creados por el usuario ingresado."
     }
   }
 
