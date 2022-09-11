@@ -1,30 +1,41 @@
 
-### Description
-Events SPA where a user can create an event with start and end date, a location and a type, and share it with the world.
-Others users can check check for upcoming events and indicate that they will participate in an event.
-You also can visit a user profile and check all the events created by this user.  
+### Descripción
+SPA de eventos donde un usuario puede crear eventos y compartirlos con el resto del mundo.
+Del mismo modo, cualquier usuario podrá checkear los proximos eventos e indicar que participarán en él.
+También podrás visitar el perfil de otros usuarios para ver que eventos creó o participó.
+Y muchas mas funcionalidades, te invitamos a probarlas todas!
 
-### Authors:
+### Autores:
     - Galetto, Adelmar
     - Sgreccia, Pablo
 
-### Thechnologies:
-    - Backend: NodeJs
-    - Frontend: Angular + (HTML, CSS, Javascript)
-    - Database: Mongo (NoSQL) / Sequelize (SQL)
+### Tecnologías utilizadas:
+    - Backend: NodeJs + (Javascript, Express, JWT)
+    - Frontend: Angular + (HTML, CSS, Typescript)
+    - Base de datos SQL +  Sequelize (ORM)
 
-### Steps to run the project (localhost):
-    1. Download the code
-    2. install packages: Run "npm i" in a terminal to dowload all required packages (do this twice, one in frontend folder and other in backend folder)
-    3. setup backend environment variables:
-        3.1: create a file called '.env' in './backend/'
-        3.1: use the document './env-backend.txt' as an example of all the variables you have to configure 
-    4. setup frontend environment variables:
-        4.1: edit 'environment.ts' and 'environment.prod.ts' located in './frontend/src/app/environments/' whit the backend host
-    5. setup and start DB: ensure you have a BD client running, then run in console at backend folder
-        4.1: npx sequelize-cli db:create
-        4.2: npx sequelize-cli db:migrate
-        4.3: npx sequelize-cli db:seed:all
-    6. Run backend server: "npm start" (or "npm run dev" in developer mode) 
-    7. Run frontend server: "ng serve"
-    8. Open "http://localhost:4200" in a browser.
+### Pasos para correr el proyecto (versión localhost):
+    0. Asegurarse tener instalado: NodeJs, Angular-CLI, y acceso a alguna base de datos SQL a la cual acceder
+    1. Descargar el código
+    2. Instalar dependencias necesarias: ejecutar "npm i" en consola. Hacerlo dos veces, una vez parados en la carpeta "backend" y otra en "frontend"
+    3. Configurar variables de entorno del backend:
+        3.1: crear un archivo llamado ".env" dentro de la carpeta "backend"
+        3.1: usar el documento ubicado en './env-backend.txt' como referencia para completar el archivo ".env" previamente creado
+    4. Ejecutar servidor de backend: ejecutar "npm start" (o "npm run dev") en consola, dentro de la carpeta "backend"
+        4.1: En caso de ejcutar "npm run dev", para setear la base de datos tambien deberá ejecutar "npx sequelize-cli db:create", "npx sequelize-cli db:migrate"
+        4.2: Ejecutar "npx sequelize-cli db:seed:all" en consola, en caso de querer tener datos por default
+    5. Ejecutar servidor de backend frontend: ejecutar "ng serve", en consola, dentro de la carpeta "frontend"
+    6. Abrir un buscador y colocar "http://localhost:4200" en la URL.
+
+### Datos precargados:
+    Usuario administrador:
+        - email: admin@admin.com
+        - contraseña: Admin123
+        
+    Usuario común 1:
+        - email: lasegunda@gmail.com
+        - contraseña: lasegunda123
+    
+    Usuario común 2:
+        - email: rosario@gmail.com
+        - contraseña: rosario123
