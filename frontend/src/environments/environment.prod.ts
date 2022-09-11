@@ -4,5 +4,5 @@ export const environment = {
   // HOST:'http://localhost:3000'
   // Heroku host
   // HOST:'https://eventoslasegunda.herokuapp.com'
-  HOST: 'http://eventos.alwaysdata.net'
+  HOST: 'https://eventos.alwaysdata.net'
 };
