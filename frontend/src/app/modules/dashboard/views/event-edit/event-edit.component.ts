@@ -25,6 +25,7 @@ export class EventEditComponent implements OnInit {
   provinces!:string[]
   cities!:string[]
   spinner: boolean = false
+  idEvent = this.activatedRoute.snapshot.paramMap.get("id")
 
   // Form
   eventForm = new FormGroup({
