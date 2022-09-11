@@ -123,6 +123,8 @@ const register = async (req, res) => {
 
 // Update user photo
 const uploadPhoto = async (req, res) => {
+    
+console.log(req.body);
     try {
         let photo= process.env.PHOTO+req.file.path.substr(req.file.path.lastIndexOf('images'))
         const id = req.userId
