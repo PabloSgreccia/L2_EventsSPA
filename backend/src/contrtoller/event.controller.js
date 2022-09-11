@@ -18,7 +18,8 @@ const showAll = async (req, res) => {
         let events = await Event.findAll({
             attributes: {
                 exclude: ['createdAt', 'updatedAt'],
-                include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = event.id)`),'cantPeople']]
+                //include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos_eventos.users_events AS uev WHERE uev.eventid = eventos_eventos.event.id)`),'cantPeople']]
+                include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
             },
             include: [{
                 model: User,
@@ -26,7 +27,11 @@ const showAll = async (req, res) => {
             }, {
                 model: Type,
                 attributes: ['type']
-            }]
+            },{
+                model: Users_events,
+                attributes:[]
+            }],
+            group: ['users_events.eventId']
         })
     
         // Edit data before to send to FE
@@ -100,7 +105,8 @@ const showEvent = async (req, res) => {
         let event = await Event.findOne({
             attributes: {
                 exclude: ['createdAt', 'updatedAt'],
-                include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = ${eventId})`),'cantPeople']]
+                //include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos_eventos.users_events AS uev WHERE uev.eventid = ${eventId})`),'cantPeople']]
+                include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
             },
             where: {
                 id: eventId
@@ -110,8 +116,12 @@ const showEvent = async (req, res) => {
                 attributes: ['name', 'id', 'photo', 'validated']
             }, {
                 model: Type,
-                attributes: ['type']
-            }]
+                attributes: ['type']            
+            },{
+                model: Users_events,
+                attributes:[]
+            }],
+            group: ['users_events.eventId']
         })
         // Edit data before to send to FE
         // if (!event.photo) {   
@@ -142,7 +152,8 @@ const eventscreatedbyuser = async (req, res) => {
         let events = await Event.findAll({
             attributes: {
                 exclude: ['createdAt', 'updatedAt'],
-                include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = event.id)`),'cantPeople']]
+                //include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = event.id)`),'cantPeople']]
+                include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
             },
             where: { idUser_admin: idUser },
             include: [{
@@ -151,7 +162,11 @@ const eventscreatedbyuser = async (req, res) => {
             }, {
                 model: Type,
                 attributes: ['type']
-            }]
+            },{
+                model: Users_events,
+                attributes:[]
+            }],
+            group: ['users_events.eventId']
         })
     
         // Edit data before to send to FE
@@ -195,7 +210,8 @@ const eventsfollowedbyuser = async (req, res) => {
             let event = await Event.findOne({
                 attributes: {
                     exclude: ['createdAt', 'updatedAt'],
-                    include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = ${element.eventId})`),'cantPeople']]
+                    //include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = ${element.eventId})`),'cantPeople']]
+                    include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
                 },
                 where: {
                     id: element.eventId
@@ -206,7 +222,11 @@ const eventsfollowedbyuser = async (req, res) => {
                 }, {
                     model: Type,
                     attributes: ['type']
-                }]
+                },{
+                    model: Users_events,
+                    attributes:[]
+                }],
+                group: ['users_events.eventId']
             })
             eventsList.push(event)
         }
