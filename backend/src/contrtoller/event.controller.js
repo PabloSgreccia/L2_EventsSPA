@@ -27,8 +27,7 @@ const showAll = async (req, res) => {
             }, {
                 model: Type,
                 attributes: ['type']
-            },
-            {
+            },{
                 model: Users_events,
                 attributes:[]
             }],
@@ -107,7 +106,7 @@ const showEvent = async (req, res) => {
         let event = await Event.findOne({
             attributes: {
                 exclude: ['createdAt', 'updatedAt'],
-                // include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = ${eventId})`),'cantPeople']]
+                //include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos_eventos.users_events AS uev WHERE uev.eventid = ${eventId})`),'cantPeople']]
                 include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
             },
             where: {
@@ -118,9 +117,8 @@ const showEvent = async (req, res) => {
                 attributes: ['name', 'id', 'photo', 'validated']
             }, {
                 model: Type,
-                attributes: ['type']
-            },
-            {
+                attributes: ['type']            
+            },{
                 model: Users_events,
                 attributes:[]
             }],
@@ -155,7 +153,7 @@ const eventscreatedbyuser = async (req, res) => {
         let events = await Event.findAll({
             attributes: {
                 exclude: ['createdAt', 'updatedAt'],
-                // include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = event.id)`),'cantPeople']]
+                //include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = event.id)`),'cantPeople']]
                 include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
             },
             where: { idUser_admin: idUser },
@@ -165,8 +163,7 @@ const eventscreatedbyuser = async (req, res) => {
             }, {
                 model: Type,
                 attributes: ['type']
-            },
-            {
+            },{
                 model: Users_events,
                 attributes:[]
             }],
@@ -214,7 +211,7 @@ const eventsfollowedbyuser = async (req, res) => {
             let event = await Event.findOne({
                 attributes: {
                     exclude: ['createdAt', 'updatedAt'],
-                    // include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = ${element.eventId})`),'cantPeople']]
+                    //include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = ${element.eventId})`),'cantPeople']]
                     include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
                 },
                 where: {
@@ -226,8 +223,7 @@ const eventsfollowedbyuser = async (req, res) => {
                 }, {
                     model: Type,
                     attributes: ['type']
-                },
-                {
+                },{
                     model: Users_events,
                     attributes:[]
                 }],
