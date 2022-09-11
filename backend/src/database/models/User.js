@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.event, {
         foreignKey: 'idUser_admin'
       })
-      User.belongsToMany(models.event, {
-        through: 'users_events'
+      User.hasMany(models.users_events, {
+        foreignKey: 'userId'
       })
     }
   }

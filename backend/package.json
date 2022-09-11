@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/app.js",
   "scripts": {
-    "start": "npm i &&npx sequelize db:create && npx sequelize db:migrate && node src/app.js",
+    "inicio":"npm i && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all",
+    "start": "node src/app.js",
     "dev": "nodemon src/app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
