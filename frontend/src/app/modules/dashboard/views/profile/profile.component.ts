@@ -18,7 +18,8 @@ import { ModalMsgComponent } from '@etp/shared/components';
 export class ProfileComponent implements OnInit {
 
   user!: User
-
+  loggedUser!: User
+  
   cantEventsCreated!: number
   cantEventsFollowed!: number
   createdEvents!: Event[]
@@ -38,6 +39,12 @@ export class ProfileComponent implements OnInit {
       this.routeParam = params.get("id");
       const id = this.activatedRoute.snapshot.paramMap.get('id');
     
+      // Get user from observable
+      this.userService.getUser().subscribe({
+        next: (user: User) => {
+          this.loggedUser = user
+      }, error: () => {}})
+
       // get user info --> BE
       if (id) {  
         this.userService.getOneUser(parseInt(id, 10))

@@ -151,7 +151,7 @@ module.exports = {
     ],)
 
     let randomData = [];
-    const notRandomNumbers = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2];
+    const notRandomNumbers = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2];
     for (let i = 11; i < 500; i++) {
         const seedData = {
           id: i,

@@ -1,5 +1,10 @@
 <div mat-dialog-title>Eliminar {{data.model}}</div>
-<div mat-dialog-content>¿Está seguro que desea eliminar el {{data.model}} con id {{data.id}}.</div>
+<div *ngIf="data.id === 0; else otherUser">
+  <div> ¿Está seguro que desea eliminar su cuenta? </div>
+</div>
+<ng-template #otherUser >
+  <div mat-dialog-content>¿Está seguro que desea eliminar el {{data.model}} con id {{data.id}}?</div>
+</ng-template>
   <div mat-dialog-actions>
     <button mat-stroked-button color="primary" [mat-dialog-close]="false">Cancelar</button>
     <button mat-stroked-button color="warn" [mat-dialog-close]="true">Sí</button>
