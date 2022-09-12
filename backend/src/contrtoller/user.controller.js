@@ -355,8 +355,9 @@ const downUser = async (req, res) => {
             return res.status(404).json({ msg: "Usuario no encontrado" })
         } else {
             Event.update({ cancelled: true }, { where: { idUser_admin: id }})
-            user.update({ active })
+            user.update({ active, validated: 1 })
             .then(user => {
+                Users_events.destroy({ where: {userId: id} })
                 res.status(200).json({ 'msg': 'Se actualizó correctamente' })
             })
         }
@@ -364,8 +365,8 @@ const downUser = async (req, res) => {
         console.log(error);
         return res.status(400).json({ msg: 'Ocurrió un error en el backend.'})
     }
-
 }
+
 // user delete its own account (this method doesnt delete the registed... it only "desactivate" it)
 const downUserByAdmin = async (req, res) => {
     const id = req.params.id;

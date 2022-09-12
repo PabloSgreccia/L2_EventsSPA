@@ -2,14 +2,14 @@
 
     <mat-form-field appearance="outline">
         <mat-label>Nombre completo</mat-label>
-        <input matInput placeholder="Placeholder" formControlName="name">
+        <input matInput formControlName="name">
         <mat-icon matSuffix>person</mat-icon>
         <mat-hint class="hint" *ngIf="name.errors?.['maxlength']">Hasta 50 caracteres.</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
-        <input matInput placeholder="Placeholder" formControlName="email">
+        <input matInput formControlName="email">
         <mat-icon matSuffix>alternate_email</mat-icon>
         <mat-hint class="hint" *ngIf="email.errors?.['email']">Ingrese un email válido.</mat-hint>
         <mat-hint class="hint" *ngIf="email.errors?.['maxlength']">Hasta 100 caracteres.</mat-hint>
@@ -17,7 +17,7 @@
     
     <mat-form-field appearance="outline">
         <mat-label>Contraseña</mat-label>
-        <input [type]="inputTypeValue" matInput placeholder="Placeholder" #passwordInput formControlName="password">
+        <input [type]="inputTypeValue" matInput #passwordInput formControlName="password">
         <mat-icon matSuffix class="pointer" (click)="showPassword()">remove_red_eye</mat-icon>
         <mat-hint class="hint" *ngIf="password.errors?.['pattern']">Al menos 8 caracteres, una letra mayuscula, una letra minuscula y un numero.</mat-hint>
         <mat-hint class="hint" *ngIf="password.errors?.['maxlength']">Hasta 255 caracteres.</mat-hint>
@@ -26,7 +26,7 @@
 
     <mat-form-field appearance="outline">
         <mat-label>Repetir contraseña</mat-label>
-        <input [type]="inputTypeValue" matInput placeholder="Placeholder" #reppasswordInput formControlName="repeatpassword">
+        <input [type]="inputTypeValue" matInput #reppasswordInput formControlName="repeatpassword">
         <mat-icon matSuffix class="pointer" (click)="showPassword()">remove_red_eye</mat-icon>
         <mat-hint class="hint" *ngIf="f.errors?.['passDoesntMatch']">Las contraseñas no coinciden.</mat-hint>
     </mat-form-field>

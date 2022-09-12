@@ -21,6 +21,12 @@ table{
     border-collapse: collapse;
 }
 
+@media screen and (max-width: 600px) {
+    table {
+        font-size: 12px;
+    }
+  }
+
 thead{
     border-top: 1px solid #172029;
     border-bottom: 1px solid #172029;
