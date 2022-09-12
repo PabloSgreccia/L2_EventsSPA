@@ -170,7 +170,9 @@ export class EventDetailComponent implements OnInit {
             })
         },
         error: (err) => { 
-          this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error al intentar borrar el evento.' } });
+          console.log(err);
+          
+          this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error. Reintente.' } });
         }
       })
     }

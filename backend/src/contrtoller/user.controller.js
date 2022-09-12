@@ -427,7 +427,6 @@ const favouriteUser = async (req, res) => {
         }
     
         const users_events = await Users_events.findOne({
-            attributes: ['userId', 'eventId'],
             where: { userId: idUser, eventId: idEvent }
         })
         if (!users_events) {
