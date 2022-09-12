@@ -2,7 +2,7 @@ require('dotenv').config();
 const User = require('../database/models/').user
 const jwt = require('jsonwebtoken');
 
-//Valida que el usuario se administrador
+// Validates that the user is an administrator
 
 const adminRole = async (req, res, next) => {
   const id=req.userId
@@ -25,7 +25,7 @@ const adminRole = async (req, res, next) => {
   }
 };
 
-// Valida que el usuario este logueado
+// Validates that the user is logged in
 async function verifyToken(req, res, next) {
   // Validate that "authorization" header exists
   if (!req.headers.authorization) {

@@ -9,8 +9,6 @@ const { validationMail, passRecovery } = require('../contrtoller/mail.controller
 const { Op, and, where } = require('sequelize');
 const formidable = require('formidable');
 
-// const IMGURL = `${process.env.PHOTO}images/default`
-
 // List all users
 const showAll = async (req, res) => {
     try {
@@ -62,9 +60,6 @@ const show = async (req, res) => {
                 id: id
             }
         });
-        // if(!user.photo){
-        //     user.photo = `${IMGURL}/defUser.png`
-        // }
         if (user) {
             return res.status(200).json({
                 user
@@ -181,7 +176,7 @@ const login = async (req, res) => {
     const { email, password } = req.body
 
     try {
-        //Comprobar email en DB
+        //Check email in DB
         User.findOne({
                 where: {
                     email: email,
@@ -190,12 +185,12 @@ const login = async (req, res) => {
             })
             .then(user => {
                 if (!user) {
-                    //Email invalido
+                    //Invalid email
                     res.status(404).json({
                         msg: 'Usuario y/o contraseña incorrecta'
                     })
                 } else if (bcrypt.compareSync(password, user.password)) {
-                    //Seteo un Token
+                    //Set a Token
                     let token = jwt.sign({
                         id: user.id,
                         role: user.role
@@ -206,13 +201,13 @@ const login = async (req, res) => {
                         token
                     })
                 } else {
-                    //Acceso denegado - Usuario y/o contraseña invalidos
+                    //Access denied - Invalid login and/or password
                     return res.status(404).json({
                         msg: 'Usuario y/o contraseña incorrecta'
                     })
                 }
             }).catch(err => {
-                //Fallo al buscar el email en la base de datos
+                //Failed to search for the email in the database
                 return res.status(400).json(err.message)
             })
     } catch (error) {
@@ -253,7 +248,6 @@ const userleftevent = async (req, res) => {
     const eventId = req.params.idEvent
     try {
         const userEvent = await Users_events.findOne({
-            // attributes: ['userId', 'eventId'],
             where: {
                 userId: userId,
                 eventId: eventId
