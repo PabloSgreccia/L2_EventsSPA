@@ -22,10 +22,11 @@ Y muchas mas funcionalidades, te invitamos a probarlas todas!
         3.1: crear un archivo llamado ".env" dentro de la carpeta "backend"
         3.1: usar el documento ubicado en './env-backend.txt' como referencia para completar el archivo ".env" previamente creado
     4. Ejecutar servidor de backend: 
-        4.1 ejecutar "npm inicio" en consola, dentro de la carpeta "backend"... Esto es para setear la base de datos
+        4.1 ejecutar "npm inicio" en consola, dentro de la carpeta "backend"... Esto es para crear la base de datos, hacer sus migraciones y ejecutar los seeders. en caso de que alguno falle ejecutarlo en forma manual ("npx sequelize-cli db:create", "npx sequelize-cli db:migrate", "npx sequelize-cli db:seed:all")
         4.1 ejecutar "npm start" (o "npm run dev") en consola, dentro de la carpeta "backend" para iniciar el servidor
     5. Ejecutar servidor de backend frontend: ejecutar "ng serve", en consola, dentro de la carpeta "frontend"
     6. Abrir un navegador de internet (ejemplo Google Chrome) y colocar "http://localhost:4200" en la URL.
+
 
 ### Datos precargados:
     Usuario administrador:
