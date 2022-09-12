@@ -29,7 +29,7 @@ export class FeedComponent implements OnInit {
   modes: FilterInput[] = [ 
     {
       value: 'site',
-      viewValue: 'On Site'
+      viewValue: 'Presencial'
     },{
       value: 'virtual',
       viewValue: 'Virtual'
