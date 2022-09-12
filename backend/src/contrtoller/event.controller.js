@@ -18,7 +18,6 @@ const showAll = async (req, res) => {
         let events = await Event.findAll({
             attributes: {
                 exclude: ['createdAt', 'updatedAt'],
-                // include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = event.id)`),'cantPeople']]
                 include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
             },
             include: [{
@@ -36,20 +35,12 @@ const showAll = async (req, res) => {
     
         // Edit data before to send to FE
         events = events.map(function(event){
-            // Add default event photo
-            // if (!event.photo) {
-            //     event.photo = `${IMGURL}/defEvent.jpg`
-            // }
             // state of user validation
             if (event.user.validated === 3) {
                 event.user.validated = true
             } else{
                 event.user.validated = false
             }
-            // Add default user photo
-            // if(!event.user.photo){
-            //     event.user.photo = `${IMGURL}/defUser.png`
-            // }
             return event;
          })
     
@@ -106,7 +97,6 @@ const showEvent = async (req, res) => {
         let event = await Event.findOne({
             attributes: {
                 exclude: ['createdAt', 'updatedAt'],
-                //include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos_eventos.users_events AS uev WHERE uev.eventid = ${eventId})`),'cantPeople']]
                 include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
             },
             where: {
@@ -124,20 +114,12 @@ const showEvent = async (req, res) => {
             }],
             group: ['users_events.eventId']
         })
-        // Edit data before to send to FE
-        // if (!event.photo) {   
-        //     event.photo = `${IMGURL}/defEvent.jpg`  
-        // }
         // state of user validation
         if (event.user.validated === 3) {
             event.user.validated = true
         } else{
             event.user.validated = false
         }
-        // Add default user photo
-        // if(!event.user.photo){
-        //     event.user.photo = `${IMGURL}/defUser.png`
-        // }
         
         return res.status(200).json({ people, event })
 
@@ -153,7 +135,6 @@ const eventscreatedbyuser = async (req, res) => {
         let events = await Event.findAll({
             attributes: {
                 exclude: ['createdAt', 'updatedAt'],
-                //include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = event.id)`),'cantPeople']]
                 include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
             },
             where: { idUser_admin: idUser },
@@ -172,19 +153,11 @@ const eventscreatedbyuser = async (req, res) => {
     
         // Edit data before to send to FE
         events = events.map(function(event){
-            // if (!event.photo) {   
-            //     event.photo = `${IMGURL}/defEvent.jpg`  
-            // }
-            // state of user validation
             if (event.user.validated === 3) {
                 event.user.validated = true
             } else{
                 event.user.validated = false
             }
-            // Add default user photo
-            // if(!event.user.photo){
-            //     event.user.photo = `${IMGURL}/defUser.png`
-            // }
             return event;
          })
     
@@ -211,7 +184,6 @@ const eventsfollowedbyuser = async (req, res) => {
             let event = await Event.findOne({
                 attributes: {
                     exclude: ['createdAt', 'updatedAt'],
-                    //include: [[Sequelize.literal(`(SELECT COUNT(*) FROM eventos.users_events AS uev WHERE uev.eventid = ${element.eventId})`),'cantPeople']]
                     include: [[Sequelize.fn("COUNT", sequelize.col("users_events.eventId")), "cantPeople"]]
                 },
                 where: {
@@ -234,20 +206,12 @@ const eventsfollowedbyuser = async (req, res) => {
 
         // Edit data before to send to FE
         eventsList = eventsList.map(function(event){
-            // if (!event.photo) {   
-            //     event.photo = `${IMGURL}/defEvent.jpg`  
-            // }
-            // state of user validation
-            if (event.user.validated === 3) {
+             if (event.user.validated === 3) {
                 event.user.validated = true
             } else{
                 event.user.validated = false
             }
-            // Add default user photo
-            // if(!event.user.photo){
-            //     event.user.photo = `${IMGURL}/defUser.png`
-            // }
-            return event;
+             return event;
         })
 
         return res.status(200).json({ events: eventsList })

@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+// Configure the e-mail variables
 const host = process.env.MAIL_HOST;
 const user = process.env.EMAil_USER;
 const pass = process.env.EMAIL_PASS;

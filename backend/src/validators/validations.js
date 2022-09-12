@@ -11,6 +11,7 @@ const Event = require('../database/models/').event;
 const Users_events = require('../database/models/').users_events;
 const bcrypt = require('bcryptjs');
 
+// Validations for user registration form
 const validateRegister = [
 
   check('name')
@@ -32,6 +33,7 @@ const validateRegister = [
   }
 ]
 
+// Verify that the e-mail address entered is not in use
 const EmailIsUnique = async (req, res, next) => {
   let email = req.body.email
 
@@ -41,7 +43,7 @@ const EmailIsUnique = async (req, res, next) => {
     }
   }).then(user => {
     if (user) {
-      //Email invalido
+      // invalid email
       return res.status(400).json({
         msg: "El email ingresado ya se encuentra en uso"
       })
@@ -49,11 +51,12 @@ const EmailIsUnique = async (req, res, next) => {
       next()
     }
   }).catch(err => {
-    //Fallo al buscar el email en la base de datos
+    // Failed to search for the email in the database
     return res.status(500).json(err.message)
   })
 };
 
+// Verify that the password is correct
 const passValidation = async (req, res, next) => {
   const {
     oldPassword
@@ -79,6 +82,7 @@ const passValidation = async (req, res, next) => {
 
 };
 
+// Validate the fields of the contact form
 const validateContact = [
 
   check('name')
@@ -103,6 +107,7 @@ const validateContact = [
   }
 ]
 
+// Validates that the user can register for an event
 const validationJoinEvent = async (req, res, next) => {
   const userId = req.userId;
   const eventId = req.body.idEvent

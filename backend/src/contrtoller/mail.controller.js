@@ -4,7 +4,7 @@ const MailConfig = require('../config/mail.config')
 
 const url = process.env.URL
 
-//configuracion cuenta de correo
+//email account configuration
 const transporter = nodemailer.createTransport({
     host: MailConfig.host,
     port: MailConfig.port,
@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-//manda el mail para dar de alta al usuario
+// send the mail to register the user
 async function validationMail(user) {
     await transporter.sendMail({
         from: '"La Segunda" <asha.kuphal50@ethereal.email>', // sender address
@@ -30,6 +30,7 @@ async function validationMail(user) {
 
 }
 
+// send email with a new password to login
 async function passRecovery(user,newPassword) {
     await transporter.sendMail({
         from: '"La Segunda" <asha.kuphal50@ethereal.email>', // sender address
