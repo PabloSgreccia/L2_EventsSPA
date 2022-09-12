@@ -12,6 +12,7 @@ DB_PASS=[yourdbpassword]
 URL = localhost:3000/api
 PHOTO=http://localhost:3000/
 STATIC=./public/
+FRONTEND=https://localhost:4200/signmenu/success
 
 #JWT
 ACCESS_TOKEN_SECRET=anysecrettoken
@@ -21,4 +22,4 @@ MAIL_HOST=smtp.gmail.com
 MAIL_PORT=465
 MAIL_SECURE=true
 EMAil_USER=tpfinallasegunda
-EMAIL_PASS=hupdatlnhnxejcys
+EMAIL_PASS=hupdatlnhnxejcys (Esta es una contraseña genera para aplicaciones, puede no andar en su equipo pero si tiene un correo gmail puede poner su usuario y generar su contraseña para aplicaciones)
