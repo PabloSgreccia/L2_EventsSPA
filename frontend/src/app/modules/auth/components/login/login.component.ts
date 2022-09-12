@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  // User forgo Password functionality
+  // User forgot Password functionality
   forgotPass(){
     if (this.email.value && this.email.valid) {
       this.userService.forgotPassword(this.email.value)
