@@ -19,7 +19,14 @@ h2{
 table{
     text-align: center;
     border-collapse: collapse;
+    font-size: 12px;
 }
+
+@media screen and (max-width: 600px) {
+    table {
+        font-size: 12px;
+    }
+  }
 
 thead{
     border-top: 1px solid #172029;
