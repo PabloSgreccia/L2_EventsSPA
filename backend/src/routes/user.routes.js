@@ -220,7 +220,7 @@ router.get("/logged", verifyToken, showLogged)
  *      404:
  *        description: No se recibieron los datos
  */
-router.post("/register", validateRegister, EmailIsUnique,upload(), register)
+router.post("/register", validateRegister, EmailIsUnique, register)
 
 /**
  * @openapi
