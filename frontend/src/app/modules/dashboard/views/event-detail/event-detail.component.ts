@@ -119,6 +119,7 @@ export class EventDetailComponent implements OnInit {
     this.event.cantPeople = (this.event.cantPeople || 0) - 1  
     this.userParticipateEvent = false
     this.userEvents = this.userEvents.filter(user => user.id !== this.idUser)
+    this.sortPeople()
     this.userService.userLeftEvent(this.event.id)
     .subscribe({ error: (err) => { this.dialog.open(ModalMsgComponent, { data: { title: 'Error', msg: 'Ocurrió un error, vuelva a intentar'} })}})
   }
